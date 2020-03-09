@@ -1,8 +1,8 @@
-import 'react-native-gesture-handler';
-import * as React from 'react';
-import { View, StatusBar } from 'react-native';
+import 'react-native-gesture-handler'
+import * as React from 'react'
+import { View, StatusBar } from 'react-native'
 
-import AppNavigator from './components/AppNavigator';
+import AppNavigator from './components/AppNavigator'
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <StatusBar barStyle="light-content" />
       <AppNavigator />
     </View>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,81 +1,65 @@
-import * as React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
-import * as Haptics from 'expo-haptics';
+import * as React from 'react'
+import { View, Text, StyleSheet, Platform } from 'react-native'
+import { Button } from 'react-native-elements'
+import * as Haptics from 'expo-haptics'
 
-import { colors } from '../lib/Settings';
-import Column from './Column';
+import { colors } from '../lib/Settings'
+import Column from './Column'
 
 class GameCanvas extends React.Component {
 
-    state = { fieldType: ['', '', '', '', '', '', '', '', ''], turn: 'o', disableFields: false, winnerColumns: [], winner: '' };
+    state = { fieldType: ['', '', '', '', '', '', '', '', ''], turn: 'o', disableFields: false, winnerColumns: [], winner: '' }
 
     componentDidUpdate(prevState) {
-        let { fieldType, disableFields } = this.state;
+        let { fieldType, disableFields } = this.state
 
         //check if all fields are pressed
         if (prevState.fieldType !== fieldType) {
-            let counter = 0;
-            for (let i = 0; i < fieldType.length; i++) {
-                if (fieldType[i] !== '') {
-                    counter++
-                }
-            }
-            if (counter === 9 && !disableFields) {
-                this.setState({ disableFields: true, winner: 'tied' })
-            }
+            let counter = 0
+            for (let i = 0; i < fieldType.length; i++) if (fieldType[i] !== '') counter++
+            if (counter === 9 && !disableFields) this.setState({ disableFields: true, winner: 'tied' })
         }
     }
 
     checkGame = (forUser) => {
-        let winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+        let winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 
-        for (let i = 0; i < winnerCombinations.length; i++) {
-            this.checkLine(forUser, winnerCombinations[i]);
-        }
+        for (let i = 0; i < winnerCombinations.length; i++) this.checkLine(forUser, winnerCombinations[i])
     }
 
     checkLine = (user, combination) => {
-        let { fieldType } = this.state;
+        let { fieldType } = this.state
 
         if (fieldType[combination[0]] === user && fieldType[combination[1]] === user && fieldType[combination[2]] === user) {
-            console.log(user + ' has won');
-            if (Platform.OS === 'ios') { Haptics.notificationAsync('success') }
+            if (Platform.OS === 'ios') Haptics.notificationAsync('success')
             this.setState({ winner: user, disableFields: true, winnerColumns: [combination[0] + 1, combination[1] + 1, combination[2] + 1] })
         }
     }
 
     pressed = (num) => {
-        let fieldType = this.state.fieldType;
-        let turn = this.state.turn;
+        let fieldType = this.state.fieldType,
+        turn = this.state.turn
 
         if (fieldType[num - 1] === '') {
-            if (Platform.OS === 'ios') { Haptics.selectionAsync() }
+            if (Platform.OS === 'ios') Haptics.selectionAsync()
 
-            if (turn === 'o') { fieldType[num - 1] = 'o' }
-            else { fieldType[num - 1] = 'x' }
+            if (turn === 'o') fieldType[num - 1] = 'o'
+            else fieldType[num - 1] = 'x' 
 
             this.checkGame(turn)
 
-            if (turn === 'o') { this.setState({ fieldType, turn: 'x' }) }
-            if (turn === 'x') { this.setState({ fieldType, turn: 'o' }) }
+            if (turn === 'o') this.setState({ fieldType, turn: 'x' }) 
+            if (turn === 'x') this.setState({ fieldType, turn: 'o' })
         }
-        else {
-            if (Platform.OS === 'ios') { Haptics.notificationAsync('error') }
-        }
+        else if (Platform.OS === 'ios') Haptics.notificationAsync('error')
     }
 
     renderInfo = () => {
-        let { disableFields, winner } = this.state;
+        let { disableFields, winner } = this.state,
+        winnerOutput = ''
 
-        let winnerOutput = '';
-
-        if(winner === 'tied'){
-            winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
-        }
-        else {
-            winnerOutput = <Text style={styles.winnerText}>The winner is {winner.toUpperCase()}</Text>
-        }
+        if(winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
+        else winnerOutput = <Text style={styles.winnerText}>The winner is {winner.toUpperCase()}</Text>
 
         if (disableFields && winner !== '') {
             return <View>
@@ -96,11 +80,10 @@ class GameCanvas extends React.Component {
     }
 
     render() {
-        let { fieldType, disableFields, winnerColumns } = this.state;
+        let { fieldType, disableFields, winnerColumns } = this.state
 
-        return (
-            <View style={styles.container}>
-                <View style={{ marginBottom: 40 }}>
+        return <View style={styles.container}>
+                <View>
                     {this.renderInfo()}
                 </View>
                 <View style={{ flexDirection: 'row'  }}>
@@ -121,7 +104,6 @@ class GameCanvas extends React.Component {
                     </View>
                 </View>
             </View>
-        );
     }
 }
 
@@ -147,9 +129,9 @@ const styles = StyleSheet.create({
     },
     button: {
         margin: 20,
+        marginBottom: 40,
         backgroundColor: colors.main
       }
-});
+})
 
-
-export default GameCanvas;
+export default GameCanvas

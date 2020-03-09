@@ -1,15 +1,13 @@
-import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import * as React from 'react'
+import { View, StyleSheet } from 'react-native'
 
-import { colors } from '../lib/Settings';
-import GameCanvas from '../components/GameCanvas';
+import { colors } from '../lib/Settings'
+import GameCanvas from '../components/GameCanvas'
 
 function Multiplayer() {
-  return (
-    <View style={styles.container}>
+  return <View style={styles.container}>
       <GameCanvas />
     </View>
-  );
 }
 
 const styles = StyleSheet.create({
@@ -19,6 +17,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.background
   }
-});
+})
 
-export default Multiplayer;
+export default Multiplayer

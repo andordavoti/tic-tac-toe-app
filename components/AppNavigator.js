@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import * as React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 
-import { colors } from '../lib/Settings';
-import SelectMode from '../screens/SelectMode';
-import Multiplayer from '../screens/Multiplayer';
+import { colors } from '../lib/Settings'
+import SelectMode from '../screens/SelectMode'
+import Multiplayer from '../screens/Multiplayer'
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 function AppNavigator() {
     return (
@@ -38,7 +38,7 @@ function AppNavigator() {
                     }} />
             </Stack.Navigator>
         </NavigationContainer>
-    );
+    )
 }
 
-export default AppNavigator;
+export default AppNavigator
