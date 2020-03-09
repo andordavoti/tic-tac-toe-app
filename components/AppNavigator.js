@@ -2,8 +2,9 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+import { colors } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
-import SinglePlayer from '../screens/SinglePlayer';
+import Multiplayer from '../screens/Multiplayer';
 
 const Stack = createStackNavigator();
 
@@ -12,25 +13,26 @@ function AppNavigator() {
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen
-                    name="Single Player"
-                    component={SinglePlayer}
+                    name="Select Mode"
+                    component={SelectMode}
                     options={{
-                        headerTitleStyle: {
-                            textAlign: 'center'
-                        },
+                        title: 'Tic Tac Toe',
                         headerStyle: {
-                            backgroundColor: '#270091',
+                            backgroundColor: colors.main,
+                            shadowColor: 'transparent',
+                            borderBottomWidth: 0,
                         },
-                        headerTintColor: '#fff'
+                        headerTintColor: '#fff',
                     }} />
                 <Stack.Screen
-                    name="Select Mode"
-                    component={SelectMode} options={{
-                        headerTitleStyle: {
-                            textAlign: 'center',
-                        },
+                    name="Multiplayer"
+                    component={Multiplayer}
+                    options={{
+                        headerBackTitle: 'Back',
                         headerStyle: {
-                            backgroundColor: '#270091',
+                            backgroundColor: colors.main,
+                            shadowColor: 'transparent',
+                            borderBottomWidth: 0,
                         },
                         headerTintColor: '#fff'
                     }} />

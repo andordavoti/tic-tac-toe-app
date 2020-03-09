@@ -1,12 +1,14 @@
 import * as React from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+import { Button } from 'react-native-elements';
 import * as Haptics from 'expo-haptics';
 
+import { colors } from '../lib/Settings';
 import Column from './Column';
 
-export default class GameCanvas extends React.Component {
+class GameCanvas extends React.Component {
 
-    state = { fieldType: ['', '', '', '', '', '', '', '', ''], turn: 'o', disableFields: false, winnerColumns: [] };
+    state = { fieldType: ['', '', '', '', '', '', '', '', ''], turn: 'o', disableFields: false, winnerColumns: [], winner: '' };
 
     componentDidUpdate(prevState) {
         let { fieldType, disableFields } = this.state;
@@ -20,8 +22,7 @@ export default class GameCanvas extends React.Component {
                 }
             }
             if (counter === 9 && !disableFields) {
-                //game is over
-                this.setState({ disableFields: true }) 
+                this.setState({ disableFields: true, winner: 'tied' })
             }
         }
     }
@@ -39,8 +40,8 @@ export default class GameCanvas extends React.Component {
 
         if (fieldType[combination[0]] === user && fieldType[combination[1]] === user && fieldType[combination[2]] === user) {
             console.log(user + ' has won');
-            Haptics.notificationAsync('success');
-            this.setState({ disableFields: true, winnerColumns:[ combination[0] + 1, combination[1] + 1, combination[2] + 1 ] })
+            if (Platform.OS === 'ios') { Haptics.notificationAsync('success') }
+            this.setState({ winner: user, disableFields: true, winnerColumns: [combination[0] + 1, combination[1] + 1, combination[2] + 1] })
         }
     }
 
@@ -49,7 +50,7 @@ export default class GameCanvas extends React.Component {
         let turn = this.state.turn;
 
         if (fieldType[num - 1] === '') {
-            Haptics.selectionAsync()
+            if (Platform.OS === 'ios') { Haptics.selectionAsync() }
 
             if (turn === 'o') { fieldType[num - 1] = 'o' }
             else { fieldType[num - 1] = 'x' }
@@ -60,7 +61,37 @@ export default class GameCanvas extends React.Component {
             if (turn === 'x') { this.setState({ fieldType, turn: 'o' }) }
         }
         else {
-            Haptics.notificationAsync('error');
+            if (Platform.OS === 'ios') { Haptics.notificationAsync('error') }
+        }
+    }
+
+    renderInfo = () => {
+        let { disableFields, winner } = this.state;
+
+        let winnerOutput = '';
+
+        if(winner === 'tied'){
+            winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
+        }
+        else {
+            winnerOutput = <Text style={styles.winnerText}>The winner is {winner.toUpperCase()}</Text>
+        }
+
+        if (disableFields && winner !== '') {
+            return <View>
+                <Text style={styles.gameOverText}>Game Over</Text>
+                {winnerOutput}
+                <Button
+                    title="New Game"
+                    type='solid'
+                    buttonStyle={styles.button}
+                    onPress={() => this.setState({
+                        fieldType: ['', '', '', '', '', '', '', '', ''],
+                        disableFields: false,
+                        winnerColumns: []
+                    })}
+                />
+            </View>
         }
     }
 
@@ -70,17 +101,9 @@ export default class GameCanvas extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={{ marginBottom: 40 }}>
-                <Text style={styles.text}>Press a field to start the game</Text>
-                <Button
-                    title="New Game"
-                    onPress={() => this.setState({
-                        fieldType: ['', '', '', '', '', '', '', '', ''],
-                        disableFields: false,
-                        winnerColumns: []
-                    })}
-                />
+                    {this.renderInfo()}
                 </View>
-                <View style={{ flexDirection: 'row', backgroundColor: '#3d3d3d', borderRadius: 50 }}>
+                <View style={{ flexDirection: 'row'  }}>
                     <View>
                         <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={1} fieldType={fieldType[0]} />
                         <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={4} fieldType={fieldType[3]} />
@@ -108,10 +131,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    text: {
+    gameOverText: {
         color: 'white',
-        margin: 50,
+        margin: 20,
+        fontSize: 30,
+        textAlign: 'center',
+        fontWeight: '500'
+    },
+    winnerText: {
+        color: 'white',
+        margin: 20,
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontWeight: 'bold'
+    },
+    button: {
+        margin: 20,
+        backgroundColor: colors.main
       }
 });
+
+
+export default GameCanvas;

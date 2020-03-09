@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
+import { colors } from '../lib/Settings';
 import GameCanvas from '../components/GameCanvas';
 
-export default SinglePlayer = () => {
-
+function Multiplayer() {
   return (
     <View style={styles.container}>
       <GameCanvas />
@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#3d3d3d'
+    backgroundColor: colors.background
   }
 });
+
+export default Multiplayer;

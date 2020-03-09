@@ -1,7 +1,8 @@
 import React from 'react';
 import { Dimensions, TouchableOpacity, Image } from 'react-native';
+import { colors } from '../lib/Settings';
 
-export default class Column extends React.Component {
+class Column extends React.Component {
     state = { isWinnerColumn: false };
 
     componentDidUpdate(prevProps) {
@@ -25,12 +26,14 @@ export default class Column extends React.Component {
     getStyles = (isWinnerColumn) => {
         return {
             column: {
+                maxWidth: Dimensions.get('window').height * 0.1, 
+                maxHeight: Dimensions.get('window').height * 0.1, 
                 width: Dimensions.get('window').width * 0.22,
                 height: Dimensions.get('window').width * 0.22,
-                backgroundColor: '#270091',
+                backgroundColor: colors.main,
                 borderRadius: 10,
-                borderWidth: 5,
-                borderColor: isWinnerColumn ? 'green' : 'white',
+                borderWidth: isWinnerColumn ? 5 : 2,
+                borderColor: isWinnerColumn ? colors.mainDark : 'white',
                 margin: 10
             },
             image: {
@@ -60,3 +63,4 @@ export default class Column extends React.Component {
     }
 }
 
+export default Column;

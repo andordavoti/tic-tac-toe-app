@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "0.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,13 +18,25 @@
       "backgroundColor": "#ffffff"
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "enabled": false
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "bundleIdentifier": "com.andordavoti.tictactoe.game",
+      "buildNumber": "20200309",
+      "supportsTablet": false,
+      "isTabletOnly": false,
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.andordavoti.tictactoe.game",
+      "versionCode": 20200309,
+      "permissions": []
     }
   }
 }
