@@ -10,7 +10,7 @@ class Column extends React.Component {
     }
 
     checkIfWinnerColumn = () => {
-        let { winnerColumns, num } = this.props,
+        const { winnerColumns, num } = this.props,
         { isWinnerColumn } = this.state
 
         if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num ) && !isWinnerColumn) this.setState({ isWinnerColumn: true })
@@ -26,7 +26,7 @@ class Column extends React.Component {
                 height: Dimensions.get('window').width * 0.22,
                 backgroundColor: colors.main,
                 borderRadius: 10,
-                borderWidth: isWinnerColumn ? 5 : 2,
+                borderWidth: isWinnerColumn ? 8 : 2,
                 borderColor: isWinnerColumn ? colors.mainDark : 'white',
                 margin: 10
             },

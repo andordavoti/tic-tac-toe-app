@@ -11,7 +11,7 @@ class GameCanvas extends React.Component {
     state = { fieldType: ['', '', '', '', '', '', '', '', ''], turn: 'o', disableFields: false, winnerColumns: [], winner: '' }
 
     componentDidUpdate(prevState) {
-        let { fieldType, disableFields } = this.state
+        const { fieldType, disableFields } = this.state
 
         //check if all fields are pressed
         if (prevState.fieldType !== fieldType) {
@@ -22,13 +22,13 @@ class GameCanvas extends React.Component {
     }
 
     checkGame = (forUser) => {
-        let winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+        const winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
 
         for (let i = 0; i < winnerCombinations.length; i++) this.checkLine(forUser, winnerCombinations[i])
     }
 
     checkLine = (user, combination) => {
-        let { fieldType } = this.state
+        const { fieldType } = this.state
 
         if (fieldType[combination[0]] === user && fieldType[combination[1]] === user && fieldType[combination[2]] === user) {
             if (Platform.OS === 'ios') Haptics.notificationAsync('success')
@@ -55,8 +55,8 @@ class GameCanvas extends React.Component {
     }
 
     renderInfo = () => {
-        let { disableFields, winner } = this.state,
-        winnerOutput = ''
+        const { disableFields, winner } = this.state
+        let winnerOutput = ''
 
         if(winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
         else winnerOutput = <Text style={styles.winnerText}>The winner is {winner.toUpperCase()}</Text>
@@ -80,7 +80,7 @@ class GameCanvas extends React.Component {
     }
 
     render() {
-        let { fieldType, disableFields, winnerColumns } = this.state
+        const { fieldType, disableFields, winnerColumns } = this.state
 
         return <View style={styles.container}>
                 <View>
