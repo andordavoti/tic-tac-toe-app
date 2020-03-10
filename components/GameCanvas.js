@@ -21,41 +21,8 @@ class GameCanvas extends React.Component {
         }
     }
 
-    checkGame = (forUser) => {
-        const winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
-
-        for (let i = 0; i < winnerCombinations.length; i++) this.checkLine(forUser, winnerCombinations[i])
-    }
-
-    checkLine = (user, combination) => {
-        const { fieldType } = this.state
-
-        if (fieldType[combination[0]] === user && fieldType[combination[1]] === user && fieldType[combination[2]] === user) {
-            if (Platform.OS === 'ios') Haptics.notificationAsync('success')
-            this.setState({ winner: user, disableFields: true, winnerColumns: [combination[0] + 1, combination[1] + 1, combination[2] + 1] })
-        }
-    }
-
-    pressed = (num) => {
-        let fieldType = this.state.fieldType,
-        turn = this.state.turn
-
-        if (fieldType[num - 1] === '') {
-            if (Platform.OS === 'ios') Haptics.selectionAsync()
-
-            if (turn === 'o') fieldType[num - 1] = 'o'
-            else fieldType[num - 1] = 'x' 
-
-            this.checkGame(turn)
-
-            if (turn === 'o') this.setState({ fieldType, turn: 'x' }) 
-            if (turn === 'x') this.setState({ fieldType, turn: 'o' })
-        }
-        else if (Platform.OS === 'ios') Haptics.notificationAsync('error')
-    }
-
     renderInfo = () => {
-        const { disableFields, winner } = this.state
+        const { disableFields, winner, gameStart } = this.state
         let winnerOutput = ''
 
         if(winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
@@ -77,6 +44,40 @@ class GameCanvas extends React.Component {
                 />
             </View>
         }
+        else if (!gameStart) return <Text style={styles.winnerText}>Press a column to start the game</Text>
+    }
+
+    checkLine = (user, combination) => {
+        const { fieldType } = this.state
+
+        if (fieldType[combination[0]] === user && fieldType[combination[1]] === user && fieldType[combination[2]] === user) {
+            if (Platform.OS === 'ios') Haptics.notificationAsync('success')
+            this.setState({ winner: user, disableFields: true, winnerColumns: [combination[0] + 1, combination[1] + 1, combination[2] + 1] })
+        }
+    }
+
+    checkGame = (forUser) => {
+        const winnerCombinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]
+
+        for (let i = 0; i < winnerCombinations.length; i++) this.checkLine(forUser, winnerCombinations[i])
+    }
+
+    pressed = (num) => {
+        let fieldType = this.state.fieldType,
+        turn = this.state.turn
+
+        if (fieldType[num - 1] === '') {
+            if (Platform.OS === 'ios') Haptics.selectionAsync()
+
+            if (turn === 'o') fieldType[num - 1] = 'o'
+            else fieldType[num - 1] = 'x' 
+
+            this.checkGame(turn)
+
+            if (turn === 'o') this.setState({ fieldType, turn: 'x' }) 
+            if (turn === 'x') this.setState({ fieldType, turn: 'o' })
+        }
+        else if (Platform.OS === 'ios') Haptics.notificationAsync('error')
     }
 
     render() {
