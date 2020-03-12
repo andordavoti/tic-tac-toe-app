@@ -8,16 +8,24 @@ import Column from './Column'
 
 class GameCanvas extends React.Component {
 
-    state = { fieldType: ['', '', '', '', '', '', '', '', ''], turn: 'o', disableFields: false, winnerColumns: [], winner: '' }
+    state = {
+        fieldType: ['', '', '', '', '', '', '', '', ''],
+        turn: 'o',
+        disableFields: false,
+        winnerColumns: [],
+        winner: '',
+        gameStart: false
+    }
 
     componentDidUpdate(prevState) {
-        const { fieldType, disableFields } = this.state
+        const { fieldType, disableFields, gameStart } = this.state
 
         //check if all fields are pressed
         if (prevState.fieldType !== fieldType) {
             let counter = 0
             for (let i = 0; i < fieldType.length; i++) if (fieldType[i] !== '') counter++
             if (counter === 9 && !disableFields) this.setState({ disableFields: true, winner: 'tied' })
+            if (counter !== 0 && !gameStart) this.setState({ gameStart: true })
         }
     }
 
@@ -25,7 +33,7 @@ class GameCanvas extends React.Component {
         const { disableFields, winner, gameStart } = this.state
         let winnerOutput = ''
 
-        if(winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
+        if (winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
         else winnerOutput = <Text style={styles.winnerText}>The winner is {winner.toUpperCase()}</Text>
 
         if (disableFields && winner !== '') {
@@ -39,7 +47,8 @@ class GameCanvas extends React.Component {
                     onPress={() => this.setState({
                         fieldType: ['', '', '', '', '', '', '', '', ''],
                         disableFields: false,
-                        winnerColumns: []
+                        winnerColumns: [],
+                        gameStart: false
                     })}
                 />
             </View>
@@ -64,17 +73,17 @@ class GameCanvas extends React.Component {
 
     pressed = (num) => {
         let fieldType = this.state.fieldType,
-        turn = this.state.turn
+            turn = this.state.turn
 
         if (fieldType[num - 1] === '') {
             if (Platform.OS === 'ios') Haptics.selectionAsync()
 
             if (turn === 'o') fieldType[num - 1] = 'o'
-            else fieldType[num - 1] = 'x' 
+            else fieldType[num - 1] = 'x'
 
             this.checkGame(turn)
 
-            if (turn === 'o') this.setState({ fieldType, turn: 'x' }) 
+            if (turn === 'o') this.setState({ fieldType, turn: 'x' })
             if (turn === 'x') this.setState({ fieldType, turn: 'o' })
         }
         else if (Platform.OS === 'ios') Haptics.notificationAsync('error')
@@ -84,27 +93,27 @@ class GameCanvas extends React.Component {
         const { fieldType, disableFields, winnerColumns } = this.state
 
         return <View style={styles.container}>
+            <View>
+                {this.renderInfo()}
+            </View>
+            <View style={{ flexDirection: 'row' }}>
                 <View>
-                    {this.renderInfo()}
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={1} fieldType={fieldType[0]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={4} fieldType={fieldType[3]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={7} fieldType={fieldType[6]} />
                 </View>
-                <View style={{ flexDirection: 'row'  }}>
-                    <View>
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={1} fieldType={fieldType[0]} />
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={4} fieldType={fieldType[3]} />
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={7} fieldType={fieldType[6]} />
-                    </View>
-                    <View>
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={2} fieldType={fieldType[1]} />
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={5} fieldType={fieldType[4]} />
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={8} fieldType={fieldType[7]} />
-                    </View>
-                    <View>
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={3} fieldType={fieldType[2]} />
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={6} fieldType={fieldType[5]} />
-                        <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={9} fieldType={fieldType[8]} />
-                    </View>
+                <View>
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={2} fieldType={fieldType[1]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={5} fieldType={fieldType[4]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={8} fieldType={fieldType[7]} />
+                </View>
+                <View>
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={3} fieldType={fieldType[2]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={6} fieldType={fieldType[5]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={9} fieldType={fieldType[8]} />
                 </View>
             </View>
+        </View>
     }
 }
 
@@ -132,7 +141,7 @@ const styles = StyleSheet.create({
         margin: 20,
         marginBottom: 40,
         backgroundColor: colors.main
-      }
+    }
 })
 
 export default GameCanvas

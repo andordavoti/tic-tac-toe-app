@@ -14,7 +14,7 @@ class Column extends React.Component {
         { isWinnerColumn } = this.state
 
         if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num ) && !isWinnerColumn) this.setState({ isWinnerColumn: true })
-        else this.setState({ isWinnerColumn: false })
+        else if (winnerColumns) this.setState({ isWinnerColumn: false })
     }
 
     getStyles = (isWinnerColumn) => {
