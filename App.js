@@ -4,7 +4,7 @@ import { View, StatusBar } from 'react-native'
 
 import AppNavigator from './components/AppNavigator'
 
-function App() {
+const App = () => {
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="light-content" />
