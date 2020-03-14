@@ -15,11 +15,6 @@ class Column extends React.Component {
 
         if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num ) && !isWinnerColumn) this.setState({ isWinnerColumn: true })
         else if (winnerColumns) this.setState({ isWinnerColumn: false })
-
-        console.log(isWinnerColumn)
-        console.log(winnerColumns)
-        console.log(num)
-        console.log('\n')
     }
 
     getStyles = (isWinnerColumn) => {
@@ -44,16 +39,17 @@ class Column extends React.Component {
     }
 
     render() {
-        let path,
-        styles = this.getStyles(isWinnerColumn)
+        let path 
         const { fieldType, num, action, disabled } = this.props
         const { isWinnerColumn } = this.state
+        const styles = this.getStyles(isWinnerColumn)
+
+        if(isWinnerColumn) console.log(num)
 
         if (fieldType === 'o') path = require(`../assets/images/o.png`) 
         if (fieldType === 'x') path = require(`../assets/images/x.png`)
 
         return <TouchableOpacity disabled={disabled} style={styles.column} onPress={() => action(num)}>
-            <Text>{num}</Text>
                 {fieldType !== '' ? <Image style={styles.image} source={path} /> : null}
             </TouchableOpacity>
     }
