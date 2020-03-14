@@ -99,17 +99,17 @@ class GameCanvas extends React.Component {
             <View style={{ flexDirection: 'row' }}>
                 <View>
                     <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={0} fieldType={fieldType[0]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={3} fieldType={fieldType[3]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={6} fieldType={fieldType[6]} />
-                </View>
-                <View>
                     <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={1} fieldType={fieldType[1]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={4} fieldType={fieldType[4]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={7} fieldType={fieldType[7]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={2} fieldType={fieldType[2]} />
                 </View>
                 <View>
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={2} fieldType={fieldType[2]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={3} fieldType={fieldType[3]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={4} fieldType={fieldType[4]} />
                     <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={5} fieldType={fieldType[5]} />
+                </View>
+                <View>
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={6} fieldType={fieldType[6]} />
+                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={7} fieldType={fieldType[7]} />
                     <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={8} fieldType={fieldType[8]} />
                 </View>
             </View>
