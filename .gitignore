@@ -13,5 +13,4 @@ web-report/
 # macOS
 .DS_Store
 
-.env
 lib/apiKeys.js
