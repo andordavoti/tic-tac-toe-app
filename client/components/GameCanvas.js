@@ -44,12 +44,16 @@ class GameCanvas extends React.Component {
                     title="New Game"
                     type='solid'
                     buttonStyle={styles.button}
-                    onPress={() => this.setState({
-                        fieldType: ['', '', '', '', '', '', '', '', ''],
-                        disableFields: false,
-                        winnerColumns: [],
-                        gameStart: false
-                    })}
+                    onPress={() => {
+                        if (Platform.OS === 'ios') Haptics.selectionAsync()
+                        this.setState({
+                            fieldType: ['', '', '', '', '', '', '', '', ''],
+                            disableFields: false,
+                            winnerColumns: [],
+                            gameStart: false
+                        })
+                    }
+                    }
                 />
             </View>
         }
