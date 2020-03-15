@@ -7,7 +7,7 @@ const NewGame = firestore => async (req, res) => {
     canvas: [],
   });
 
-  return res.send(newLobby.id);
+  return res.send({ lobbyId: newLobby.id });
 };
 
 module.exports = NewGame;
