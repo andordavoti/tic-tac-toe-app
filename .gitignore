@@ -19,3 +19,4 @@ client/lib/apiKeys.js
 
 #server
 server/node_modules/**/*
+server/functions/firebaseKey.json
