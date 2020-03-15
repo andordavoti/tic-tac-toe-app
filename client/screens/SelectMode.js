@@ -28,25 +28,31 @@ const SelectMode = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Select Mode:</Text>
-      <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Button
-          title="Roboplayer"
-          type="solid"
-          buttonStyle={styles.button}
-          onPress={() => navigation.navigate("Roboplayer")}
-        />
-        <Button
-          title="Multiplayer"
-          type="solid"
-          buttonStyle={styles.button}
-          onPress={() => navigation.navigate("Multiplayer")}
-        />
-        <Button
-          title="Online Multiplayer"
-          type="solid"
-          buttonStyle={styles.button}
-          onPress={() => navigation.navigate("Online Multiplayer")}
-        />
+      <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Roboplayer"
+            type="solid"
+            buttonStyle={styles.button}
+            onPress={() => navigation.navigate("Roboplayer")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Multiplayer"
+            type="solid"
+            buttonStyle={styles.button}
+            onPress={() => navigation.navigate("Multiplayer")}
+          />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button
+            title="Online Multiplayer"
+            type="solid"
+            buttonStyle={styles.button}
+            onPress={() => navigation.navigate("Online Multiplayer")}
+          />
+        </View>
       </View>
       {renderWeb()}
     </View>
@@ -60,18 +66,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.background
   },
+  buttonContainer: {
+    width: 250,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  button: {
+    padding: 10,
+    margin: 10,
+    backgroundColor: colors.main,
+    width: '100%'
+  },
   text: {
     color: "white",
     margin: 20,
     fontSize: 20,
     textAlign: "center",
     fontWeight: "500"
-  },
-  button: {
-    width: 200,
-    padding: 10,
-    margin: 10,
-    backgroundColor: colors.main
   },
   image: {
     flex: 1,
