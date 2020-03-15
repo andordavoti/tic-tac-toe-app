@@ -1,31 +1,33 @@
 import * as React from "react";
-import { View, Text, Image, StyleSheet, Platform } from "react-native";
+import { View, Text, Image, StyleSheet, Platform, TextInput } from "react-native";
 import { Button } from "react-native-elements";
 
 import { colors } from "../lib/Settings";
 
 export default class OnlineMultiplayer extends React.Component {
 
+  state = { textInputValue: '' }
+
   render() {
     return <View style={styles.container}>
-      <Text style={styles.text}>Select Mode:</Text>
-      <View style={{ flexWrap: "wrap", flexDirection: "row", justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-        <Button
-          title="Roboplayer"
-          type="solid"
-          buttonStyle={styles.button}
-        />
-        <Button
-          title="Multiplayer"
-          type="solid"
-          buttonStyle={styles.button}
-        />
-        <Button
-          title="Online Multiplayer"
-          type="solid"
-          buttonStyle={styles.button}
-        />
-      </View>
+      <Button
+        title="New Game"
+        type="solid"
+        buttonStyle={styles.button}
+      />
+      <Text style={styles.text}>Join Game:</Text>
+
+      <TextInput
+        style={styles.input}
+        value={this.state.textInputValue}
+        onChangeText={(text) => this.setState({ textInputValue: text })}
+      />
+
+      <Button
+        title="Join"
+        type="solid"
+        buttonStyle={styles.button}
+      />
     </View>
   }
 }
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    margin: 20,
+    marginTop: 20,
     fontSize: 20,
     textAlign: "center",
     fontWeight: "500"
@@ -53,6 +55,14 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     height: 60,
+    width: 200,
+    margin: 10
+  },
+  input: {
+    color: 'white',
+    textAlign: 'center',
+    backgroundColor: 'grey',
+    height: 20,
     width: 200,
     margin: 10
   }
