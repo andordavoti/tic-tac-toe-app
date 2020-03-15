@@ -6,7 +6,11 @@ const NewGame = require('./controllers/newGame');
 
 //Services
 const admin = require('firebase-admin');
-admin.initializeApp();
+const firebaseKey = require('../firebaseKey.json');
+admin.initializeApp({
+  credential: admin.credential.cert(firebaseKey),
+  databaseURL: 'https://ticktacktoe-7aa6d.firebaseio.com',
+});
 const firestore = admin.firestore();
 
 const app = express();
