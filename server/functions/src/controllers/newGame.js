@@ -1,11 +1,13 @@
-const NewGame = firestore => (req, res) => {
-  const newLobby = firestore.collection('lobbies').doc();
-  newLobby.set({
-    playerOne: 1,
-    playerTwo: 2,
+const shortid = require('shortid');
+
+const NewGame = firestore => async (req, res) => {
+  const newLobby = await firestore.collection('lobbies').doc(shortid.generate());
+
+  const writeResult = await newLobby.set({
+    canvas: [],
   });
 
-  return res.send('new game created');
+  return res.send(newLobby.id);
 };
 
 module.exports = NewGame;
