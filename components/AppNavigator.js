@@ -10,7 +10,7 @@ import OnlineMultiplayer from '../screens/OnlineMultiplayer'
 
 const Stack = createStackNavigator()
 
-function AppNavigator() {
+const AppNavigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator>

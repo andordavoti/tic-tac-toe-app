@@ -1,18 +1,11 @@
-import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import React, { Component } from 'react'
+import { View, Text } from 'react-native'
 
 export default class Roboplayer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
 
   render() {
-    return (
-      <View>
-        <Text> Roboplayer </Text>
+    return <View>
+        <Text>Roboplayer</Text>
       </View>
-    );
   }
 }
