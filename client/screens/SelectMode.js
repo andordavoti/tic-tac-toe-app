@@ -28,31 +28,25 @@ const SelectMode = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Select Mode:</Text>
-      <View style={{ flexWrap: "wrap", flexDirection: "row" }}>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Roboplayer"
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => navigation.navigate("Roboplayer")}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Multiplayer"
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => navigation.navigate("Multiplayer")}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Online Multiplayer"
-            type="solid"
-            buttonStyle={styles.button}
-            onPress={() => navigation.navigate("Online Multiplayer")}
-          />
-        </View>
+      <View style={Platform.OS === 'web' ? { flexDirection: 'row' } : { flexDirection: 'column' }}>
+        <Button
+          title="Roboplayer"
+          type="solid"
+          buttonStyle={styles.button}
+          onPress={() => navigation.navigate("Roboplayer")}
+        />
+        <Button
+          title="Multiplayer"
+          type="solid"
+          buttonStyle={styles.button}
+          onPress={() => navigation.navigate("Multiplayer")}
+        />
+        <Button
+          title="Online Multiplayer"
+          type="solid"
+          buttonStyle={styles.button}
+          onPress={() => navigation.navigate("Online Multiplayer")}
+        />
       </View>
       {renderWeb()}
     </View>
@@ -75,7 +69,6 @@ const styles = StyleSheet.create({
     padding: 10,
     margin: 10,
     backgroundColor: colors.main,
-    width: '100%'
   },
   text: {
     color: "white",
