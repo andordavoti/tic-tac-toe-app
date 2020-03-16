@@ -11,17 +11,17 @@ class Column extends React.Component {
 
     checkIfWinnerColumn = () => {
         const { winnerColumns, num } = this.props,
-        { isWinnerColumn } = this.state
+            { isWinnerColumn } = this.state
 
-        if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num ) && !isWinnerColumn) this.setState({ isWinnerColumn: true })
+        if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num) && !isWinnerColumn) this.setState({ isWinnerColumn: true })
         else if (winnerColumns) this.setState({ isWinnerColumn: false })
     }
 
     getStyles = (isWinnerColumn) => {
         return {
             column: {
-                maxWidth: Dimensions.get('window').height * 0.1, 
-                maxHeight: Dimensions.get('window').height * 0.1, 
+                maxWidth: Dimensions.get('window').height * 0.1,
+                maxHeight: Dimensions.get('window').height * 0.1,
                 width: Dimensions.get('window').width * 0.22,
                 height: Dimensions.get('window').width * 0.22,
                 backgroundColor: colors.main,
@@ -39,19 +39,17 @@ class Column extends React.Component {
     }
 
     render() {
-        let path 
+        let path
         const { fieldType, num, action, disabled } = this.props
         const { isWinnerColumn } = this.state
         const styles = this.getStyles(isWinnerColumn)
 
-        if(isWinnerColumn) console.log(num)
-
-        if (fieldType === 'o') path = require(`../assets/images/o.png`) 
+        if (fieldType === 'o') path = require(`../assets/images/o.png`)
         if (fieldType === 'x') path = require(`../assets/images/x.png`)
 
         return <TouchableOpacity disabled={disabled} style={styles.column} onPress={() => action(num)}>
-                {fieldType !== '' ? <Image style={styles.image} source={path} /> : null}
-            </TouchableOpacity>
+            {fieldType !== '' ? <Image style={styles.image} source={path} /> : null}
+        </TouchableOpacity>
     }
 }
 
