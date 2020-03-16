@@ -13,11 +13,18 @@ const OnlineMultiplayer = () => {
   const [gameLobby, setGameLobby] = useState(undefined);
 
   const connectToGame = lobbyId => {
+    // Getting firestore document reference
     const docRef = firestore.collection('lobbies').doc(lobbyId);
-    docRef.onSnapshot(snapshot => {
-      console.log(snapshot.data());
-      setGameLobby(snapshot.data());
-    });
+    // Attaching a firestore onSnapshot listener that listens for changes on the documentRef.
+    // Any update will trigger the code inside the snapshot function;
+    docRef.onSnapshot(
+      snapshot => {
+        // This code will change.
+        console.log(snapshot.data());
+        setGameLobby(snapshot.data());
+      },
+      err => console.error(err)
+    );
   };
 
   // Hook runs once on componentdidmount and whenever lobbyId changes. Fires off connectToGame which opens realtime connection to firebase.
