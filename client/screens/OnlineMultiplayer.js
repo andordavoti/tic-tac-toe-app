@@ -1,14 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { View, Text, Image, StyleSheet, Platform, TextInput } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import { colors, urls } from '../lib/Settings';
+import { firestore } from '../lib/firebaseUtils';
 
 const OnlineMultiplayer = () => {
   const [textInput, setTextInput] = useState(''); // useState returns [value, setValue];
   const [loading, setLoading] = useState(false);
   const [lobbyId, setLobbyId] = useState(undefined);
+  const [gameLobby, setGameLobby] = useState(undefined);
+
+  const connectToGame = lobbyId => {
+    const docRef = firestore.collection('lobbies').doc(lobbyId);
+    docRef.onSnapshot(snapshot => {
+      console.log(snapshot.data());
+      setGameLobby(snapshot.data());
+    });
+  };
+
+  // Hook runs once on componentdidmount and whenever lobbyId changes. Fires off connectToGame which opens realtime connection to firebase.
+  // ConnectToGame is called only if lobbyId is defined.
+  useEffect(() => {
+    lobbyId && connectToGame(lobbyId);
+  }, [lobbyId]);
 
   const handleNewGame = async () => {
     setLoading(true);
@@ -26,7 +42,17 @@ const OnlineMultiplayer = () => {
     setLoading(false);
   };
 
-  const handleJoinGame = () => {
+  const handleJoinGame = async () => {
+    // Fetching lobby from text input
+    const snapshot = await firestore
+      .collection('lobbies')
+      .doc(textInput)
+      .get();
+
+    // Checking if lobby exists
+    if (!snapshot.exists) return console.log('game does not exist');
+
+    // Setting lobby ID if it exists which in turn activates useEffect hook to initialize realtime connection;
     setLobbyId(textInput);
   };
 
@@ -54,6 +80,7 @@ const OnlineMultiplayer = () => {
       ) : (
         <Text>Loading</Text>
       )}
+      {gameLobby && <Text> Connected to game </Text>}
     </View>
   );
 };
