@@ -5,6 +5,7 @@ const NewGame = firestore => async (req, res) => {
 
   const writeResult = await newLobby.set({
     canvas: [],
+    players: [1],
   });
 
   return res.send({ lobbyId: newLobby.id });
