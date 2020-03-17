@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput } from 'react-native';
 import { Button } from 'react-native-elements';
+import { colors } from '../../lib/Settings';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }) => {
@@ -13,6 +14,11 @@ const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handl
         style={styles.input}
         value={textInput.value} // state {...state} {random: '', textInputValue: ''}
         onChangeText={handleInputChange}
+        keyboardAppearance='dark'
+        selectionColor={colors.main}
+        underlineColorAndroid={colors.main}
+        placeholder='Enter lobby id'
+        placeholderTextColor='lightgrey'
       />
 
       <Button onPress={handleJoinGame} title="Join" type="solid" buttonStyle={styles.button} />

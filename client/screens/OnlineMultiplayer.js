@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { View, Text, Image, StyleSheet, Platform, TextInput } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, StyleSheet, Clipboard } from 'react-native';
 
 import { colors, urls } from '../lib/Settings';
 import { firestore } from '../lib/firebaseUtils';
@@ -30,6 +29,8 @@ const OnlineMultiplayer = () => {
     if (lobbyId) {
       // Getting firestore document reference
       const docRef = firestore.collection('lobbies').doc(lobbyId);
+      //copy lobbiId to users clipboard (need to give instructions to user)
+      Clipboard.setString(lobbyId)
       // Attaching a firestore onSnapshot listener that listens for changes on the documentRef.
       // Any update will trigger the code inside the snapshot function;
       unsubscribe = docRef.onSnapshot(
@@ -109,13 +110,13 @@ const OnlineMultiplayer = () => {
       {gameLobby ? (
         <GameCanvasWithSpinner loading={gameLobby.players > 1} />
       ) : (
-        //No nested if, loading state passed directly to component
-        <PlayerMenuWithSpinner
-          loading={loading}
-          {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-        />
-        //No nested if, loading state passed directly to component
-      )}
+          //No nested if, loading state passed directly to component
+          <PlayerMenuWithSpinner
+            loading={loading}
+            {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+          />
+          //No nested if, loading state passed directly to component
+        )}
     </View>
   );
 };
@@ -150,9 +151,13 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     backgroundColor: 'grey',
-    height: 20,
+    height: 40,
     width: 200,
     margin: 10,
+    borderRadius: 5,
+    borderColor: colors.main,
+    fontSize: 20,
   },
 });
+
 export default OnlineMultiplayer;
