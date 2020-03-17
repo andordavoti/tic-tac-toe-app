@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Axios from 'axios';
-import { View, Text, Image, StyleSheet, Platform, TextInput } from 'react-native';
-import { Button } from 'react-native-elements';
+import { View, StyleSheet, Clipboard } from 'react-native';
 
 import { colors, urls } from '../../lib/Settings';
 import { firestore } from '../../lib/firebaseUtils';
@@ -127,9 +126,13 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     backgroundColor: 'grey',
-    height: 20,
+    height: 40,
     width: 200,
     margin: 10,
+    borderRadius: 5,
+    borderColor: colors.main,
+    fontSize: 20,
   },
 });
+
 export default OnlineMultiplayer;
