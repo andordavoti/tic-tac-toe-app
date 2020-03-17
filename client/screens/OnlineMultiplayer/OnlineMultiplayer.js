@@ -1,51 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Axios from 'axios';
 import { View, Text, Image, StyleSheet, Platform, TextInput } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { colors, urls } from '../lib/Settings';
-import { firestore } from '../lib/firebaseUtils';
-import PlayerMenu from '../components/online/PlayerMenu';
-import { withSpinner } from '../components/Spinner';
-import GameCanvas from '../components/GameCanvas';
+import { colors, urls } from '../../lib/Settings';
+import { firestore } from '../../lib/firebaseUtils';
+import PlayerMenu from '../../components/online/PlayerMenu';
+import { withSpinner } from '../../components/Spinner';
+import GameLoader from '../../components/online/GameLoader/GameLoader';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
-const GameCanvasWithSpinner = withSpinner(GameCanvas);
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
 const OnlineMultiplayer = () => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
-  }); // useState returns [value, setValue];
+  });
   const [loading, setLoading] = useState(false);
-  const [lobbyId, setLobbyId] = useState(undefined);
-  const [gameLobby, setGameLobby] = useState(undefined);
 
-  // Hook runs once on componentdidmount and whenever lobbyId changes. Fires off connectToGame which opens realtime connection to firebase.
-  // ConnectToGame is called only if lobbyId is defined.
-  useEffect(() => {
-    console.log('useEffect called');
-    let unsubscribe;
-    if (lobbyId) {
-      // Getting firestore document reference
-      const docRef = firestore.collection('lobbies').doc(lobbyId);
-      // Attaching a firestore onSnapshot listener that listens for changes on the documentRef.
-      // Any update will trigger the code inside the snapshot function;
-      unsubscribe = docRef.onSnapshot(
-        snapshot => {
-          console.log('data found');
-          // This code will change.
-          console.log(snapshot.data());
-          setGameLobby(snapshot.data());
-        },
-        err => console.error(err)
-      );
-    }
-    return () => {
-      console.log('unmounting');
-    };
-  }, [lobbyId]);
+  const [lobbyData, setLobbyData] = useState({
+    playerId: undefined,
+    lobbyId: undefined,
+  });
 
   const handleNewGame = async () => {
     setLoading(true);
@@ -56,28 +33,26 @@ const OnlineMultiplayer = () => {
       });
 
       const { data } = response;
-      setLoading(false);
-      console.log('new game made');
-      setLobbyId(data.lobbyId);
-      console.log('Lobby id set');
+
+      setLobbyData({ lobbyId: data.lobbyId, playerId: 0 });
     } catch (error) {
       console.error(error.message);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   const handleJoinGame = async () => {
     // Fetching lobby from text input
     const snapshot = await firestore
       .collection('lobbies')
-      .doc(textInput)
+      .doc(textInput.value)
       .get();
 
     // Checking if lobby exists
-    if (!snapshot.exists) return console.log('game does not exist');
+    if (!snapshot.exists)
+      return setTextInput({ ...textInput, err: 'This lobby does not exist...' });
 
-    // Setting lobby ID if it exists which in turn activates useEffect hook to initialize realtime connection;
-    setLobbyId(textInput.value);
+    setLobbyData({ lobbyId: textInput.value, playerId: 1 });
   };
 
   const handleInputChange = text => {
@@ -103,14 +78,16 @@ const OnlineMultiplayer = () => {
   //     }
   //   }
   // };
-
+  // console.log('render called');
+  const { lobbyId, playerId } = lobbyData;
   return (
     <View style={styles.container}>
-      {gameLobby ? (
-        <GameCanvasWithSpinner loading={gameLobby.players > 1} />
+      {lobbyId ? (
+        <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
       ) : (
         //No nested if, loading state passed directly to component
         <PlayerMenuWithSpinner
+          msg="Connecting to game"
           loading={loading}
           {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
         />

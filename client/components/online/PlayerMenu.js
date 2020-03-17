@@ -14,8 +14,15 @@ const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handl
         value={textInput.value} // state {...state} {random: '', textInputValue: ''}
         onChangeText={handleInputChange}
       />
+      {textInput.err && <Text>{textInput.err}</Text>}
 
-      <Button onPress={handleJoinGame} title="Join" type="solid" buttonStyle={styles.button} />
+      <Button
+        disabled={!textInput.value.length}
+        onPress={handleJoinGame}
+        title="Join"
+        type="solid"
+        buttonStyle={styles.button}
+      />
     </View>
   );
 };

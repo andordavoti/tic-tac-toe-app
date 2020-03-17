@@ -5,7 +5,16 @@ const NewGame = firestore => async (req, res) => {
 
   const writeResult = await newLobby.set({
     canvas: [],
-    players: [1],
+    players: [
+      {
+        id: shortid.generate(),
+        connected: false,
+      },
+      {
+        id: shortid.generate(),
+        connected: false,
+      },
+    ],
   });
 
   return res.send({ lobbyId: newLobby.id });
