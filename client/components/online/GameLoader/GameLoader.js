@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useReducer } from 'react';
 import GameCanvas from '../../GameCanvas';
-import { firestore } from '../../../lib/firebaseUtils';
+import { firestore, modifyPlayer } from '../../../lib/firebaseUtils';
 import { GAME_STATE_CHANGE, GAME_LOADED } from './types';
 import { withSpinner } from '../../Spinner';
 import { gameStateChange, gameLoaded } from './actions';
@@ -43,13 +43,9 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
       const getGameState = await docRef.get();
       const gamePlayers = getGameState.data().players;
 
-      const players = gamePlayers.map((player, idx) =>
-        idx === playerId ? { ...player, connected: false } : player
-      );
+      const players = modifyPlayer(gamePlayers, playerId, { connected: false });
 
       await docRef.set({ players }, { merge: true });
-
-      console.log(`player ${playerId} connected`);
     } catch (err) {
       console.log(err.message);
     }
@@ -59,9 +55,7 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
     try {
       const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-      const players = state.players.map((player, idx) =>
-        idx === playerId ? { ...player, connected: true } : player
-      );
+      const players = modifyPlayer(state.players, playerId, { connected: true });
 
       await docRef.set({ players }, { merge: true });
     } catch (err) {
