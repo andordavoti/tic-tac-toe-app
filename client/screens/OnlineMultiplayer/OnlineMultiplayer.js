@@ -84,14 +84,14 @@ const OnlineMultiplayer = () => {
       {lobbyId ? (
         <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
       ) : (
-        //No nested if, loading state passed directly to component
-        <PlayerMenuWithSpinner
-          msg="Connecting to game"
-          loading={loading}
-          {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-        />
-        //No nested if, loading state passed directly to component
-      )}
+          //No nested if, loading state passed directly to component
+          <PlayerMenuWithSpinner
+            msg="Connecting to game"
+            loading={loading}
+            {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+          />
+          //No nested if, loading state passed directly to component
+        )}
     </View>
   );
 };
