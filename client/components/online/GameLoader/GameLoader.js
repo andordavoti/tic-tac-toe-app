@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useReducer } from 'react';
 import GameCanvas from '../../GameCanvas';
-import { firestore, modifyPlayer } from '../../../lib/firebaseUtils';
+import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
 import { GAME_STATE_CHANGE, GAME_LOADED } from './types';
 import { withSpinner } from '../../Spinner';
 import { gameStateChange, gameLoaded } from './actions';
-import { View, Text } from 'react-native';
+import { View, Text, Clipboard } from 'react-native';
 
 const GameCanvasWithSpinner = withSpinner(GameCanvas);
 
@@ -30,7 +30,7 @@ const reducer = (state, action) => {
 const initialState = {
   lobbyId: undefined,
   canvas: undefined,
-  players: undefined,
+  players: [],
   gameLoaded: false,
 };
 
@@ -91,14 +91,21 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
   }, [lobbyId]);
 
   const connectedPlayers = useMemo(() => {
-    const result = state.players ? state.players.filter(player => player.connected) : 0;
+    const result = state.players ? getConnectedPlayers(state.players) : 0;
 
     return result;
   }, [state.players]);
 
+  const copyLobbyId = () => {
+    Clipboard.setString(lobbyId);
+  };
+
   return (
     <View>
-      <Text style={styles.text}>LobbyID: {lobbyId}</Text>
+      <Text style={styles.text} onPress={copyLobbyId}>
+        LobbyID: {lobbyId}
+      </Text>
+
       <Text style={styles.text}>You are player: {playerId + 1}</Text>
 
       <GameCanvasWithSpinner
