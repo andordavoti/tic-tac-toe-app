@@ -3,7 +3,7 @@ import Axios from 'axios';
 import { View, StyleSheet, Clipboard } from 'react-native';
 
 import { colors, urls } from '../../lib/Settings';
-import { firestore } from '../../lib/firebaseUtils';
+import { firestore, getConnectedPlayers } from '../../lib/firebaseUtils';
 import PlayerMenu from '../../components/online/PlayerMenu';
 import { withSpinner } from '../../components/Spinner';
 import GameLoader from '../../components/online/GameLoader/GameLoader';
@@ -51,7 +51,14 @@ const OnlineMultiplayer = () => {
     if (!snapshot.exists)
       return setTextInput({ ...textInput, err: 'This lobby does not exist...' });
 
-    setLobbyData({ lobbyId: textInput.value, playerId: 1 });
+    const players = snapshot.data().players;
+    const connected = getConnectedPlayers(players);
+    // const playerId = connected.length ? 1 : 0;
+    const playerId = players[0].connected ? 1 : players[1].connected ? 0 : 0;
+
+    if (connected.length >= 2) return setTextInput({ ...textInput, err: 'Lobby is full...' });
+
+    setLobbyData({ lobbyId: textInput.value, playerId });
   };
 
   const handleInputChange = text => {
@@ -84,14 +91,14 @@ const OnlineMultiplayer = () => {
       {lobbyId ? (
         <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
       ) : (
-          //No nested if, loading state passed directly to component
-          <PlayerMenuWithSpinner
-            msg="Connecting to game"
-            loading={loading}
-            {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-          />
-          //No nested if, loading state passed directly to component
-        )}
+        //No nested if, loading state passed directly to component
+        <PlayerMenuWithSpinner
+          msg="Connecting to game"
+          loading={loading}
+          {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+        />
+        //No nested if, loading state passed directly to component
+      )}
     </View>
   );
 };
