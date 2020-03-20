@@ -19,8 +19,9 @@ const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handl
         underlineColorAndroid={colors.main}
         placeholder='Enter lobby id'
         placeholderTextColor='lightgrey'
+        autoCapitalize='none'
       />
-      {textInput.err && <Text>{textInput.err}</Text>}
+      {textInput.err && <Text style={styles.infoText}>{textInput.err}</Text>}
 
       <Button
         disabled={!textInput.value.length}

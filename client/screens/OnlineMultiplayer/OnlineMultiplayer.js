@@ -110,6 +110,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: '500',
   },
+  infoText: {
+    color: 'red',
+    margin: 5,
+    fontSize: 15,
+    textAlign: 'center',
+    fontWeight: '500',
+  },
   button: {
     width: 200,
     padding: 10,
