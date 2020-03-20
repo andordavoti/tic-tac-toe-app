@@ -1,5 +1,5 @@
 # tic-tac-toe-app
 
-Tri-platform (iOS, android and web) online multiplayer Tic Tac Toe app build using react native, expo and firebase.
+Tri-platform (iOS, android and web) online multiplayer Tic Tac Toe game, built using React Native, Expo and Firebase.
 
 Work in progress...
