@@ -6,8 +6,8 @@ import GameCanvas from '../components/GameCanvas'
 
 function Multiplayer() {
   return <View style={styles.container}>
-      <GameCanvas />
-    </View>
+    <GameCanvas size={3} />
+  </View>
 }
 
 const styles = StyleSheet.create({

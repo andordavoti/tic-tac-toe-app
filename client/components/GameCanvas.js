@@ -9,6 +9,7 @@ import Column from './Column'
 class GameCanvas extends React.Component {
 
     state = {
+        //TODO: generate fieldtype array dynamically from the size prop in component did mount (Math.pow(size, 2) to generate the length)
         fieldType: ['', '', '', '', '', '', '', '', ''],
         turn: 'o',
         disableFields: false,
@@ -19,12 +20,13 @@ class GameCanvas extends React.Component {
 
     componentDidUpdate(prevState) {
         const { fieldType, disableFields, gameStart } = this.state
+        const { size } = this.props
 
         //check if all fields are pressed
         if (prevState.fieldType !== fieldType) {
             let counter = 0
             for (let i = 0; i < fieldType.length; i++) if (fieldType[i] !== '') counter++
-            if (counter === 9 && !disableFields) this.setState({ disableFields: true, winner: 'tied' })
+            if (counter === Math.pow(size, 2) && !disableFields) this.setState({ disableFields: true, winner: 'tied' })
             if (counter !== 0 && !gameStart) this.setState({ gameStart: true })
         }
     }
@@ -93,30 +95,54 @@ class GameCanvas extends React.Component {
         else if (Platform.OS === 'ios') Haptics.notificationAsync('error')
     }
 
-    render() {
-        const { fieldType, disableFields, winnerColumns } = this.state
+    getNum = (y, x) => {
 
+        //TODO: create an algorithm from this pattern (this may not be correct, I don't think the width is accounted for in this pattern)
+        if (x === 1) {
+            return x + y - 2
+        }
+        if (x === 2) {
+            return x + y
+        }
+        if (x === 3) {
+            return x + y + 2
+        }
+        if (x === 4) {
+            return x + y + 4
+        }
+        if (x === 5) {
+            return x + y + 6
+        }
+    }
+
+    renderGrid = () => {
+        //TODO: dynamically make an array of size, like if size would be 3, then the output array should be [1, 2, 3, ...]
+        const { size } = this.props
+        const sizeArray = [1, 2, 3]
+
+        return <View>
+            {
+                sizeArray.map(x => (
+                    <View style={{ flexDirection: 'row' }} key={x}>
+                        {
+                            sizeArray.map(y => <Column key={y}
+                                action={this.pressed}
+                                num={this.getNum(x, y)}
+                                {...this.state}
+                            />)
+                        }
+                    </View>
+                ))
+            }
+        </View>
+    }
+
+    render() {
         return <View style={styles.container}>
             <View>
                 {this.renderInfo()}
             </View>
-            <View style={{ flexDirection: 'row' }}>
-                <View>
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={0} fieldType={fieldType[0]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={1} fieldType={fieldType[1]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={2} fieldType={fieldType[2]} />
-                </View>
-                <View>
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={3} fieldType={fieldType[3]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={4} fieldType={fieldType[4]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={5} fieldType={fieldType[5]} />
-                </View>
-                <View>
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={6} fieldType={fieldType[6]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={7} fieldType={fieldType[7]} />
-                    <Column winnerColumns={winnerColumns} disabled={disableFields} action={this.pressed} num={8} fieldType={fieldType[8]} />
-                </View>
-            </View>
+            {this.renderGrid()}
         </View>
     }
 }

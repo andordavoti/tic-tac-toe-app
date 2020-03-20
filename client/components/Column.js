@@ -40,15 +40,16 @@ class Column extends React.Component {
 
     render() {
         let path
-        const { fieldType, num, action, disabled } = this.props
-        const { isWinnerColumn } = this.state
-        const styles = this.getStyles(isWinnerColumn)
+        const { fieldType, num, action, disableFields } = this.props,
+            { isWinnerColumn } = this.state,
+            styles = this.getStyles(isWinnerColumn),
+            currentFieldType = fieldType[num]
 
-        if (fieldType === 'o') path = require(`../assets/images/o.png`)
-        if (fieldType === 'x') path = require(`../assets/images/x.png`)
+        if (currentFieldType === 'o') path = require(`../assets/images/o.png`)
+        if (currentFieldType === 'x') path = require(`../assets/images/x.png`)
 
-        return <TouchableOpacity disabled={disabled} style={styles.column} onPress={() => action(num)}>
-            {fieldType !== '' ? <Image style={styles.image} source={path} /> : null}
+        return <TouchableOpacity disabled={disableFields} style={styles.column} onPress={() => action(num)}>
+            {currentFieldType !== '' ? <Image style={styles.image} source={path} /> : null}
         </TouchableOpacity>
     }
 }
