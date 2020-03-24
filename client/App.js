@@ -3,6 +3,8 @@ import * as React from 'react';
 import { View, StatusBar } from 'react-native';
 import { decode, encode } from 'base-64';
 import AppNavigator from './components/AppNavigator';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 // Polyfill for Firebase missing base-64 decoder/encoder
 if (!global.btoa) {
@@ -15,10 +17,12 @@ if (!global.atob) {
 
 const App = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <StatusBar barStyle="light-content" />
-      <AppNavigator />
-    </View>
+    <Provider store={store}>
+      <View style={{ flex: 1 }}>
+        <StatusBar barStyle="light-content" />
+        <AppNavigator />
+      </View>
+    </Provider>
   );
 };
 

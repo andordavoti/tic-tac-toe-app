@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-elements';
 import * as Haptics from 'expo-haptics';
 
-import { colors } from '../lib/Settings';
-import Column from './Column';
+import { colors } from '../../lib/Settings';
+import Column from '../Column';
 
-class GameCanvas extends React.Component {
+class OnlineGameCanvas extends React.Component {
   state = {
     //TODO: generate fieldtype array dynamically from the size prop in component did mount (Math.pow(size, 2) to generate the length)
     fieldType: ['', '', '', '', '', '', '', '', ''],
@@ -180,4 +180,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GameCanvas;
+export default OnlineGameCanvas;

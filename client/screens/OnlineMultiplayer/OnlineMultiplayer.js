@@ -1,27 +1,26 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
-import { View, StyleSheet, Clipboard } from 'react-native';
-
+import { View, StyleSheet } from 'react-native';
 import { colors, urls } from '../../lib/Settings';
 import { firestore, getConnectedPlayers } from '../../lib/firebaseUtils';
 import PlayerMenu from '../../components/online/PlayerMenu';
 import { withSpinner } from '../../components/Spinner';
 import GameLoader from '../../components/online/GameLoader/GameLoader';
+// Redux
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectPlayerId, selectLobbyId } from '../../redux/game/game.selectors';
+import { setLobbyId, setPlayerId } from '../../redux/game/game.actions';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = () => {
+const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
   });
   const [loading, setLoading] = useState(false);
-
-  const [lobbyData, setLobbyData] = useState({
-    playerId: undefined,
-    lobbyId: undefined,
-  });
 
   const handleNewGame = async () => {
     setLoading(true);
@@ -33,7 +32,8 @@ const OnlineMultiplayer = () => {
 
       const { data } = response;
 
-      setLobbyData({ lobbyId: data.lobbyId, playerId: 0 });
+      setPlayerId(0);
+      setLobbyId(data.lobbyId);
     } catch (error) {
       console.error(error.message);
     }
@@ -58,34 +58,14 @@ const OnlineMultiplayer = () => {
 
     if (connected.length >= 2) return setTextInput({ ...textInput, err: 'Lobby is full...' });
 
-    setLobbyData({ lobbyId: textInput.value, playerId });
+    setPlayerId(playerId);
+    setLobbyId(textInput.value);
   };
 
   const handleInputChange = text => {
     setTextInput({ ...textInput, value: text });
   };
 
-  // const renderContent = () => {
-  //   if (loading) {
-  //     return <Spinner msg="Creating lobby" />;
-  //   } else {
-  //     if (!gameLobby) {
-  //       console.log('no game lobby');
-  //       return (
-  //         <PlayerMenu
-  //           {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-  //         />
-  //       );
-  //     } else if (gameLobby && gameLobby.players.length > 1) {
-  //       console.log('game lobby and no players');
-  //       return <GameCanvas />;
-  //     } else {
-  //       <Text>Random</Text>;
-  //     }
-  //   }
-  // };
-  // console.log('render called');
-  const { lobbyId, playerId } = lobbyData;
   return (
     <View style={styles.container}>
       {lobbyId ? (
@@ -102,6 +82,16 @@ const OnlineMultiplayer = () => {
     </View>
   );
 };
+
+const mapStateToProps = createStructuredSelector({
+  playerId: selectPlayerId,
+  lobbyId: selectLobbyId,
+});
+const actions = {
+  setLobbyId,
+  setPlayerId,
+};
+export default connect(mapStateToProps, actions)(OnlineMultiplayer);
 
 const styles = StyleSheet.create({
   container: {
@@ -148,5 +138,3 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 });
-
-export default OnlineMultiplayer;

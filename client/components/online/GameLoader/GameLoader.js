@@ -1,41 +1,17 @@
-import React, { useEffect, useMemo, useReducer } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import GameCanvas from '../../GameCanvas';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
-import { GAME_STATE_CHANGE, GAME_LOADED } from './types';
 import { withSpinner } from '../../Spinner';
-import { gameStateChange, gameLoaded } from './actions';
+import { setGameStateChange, setGameLoaded } from '../../../redux/game/game.actions';
 import { View, Text, Clipboard } from 'react-native';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectGame } from '../../../redux/game/game.selectors';
 
 const GameCanvasWithSpinner = withSpinner(GameCanvas);
 
-// Advanced State manipulation
-const reducer = (state, action) => {
-  switch (action.type) {
-    case GAME_LOADED:
-      return {
-        ...state,
-        ...action.payload,
-        gameLoaded: true,
-      };
-    case GAME_STATE_CHANGE:
-      return {
-        ...state,
-        ...action.payload,
-      };
-    default:
-      return state;
-  }
-};
-
-const initialState = {
-  lobbyId: undefined,
-  canvas: undefined,
-  players: [],
-  gameLoaded: false,
-};
-
-const GameLoader = ({ styles, playerId, lobbyId }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
+  const { playerId, lobbyId } = game;
 
   const disconnectPlayer = async () => {
     try {
@@ -55,7 +31,7 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
     try {
       const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-      const players = modifyPlayer(state.players, playerId, { connected: true });
+      const players = modifyPlayer(game.players, playerId, { connected: true });
 
       await docRef.set({ players }, { merge: true });
     } catch (err) {
@@ -64,8 +40,8 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
   };
 
   useEffect(() => {
-    state.gameLoaded && connectPlayer();
-  }, [state.gameLoaded]);
+    game.gameLoaded && connectPlayer();
+  }, [game.gameLoaded]);
 
   useEffect(() => {
     const docRef = firestore.collection('lobbies').doc(lobbyId);
@@ -73,12 +49,13 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
     let initial = true;
     const channel = docRef.onSnapshot(
       snapshot => {
+        console.log('called');
         // This code will change.
         if (initial) {
-          dispatch(gameLoaded({ lobbyId, ...snapshot.data() }));
+          setGameLoaded({ lobbyId, ...snapshot.data() });
           initial = false;
         } else {
-          dispatch(gameStateChange({ lobbyId, ...snapshot.data() }));
+          setGameStateChange({ lobbyId, ...snapshot.data() });
         }
       },
       err => console.error(err)
@@ -91,10 +68,10 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
   }, [lobbyId]);
 
   const connectedPlayers = useMemo(() => {
-    const result = state.players ? getConnectedPlayers(state.players) : 0;
+    const result = game.players ? getConnectedPlayers(game.players) : 0;
 
     return result;
-  }, [state.players]);
+  }, [game.players]);
 
   const copyLobbyId = () => {
     Clipboard.setString(lobbyId);
@@ -109,11 +86,20 @@ const GameLoader = ({ styles, playerId, lobbyId }) => {
       <Text style={styles.text}>You are player: {playerId + 1}</Text>
 
       <GameCanvasWithSpinner
-        msg={`Waiting for players, [${connectedPlayers.length}] connected`}
+        msg={`Waiting for player. ${playerId + 1} connected`}
         loading={connectedPlayers.length < 2}
+        size={3}
       />
     </View>
   );
 };
 
-export default GameLoader;
+const mapStateToProps = createStructuredSelector({
+  game: selectGame,
+});
+
+const actions = {
+  setGameStateChange,
+  setGameLoaded,
+};
+export default connect(mapStateToProps, actions)(GameLoader);
