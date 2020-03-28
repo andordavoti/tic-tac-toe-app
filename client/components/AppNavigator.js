@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { colors } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
-import Roboplayer from '../screens/Roboplayer';
 import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer/OnlineMultiplayer';
 
@@ -19,19 +18,6 @@ const AppNavigator = () => {
           component={SelectMode}
           options={{
             title: 'Tic Tac Toe',
-            headerStyle: {
-              backgroundColor: colors.main,
-              shadowColor: 'transparent',
-              borderBottomWidth: 0,
-            },
-            headerTintColor: '#fff',
-          }}
-        />
-        <Stack.Screen
-          name="Roboplayer"
-          component={Roboplayer}
-          options={{
-            headerBackTitle: 'Back',
             headerStyle: {
               backgroundColor: colors.main,
               shadowColor: 'transparent',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, Image } from 'react-native';
 import { Button } from 'react-native-elements';
 import { colors } from '../../lib/Settings';
 
@@ -21,6 +21,10 @@ const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handl
         placeholderTextColor='lightgrey'
         autoCapitalize='none'
       />
+
+      { /* TODO: change value of textInput to be the string of the clipboard */ }
+      <Image style={{ width: 30, height: 30, alignSelf: 'center' }} source={require(`../../assets/images/clipboard.png`)} />
+
       {textInput.err && <Text style={styles.infoText}>{textInput.err}</Text>}
 
       <Button

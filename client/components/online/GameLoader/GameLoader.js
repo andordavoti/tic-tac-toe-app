@@ -2,8 +2,10 @@ import React, { useEffect, useMemo } from 'react';
 import GameCanvas from '../../GameCanvas';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
 import { withSpinner } from '../../Spinner';
-import { setGameStateChange, setGameLoaded } from '../../../redux/game/game.actions';
-import { View, Text, Clipboard } from 'react-native';
+import { setGameStateChange, setGameLoaded, setLobbyId } from '../../../redux/game/game.actions';
+import { View, Text, Clipboard, TouchableOpacity, Image, Platform } from 'react-native';
+import { Button } from 'react-native-elements';
+import * as Haptics from 'expo-haptics';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectGame } from '../../../redux/game/game.selectors';
@@ -79,9 +81,15 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
 
   return (
     <View>
-      <Text style={styles.text} onPress={copyLobbyId}>
-        LobbyID: {lobbyId}
-      </Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+        <Text style={styles.text} >Lobby ID:</Text>
+        <TouchableOpacity onPress={copyLobbyId}>
+          <View style={{ flexDirection: 'row' }}>
+            <Text style={styles.lobbyId}> {lobbyId}</Text>
+            <Image style={{ marginTop: 15, marginLeft: 5, width: 30, height: 30 }} source={require(`../../../assets/images/clipboard.png`)} />
+          </View>
+        </TouchableOpacity>
+      </View>
 
       <Text style={styles.text}>You are player: {playerId + 1}</Text>
 
@@ -89,6 +97,18 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
         msg={`Waiting for player. ${playerId + 1} connected`}
         loading={connectedPlayers.length < 2}
         size={3}
+      />
+
+      <Button
+        title="Quit Game"
+        type="solid"
+        buttonStyle={styles.quitButton}
+        onPress={() => {
+          if (Platform.OS === 'ios') Haptics.selectionAsync();
+
+          //TODO: needs to disconnect players
+          disconnectPlayer();
+        }}
       />
     </View>
   );
@@ -101,5 +121,6 @@ const mapStateToProps = createStructuredSelector({
 const actions = {
   setGameStateChange,
   setGameLoaded,
+  setLobbyId
 };
 export default connect(mapStateToProps, actions)(GameLoader);

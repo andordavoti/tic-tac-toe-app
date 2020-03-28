@@ -30,12 +30,6 @@ const SelectMode = ({ navigation }) => {
       <Text style={styles.text}>Select Mode:</Text>
       <View style={Platform.OS === 'web' ? { flexDirection: 'row' } : { flexDirection: 'column' }}>
         <Button
-          title="Roboplayer"
-          type="solid"
-          buttonStyle={styles.button}
-          onPress={() => navigation.navigate("Roboplayer")}
-        />
-        <Button
           title="Multiplayer"
           type="solid"
           buttonStyle={styles.button}
