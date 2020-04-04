@@ -15,13 +15,12 @@ import { setLobbyId, setPlayerId } from '../../redux/game/game.actions';
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
+const OnlineMultiplayer = ({ navigation, lobbyId, playerId, setLobbyId, setPlayerId }) => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
   });
   const [loading, setLoading] = useState(false);
-
   const handleNewGame = async () => {
     setLoading(true);
     try {
@@ -42,10 +41,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
 
   const handleJoinGame = async () => {
     // Fetching lobby from text input
-    const snapshot = await firestore
-      .collection('lobbies')
-      .doc(textInput.value)
-      .get();
+    const snapshot = await firestore.collection('lobbies').doc(textInput.value).get();
 
     // Checking if lobby exists
     if (!snapshot.exists)
@@ -62,7 +58,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
     setLobbyId(textInput.value);
   };
 
-  const handleInputChange = text => {
+  const handleInputChange = (text) => {
     setTextInput({ ...textInput, value: text });
   };
 
@@ -71,14 +67,14 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
       {lobbyId ? (
         <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
       ) : (
-          //No nested if, loading state passed directly to component
-          <PlayerMenuWithSpinner
-            msg="Connecting to game server"
-            loading={loading}
-            {...{ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-          />
-          //No nested if, loading state passed directly to component
-        )}
+        //No nested if, loading state passed directly to component
+        <PlayerMenuWithSpinner
+          msg="Connecting to game server"
+          loading={loading}
+          {...{ setTextInput, styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+        />
+        //No nested if, loading state passed directly to component
+      )}
     </View>
   );
 };

@@ -3,7 +3,7 @@ import {
   GAME_STATE_CHANGE,
   SET_LOBBY_ID,
   SET_PLAYER_ID,
-  SET_LOBBY_DATA,
+  QUIT_GAME,
 } from './game.types';
 
 const initialState = {
@@ -28,7 +28,10 @@ export const gameReducer = (state = initialState, action) => {
         ...state,
         ...action.payload,
       };
-
+    case QUIT_GAME:
+      return {
+        ...initialState,
+      };
     case SET_PLAYER_ID:
       return {
         ...state,

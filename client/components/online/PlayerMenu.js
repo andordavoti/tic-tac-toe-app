@@ -1,10 +1,23 @@
 import React from 'react';
-import { View, Text, TextInput, Image } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, Clipboard } from 'react-native';
 import { Button } from 'react-native-elements';
 import { colors } from '../../lib/Settings';
 
 // Menu that displays "new game" or "Join game" options
-const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handleJoinGame }) => {
+const PlayerMenu = ({
+  setTextInput,
+  styles,
+  textInput,
+  handleInputChange,
+  handleNewGame,
+  handleJoinGame,
+}) => {
+  const insertFromClipboard = async () => {
+    const text = await Clipboard.getString();
+    console.log('insertFromClipboard -> text', text);
+    setTextInput((prevState) => ({ ...prevState, value: text }));
+  };
+
   return (
     <View>
       <Button onPress={handleNewGame} title="New Game" type="solid" buttonStyle={styles.button} />
@@ -14,16 +27,21 @@ const PlayerMenu = ({ styles, textInput, handleInputChange, handleNewGame, handl
         style={styles.input}
         value={textInput.value} // state {...state} {random: '', textInputValue: ''}
         onChangeText={handleInputChange}
-        keyboardAppearance='dark'
+        keyboardAppearance="dark"
         selectionColor={colors.main}
         underlineColorAndroid={colors.main}
-        placeholder='Enter lobby id'
-        placeholderTextColor='lightgrey'
-        autoCapitalize='none'
+        placeholder="Enter lobby id"
+        placeholderTextColor="lightgrey"
+        autoCapitalize="none"
       />
 
-      { /* TODO: change value of textInput to be the string of the clipboard */ }
-      <Image style={{ width: 30, height: 30, alignSelf: 'center' }} source={require(`../../assets/images/clipboard.png`)} />
+      {/* TODO: change value of textInput to be the string of the clipboard */}
+      <TouchableOpacity onPress={insertFromClipboard}>
+        <Image
+          style={{ width: 30, height: 30, alignSelf: 'center' }}
+          source={require(`../../assets/images/clipboard.png`)}
+        />
+      </TouchableOpacity>
 
       {textInput.err && <Text style={styles.infoText}>{textInput.err}</Text>}
 

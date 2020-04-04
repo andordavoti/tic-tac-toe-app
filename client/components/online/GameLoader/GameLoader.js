@@ -2,7 +2,12 @@ import React, { useEffect, useMemo } from 'react';
 import GameCanvas from '../../GameCanvas';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
 import { withSpinner } from '../../Spinner';
-import { setGameStateChange, setGameLoaded, setLobbyId } from '../../../redux/game/game.actions';
+import {
+  setGameStateChange,
+  setGameLoaded,
+  setLobbyId,
+  quitGame,
+} from '../../../redux/game/game.actions';
 import { View, Text, Clipboard, TouchableOpacity, Image, Platform } from 'react-native';
 import { Button } from 'react-native-elements';
 import * as Haptics from 'expo-haptics';
@@ -12,7 +17,7 @@ import { selectGame } from '../../../redux/game/game.selectors';
 
 const GameCanvasWithSpinner = withSpinner(GameCanvas);
 
-const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
+const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame }) => {
   const { playerId, lobbyId } = game;
 
   const disconnectPlayer = async () => {
@@ -24,6 +29,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
       const players = modifyPlayer(gamePlayers, playerId, { connected: false });
 
       await docRef.set({ players }, { merge: true });
+      quitGame();
     } catch (err) {
       console.log(err.message);
     }
@@ -50,7 +56,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
 
     let initial = true;
     const channel = docRef.onSnapshot(
-      snapshot => {
+      (snapshot) => {
         console.log('called');
         // This code will change.
         if (initial) {
@@ -60,7 +66,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
           setGameStateChange({ lobbyId, ...snapshot.data() });
         }
       },
-      err => console.error(err)
+      (err) => console.error(err)
     );
 
     return () => {
@@ -82,11 +88,14 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange }) => {
   return (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={styles.text} >Lobby ID:</Text>
+        <Text style={styles.text}>Lobby ID:</Text>
         <TouchableOpacity onPress={copyLobbyId}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>
-            <Image style={{ marginTop: 15, marginLeft: 5, width: 30, height: 30 }} source={require(`../../../assets/images/clipboard.png`)} />
+            <Image
+              style={{ marginTop: 15, marginLeft: 5, width: 30, height: 30 }}
+              source={require(`../../../assets/images/clipboard.png`)}
+            />
           </View>
         </TouchableOpacity>
       </View>
@@ -121,6 +130,7 @@ const mapStateToProps = createStructuredSelector({
 const actions = {
   setGameStateChange,
   setGameLoaded,
-  setLobbyId
+  setLobbyId,
+  quitGame,
 };
 export default connect(mapStateToProps, actions)(GameLoader);
