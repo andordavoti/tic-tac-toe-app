@@ -8,7 +8,7 @@ import {
   quitGame,
 } from '../../../redux/game/game.actions';
 import { View, Text, Clipboard, TouchableOpacity, Image, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -109,16 +109,13 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
       />
 
       <Button
-        title="Quit Game"
-        type="solid"
-        buttonStyle={styles.quitButton}
+        type="contained"
+        style={styles.quitButton}
+        labelStyle={{ color: 'white' }}
         onPress={() => {
           if (Platform.OS === 'ios') Haptics.selectionAsync();
-
-          //TODO: needs to disconnect players
           disconnectPlayer();
-        }}
-      />
+        }}>Quit Game</Button>
     </View>
   );
 };

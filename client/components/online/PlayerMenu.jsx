@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Clipboard, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button } from 'react-native-paper';
 import { colors } from '../../lib/Settings';
 
 // Menu that displays "new game" or "Join game" options
@@ -20,7 +20,7 @@ const PlayerMenu = ({
 
   return (
     <View>
-      <Button onPress={handleNewGame} title="New Game" type="solid" buttonStyle={styles.button} />
+      <Button onPress={handleNewGame} type="contained" style={styles.button} labelStyle={{ color: 'white' }}>New Game</Button>
       <Text style={styles.text}>Join Game:</Text>
 
       <TextInput
@@ -52,10 +52,10 @@ const PlayerMenu = ({
       <Button
         disabled={!textInput.value.length}
         onPress={handleJoinGame}
-        title="Join"
-        type="solid"
-        buttonStyle={styles.button}
-      />
+        type="contained"
+        style={styles.button}
+        labelStyle={{ color: 'white' }}
+      >Join</Button>
     </View>
   );
 };

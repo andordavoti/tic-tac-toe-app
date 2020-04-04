@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
 import { colors } from '../lib/Settings';
@@ -44,9 +44,9 @@ class GameCanvas extends React.Component {
           <Text style={styles.gameOverText}>Game Over</Text>
           {winnerOutput}
           <Button
-            title="New Game"
-            type="solid"
-            buttonStyle={styles.button}
+            type="contained"
+            style={styles.button}
+            labelStyle={{ color: 'white' }}
             onPress={() => {
               if (Platform.OS === 'ios') Haptics.selectionAsync();
               this.setState({
@@ -54,9 +54,8 @@ class GameCanvas extends React.Component {
                 disableFields: false,
                 winnerColumns: [],
                 gameStart: false,
-              });
-            }}
-          />
+              })
+            }}>New Game</Button>
         </View>
       );
     } else if (!gameStart)
@@ -177,6 +176,7 @@ const styles = StyleSheet.create({
     margin: 20,
     marginBottom: 40,
     backgroundColor: colors.main,
+    color: 'white'
   },
 });
 

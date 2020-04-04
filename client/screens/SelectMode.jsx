@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, Text, Image, StyleSheet, Platform } from "react-native";
-import { Button } from "react-native-elements";
+import { Button } from "react-native-paper";
 
 import { colors } from "../lib/Settings";
 
@@ -30,17 +30,17 @@ const SelectMode = ({ navigation }) => {
       <Text style={styles.text}>Select Mode:</Text>
       <View style={Platform.OS === 'web' ? { flexDirection: 'row' } : { flexDirection: 'column' }}>
         <Button
-          title="Multiplayer"
-          type="solid"
-          buttonStyle={styles.button}
+          type="contained"
+          style={styles.button}
+          labelStyle={{ color: 'white' }}
           onPress={() => navigation.navigate("Multiplayer")}
-        />
+        >Multiplayer</Button>
         <Button
-          title="Online Multiplayer"
-          type="solid"
-          buttonStyle={styles.button}
+          type="contained"
+          style={styles.button}
+          labelStyle={{ color: 'white' }}
           onPress={() => navigation.navigate("Online Multiplayer")}
-        />
+        >Online Multiplayer</Button>
       </View>
       {renderWeb()}
     </View>
