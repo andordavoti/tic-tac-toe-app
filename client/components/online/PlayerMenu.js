@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Clipboard } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, Clipboard, Platform } from 'react-native';
 import { Button } from 'react-native-elements';
 import { colors } from '../../lib/Settings';
 
@@ -36,13 +36,16 @@ const PlayerMenu = ({
         underlineColorAndroid='transparent'
       />
 
-      {/* TODO: change value of textInput to be the string of the clipboard */}
-      <TouchableOpacity onPress={insertFromClipboard}>
-        <Image
-          style={{ width: 30, height: 30, alignSelf: 'center' }}
-          source={require(`../../assets/images/clipboard.png`)}
-        />
-      </TouchableOpacity>
+
+      {
+        Platform.OS === 'web' ? null :
+          <TouchableOpacity onPress={insertFromClipboard}>
+            <Image
+              style={{ width: 30, height: 30, alignSelf: 'center' }}
+              source={require(`../../assets/images/clipboard.png`)}
+            />
+          </TouchableOpacity>
+      }
 
       {textInput.err && <Text style={styles.infoText}>{textInput.err}</Text>}
 
