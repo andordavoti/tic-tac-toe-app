@@ -1,6 +1,7 @@
 import React from 'react';
-import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../lib/Settings';
+import { ActivityIndicator } from "react-native-paper";
 
 export const withSpinner = WrappedComponent => ({ loading = true, msg, ...props }) =>
   loading ? <Spinner msg={msg} /> : <WrappedComponent {...props} />;
