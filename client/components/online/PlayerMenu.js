@@ -33,6 +33,7 @@ const PlayerMenu = ({
         placeholder="Enter lobby id"
         placeholderTextColor="lightgrey"
         autoCapitalize="none"
+        underlineColorAndroid='transparent'
       />
 
       {/* TODO: change value of textInput to be the string of the clipboard */}
