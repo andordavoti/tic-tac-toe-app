@@ -53,7 +53,7 @@ const PlayerMenu = ({
         disabled={!textInput.value.length}
         onPress={handleJoinGame}
         type="contained"
-        style={styles.button}
+        style={textInput.value.length ? styles.button : { ...styles.button, backgroundColor: 'grey' }}
         labelStyle={{ color: 'white' }}
       >Join</Button>
     </View>
