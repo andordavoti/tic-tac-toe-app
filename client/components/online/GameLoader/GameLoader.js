@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import GameCanvas from '../../GameCanvas';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
 import { withSpinner } from '../../Spinner';
 import {
@@ -14,8 +13,9 @@ import * as Haptics from 'expo-haptics';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectGame } from '../../../redux/game/game.selectors';
+import OnlineGameCanvas from '../OnlineGameCanvas';
 
-const GameCanvasWithSpinner = withSpinner(GameCanvas);
+const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
 const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame }) => {
   const { playerId, lobbyId } = game;

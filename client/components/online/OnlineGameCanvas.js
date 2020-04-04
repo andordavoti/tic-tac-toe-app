@@ -5,6 +5,10 @@ import * as Haptics from 'expo-haptics';
 
 import { colors } from '../../lib/Settings';
 import Column from '../Column';
+import { firestore } from '../../lib/firebaseUtils';
+import { createStructuredSelector } from 'reselect';
+import { selectLobbyId, selectFieldTypes } from '../../redux/game/game.selectors';
+import { connect } from 'react-redux';
 
 class OnlineGameCanvas extends React.Component {
   state = {
@@ -80,7 +84,7 @@ class OnlineGameCanvas extends React.Component {
     }
   };
 
-  checkGame = forUser => {
+  checkGame = (forUser) => {
     const winnerCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -96,7 +100,16 @@ class OnlineGameCanvas extends React.Component {
       this.checkLine(forUser, winnerCombinations[i]);
   };
 
-  pressed = num => {
+  async sendRequest(num) {
+    console.log('called');
+    const docRef = firestore.collection('lobbies').doc(this.props.lobbyId);
+    // const response = await docRef.get();
+
+    // const data = response.data();
+
+    await docRef.set({ fieldTypes: [...this.props.fieldTypes, num] });
+  }
+  pressed = (num) => {
     let fieldType = this.state.fieldType,
       turn = this.state.turn;
 
@@ -111,6 +124,7 @@ class OnlineGameCanvas extends React.Component {
       if (turn === 'o') this.setState({ fieldType, turn: 'x' });
       if (turn === 'x') this.setState({ fieldType, turn: 'o' });
     } else if (Platform.OS === 'ios') Haptics.notificationAsync('error');
+    this.sendRequest(num);
   };
 
   getNum = (y, x) => {
@@ -132,9 +146,9 @@ class OnlineGameCanvas extends React.Component {
 
     return (
       <View>
-        {sizeArray.map(x => (
+        {sizeArray.map((x) => (
           <View style={{ flexDirection: 'row' }} key={x}>
-            {sizeArray.map(y => (
+            {sizeArray.map((y) => (
               <Column key={y} action={this.pressed} num={this.getNum(x, y)} {...this.state} />
             ))}
           </View>
@@ -180,4 +194,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OnlineGameCanvas;
+const mapStateToProps = createStructuredSelector({
+  lobbyId: selectLobbyId,
+  fieldTypes: selectFieldTypes,
+});
+export default connect(mapStateToProps)(OnlineGameCanvas);
