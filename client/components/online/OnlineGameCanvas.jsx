@@ -7,7 +7,12 @@ import { colors } from '../../lib/Settings';
 import Column from '../Column';
 import { firestore } from '../../lib/firebaseUtils';
 import { createStructuredSelector } from 'reselect';
-import { selectLobbyId, selectFieldTypes } from '../../redux/game/game.selectors';
+import {
+  selectLobbyId,
+  selectFieldTypes,
+  selectPlayerId,
+  selectGame,
+} from '../../redux/game/game.selectors';
 import { connect } from 'react-redux';
 
 class OnlineGameCanvas extends React.Component {
@@ -21,14 +26,34 @@ class OnlineGameCanvas extends React.Component {
     gameStart: false,
   };
 
+  componentDidMount() {
+    const { xIsNext, playerId } = this.props.gameState;
+
+    if (playerId !== 0) {
+      this.setState({ disableFields: true });
+    }
+  }
+  component;
+  componentWillReceiveProps() {
+    const { xIsNext, playerId } = this.props.gameState;
+    console.log('OnlineGameCanvas -> componentWillReceiveProps -> playerId', playerId);
+    console.log('OnlineGameCanvas -> componentWillReceiveProps -> xIsNext', xIsNext);
+    if (xIsNext !== playerId) {
+      console.log('not equal');
+      this.setState({ disableFields: true });
+    } else {
+      this.setState({ disableFields: false });
+    }
+  }
   componentDidUpdate(prevState) {
+    const { xIsNext, playerId } = this.props.gameState;
     const { fieldType, disableFields, gameStart } = this.state;
     const { size } = this.props;
 
     //check if all fields are pressed
     if (prevState.fieldType !== fieldType) {
       let counter = 0;
-      for (let i = 0; i < fieldType.length; i++) if (fieldType[i] !== '') counter++;
+      for (const type of fieldType) if (type !== '') counter++;
       if (counter === Math.pow(size, 2) && !disableFields)
         this.setState({ disableFields: true, winner: 'tied' });
       if (counter !== 0 && !gameStart) this.setState({ gameStart: true });
@@ -59,7 +84,10 @@ class OnlineGameCanvas extends React.Component {
                 winnerColumns: [],
                 gameStart: false,
               });
-            }}>New Game</Button>
+            }}
+          >
+            New Game
+          </Button>
         </View>
       );
     } else if (!gameStart)
@@ -67,12 +95,12 @@ class OnlineGameCanvas extends React.Component {
   };
 
   checkLine = (user, combination) => {
-    const { fieldType } = this.state;
+    const { fieldTypes } = this.props;
 
     if (
-      fieldType[combination[0]] === user &&
-      fieldType[combination[1]] === user &&
-      fieldType[combination[2]] === user
+      fieldTypes[combination[0]] === user &&
+      fieldTypes[combination[1]] === user &&
+      fieldTypes[combination[2]] === user
     ) {
       if (Platform.OS === 'ios') Haptics.notificationAsync('success');
       this.setState({
@@ -103,10 +131,16 @@ class OnlineGameCanvas extends React.Component {
     console.log('called');
     const docRef = firestore.collection('lobbies').doc(this.props.lobbyId);
     // const response = await docRef.get();
+    const { fieldTypes, playerId, xIsNext } = this.props.gameState;
 
     // const data = response.data();
+    const newFieldTypes = [...fieldTypes];
+    newFieldTypes[num] = playerId;
 
-    await docRef.set({ fieldTypes: [...this.props.fieldTypes, num] });
+    await docRef.set(
+      { fieldTypes: newFieldTypes, xIsNext: xIsNext === 0 ? 1 : 0 },
+      { merge: true }
+    );
   }
   pressed = (num) => {
     let fieldType = this.state.fieldType,
@@ -195,6 +229,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = createStructuredSelector({
   lobbyId: selectLobbyId,
+  playerId: selectPlayerId,
   fieldTypes: selectFieldTypes,
+  gameState: selectGame,
 });
 export default connect(mapStateToProps)(OnlineGameCanvas);

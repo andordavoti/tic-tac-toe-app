@@ -1,10 +1,10 @@
 const shortid = require('shortid');
 
-const NewGame = firestore => async (req, res) => {
+const NewGame = (firestore) => async (req, res) => {
   const newLobby = await firestore.collection('lobbies').doc(shortid.generate());
 
   const writeResult = await newLobby.set({
-    canvas: [],
+    fieldTypes: Array(9).fill(null),
     players: [
       {
         id: shortid.generate(),

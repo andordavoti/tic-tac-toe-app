@@ -9,6 +9,7 @@ import {
 const initialState = {
   lobbyId: undefined,
   playerId: undefined,
+  xIsNext: 0,
   fieldTypes: [],
   players: [],
   gameLoaded: false,
