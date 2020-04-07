@@ -3,7 +3,6 @@
     "name": "Tic Tac Toe",
     "slug": "tic-tac-toe",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
