@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet } from 'react-native';
-import { colors, urls } from '../../lib/Settings';
-import { firestore, getConnectedPlayers } from '../../lib/firebaseUtils';
-import PlayerMenu from '../../components/online/PlayerMenu';
-import { withSpinner } from '../../components/Spinner';
-import GameLoader from '../../components/online/GameLoader/GameLoader';
+import { colors, urls } from '../lib/Settings';
+import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
+import PlayerMenu from '../components/online/PlayerMenu';
+import { withSpinner } from '../components/Spinner';
+import GameLoader from '../components/online/GameLoader/GameLoader';
 // Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectPlayerId, selectLobbyId } from '../../redux/game/game.selectors';
-import { setLobbyId, setPlayerId } from '../../redux/game/game.actions';
+import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
+import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);

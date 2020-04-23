@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
 import Multiplayer from '../screens/Multiplayer';
-import OnlineMultiplayer from '../screens/OnlineMultiplayer/OnlineMultiplayer';
+import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
 import AboutScreen from '../screens/AboutScreen';
 
