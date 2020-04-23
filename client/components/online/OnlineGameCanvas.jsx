@@ -14,7 +14,7 @@ import {
   selectGame,
 } from '../../redux/game/game.selectors';
 import { connect } from 'react-redux';
-import { getFieldType, checkGame } from '../../lib/gameCanvasUtils';
+import { getFieldType, checkGame, getPlayerName } from '../../lib/gameCanvasUtils';
 
 const initialState = {
   winner: null,
@@ -64,7 +64,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId }) => {
 
   return (
     <View style={styles.container}>
-      <Text> Turn is player {xIsNext + 1}</Text>
+      <Text style={styles.text}> Turn: Player {getPlayerName(xIsNext)}</Text>
       {Boolean(winner) && (
         <View>
           <Text style={styles.gameOverText}>Game Over</Text>
@@ -139,8 +139,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  text: {
+    color: 'white',
+    marginTop: 20,
+    fontSize: 20,
+    textAlign: 'center',
+    fontWeight: '500',
+    marginBottom: 20
+  },
   button: {
-    margin: 20,
     marginBottom: 40,
     backgroundColor: colors.main,
   },
