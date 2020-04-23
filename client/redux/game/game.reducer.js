@@ -15,7 +15,7 @@ const initialState = {
   gameLoaded: false,
 };
 
-export const gameReducer = (state = initialState, action) => {
+const gameReducer = (state = initialState, action) => {
   switch (action.type) {
     case GAME_LOADED:
       return {
@@ -49,3 +49,5 @@ export const gameReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default gameReducer
