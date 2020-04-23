@@ -4,7 +4,7 @@ import { View, StyleSheet } from 'react-native'
 import { colors } from '../lib/Settings'
 import GameCanvas from '../components/GameCanvas'
 
-function Multiplayer() {
+const Multiplayer = () => {
   return <View style={styles.container}>
     <GameCanvas size={3} />
   </View>
