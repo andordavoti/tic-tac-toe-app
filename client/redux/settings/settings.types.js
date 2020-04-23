@@ -1,0 +1,5 @@
+export const SET_THEME = 'SET_THEME'
+export const USE_SYSTEM_THEME = 'USE_SYSTEM_THEME'
+export const USE_HAPTICS = 'USE_HAPTICS'
+export const SET_MAX_RESULTS = 'SET_MAX_RESULTS'
+export const SORT_BY_SYLLABLES = 'SORT_BY_SYLLABLES'
