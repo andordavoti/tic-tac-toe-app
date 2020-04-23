@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
@@ -14,191 +14,111 @@ import {
   selectGame,
 } from '../../redux/game/game.selectors';
 import { connect } from 'react-redux';
+import { getFieldType, checkGame } from '../../lib/gameCanvasUtils';
 
-class OnlineGameCanvas extends React.Component {
-  state = {
-    //TODO: generate fieldtype array dynamically from the size prop in component did mount (Math.pow(size, 2) to generate the length)
-    fieldType: ['', '', '', '', '', '', '', '', ''],
-    turn: 'o',
-    disableFields: false,
-    winnerColumns: [],
-    winner: '',
-    gameStart: false,
+const initialState = {
+  winner: null,
+  winnerColumns: [],
+};
+
+const OnlineGameCanvas = ({ size, gameState, lobbyId }) => {
+  const [winnerDetails, setWinnerDetails] = useState(initialState);
+  const { winner, winnerColumns } = winnerDetails;
+  const { fieldTypes, playerId, xIsNext } = gameState;
+
+  const canvasFrozen = playerId !== xIsNext;
+
+  const handleFieldPress = async (num) => {
+    if (canvasFrozen) return;
+    const docRef = firestore.collection('lobbies').doc(lobbyId);
+
+    const newFieldTypes = [...fieldTypes];
+
+    newFieldTypes[num] = getFieldType(playerId);
+
+    await docRef.set(
+      { xIsNext: xIsNext === 0 ? 1 : 0, fieldTypes: newFieldTypes },
+      { merge: true }
+    );
   };
 
-  componentDidMount() {
-    const { xIsNext, playerId } = this.props.gameState;
+  const resetLobby = async () => {
+    const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-    if (playerId !== 0) {
-      this.setState({ disableFields: true });
+    await docRef.set({ fieldTypes: Array(size * size).fill(null), xIsNext: 0 }, { merge: true });
+  };
+
+  const handleNewGame = () => {
+    if (Platform.OS === 'ios') Haptics.selectionAsync();
+    resetLobby();
+  };
+
+  useEffect(() => {
+    const result = checkGame(fieldTypes);
+    if (result.winner && result.winnerColumns.length) {
+      setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
+    } else if (winner) {
+      setWinnerDetails(initialState);
     }
-  }
-  component;
-  componentWillReceiveProps() {
-    const { xIsNext, playerId } = this.props.gameState;
-    console.log('OnlineGameCanvas -> componentWillReceiveProps -> playerId', playerId);
-    console.log('OnlineGameCanvas -> componentWillReceiveProps -> xIsNext', xIsNext);
-    if (xIsNext !== playerId) {
-      console.log('not equal');
-      this.setState({ disableFields: true });
-    } else {
-      this.setState({ disableFields: false });
-    }
-  }
-  componentDidUpdate(prevState) {
-    const { xIsNext, playerId } = this.props.gameState;
-    const { fieldType, disableFields, gameStart } = this.state;
-    const { size } = this.props;
+  }, [fieldTypes]);
 
-    //check if all fields are pressed
-    if (prevState.fieldType !== fieldType) {
-      let counter = 0;
-      for (const type of fieldType) if (type !== '') counter++;
-      if (counter === Math.pow(size, 2) && !disableFields)
-        this.setState({ disableFields: true, winner: 'tied' });
-      if (counter !== 0 && !gameStart) this.setState({ gameStart: true });
-    }
-  }
-
-  renderInfo = () => {
-    const { disableFields, winner, gameStart } = this.state;
-    let winnerOutput = '';
-
-    if (winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
-    else winnerOutput = <Text style={styles.winnerText}>The winner is {winner.toUpperCase()}</Text>;
-
-    if (disableFields && winner !== '') {
-      return (
+  return (
+    <View style={styles.container}>
+      <Text> Turn is player {xIsNext + 1}</Text>
+      {Boolean(winner) && (
         <View>
           <Text style={styles.gameOverText}>Game Over</Text>
-          {winnerOutput}
+          <Text>The winner is player {winner}</Text>
           <Button
             type="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
-            onPress={() => {
-              if (Platform.OS === 'ios') Haptics.selectionAsync();
-              this.setState({
-                fieldType: ['', '', '', '', '', '', '', '', ''],
-                disableFields: false,
-                winnerColumns: [],
-                gameStart: false,
-              });
-            }}
+            onPress={handleNewGame}
           >
             New Game
           </Button>
         </View>
-      );
-    } else if (!gameStart)
-      return <Text style={styles.winnerText}>Press a column to start the game</Text>;
-  };
+      )}
+      <RenderGrid
+        {...{ fieldTypes, size, handlePress: handleFieldPress, winnerColumns, canvasFrozen }}
+      />
+    </View>
+  );
+};
 
-  checkLine = (user, combination) => {
-    const { fieldTypes } = this.props;
+const RenderGrid = ({ fieldTypes, size, handlePress, winnerColumns, canvasFrozen }) => {
+  const sizeArray = [...Array(size).keys()];
 
-    if (
-      fieldTypes[combination[0]] === user &&
-      fieldTypes[combination[1]] === user &&
-      fieldTypes[combination[2]] === user
-    ) {
-      if (Platform.OS === 'ios') Haptics.notificationAsync('success');
-      this.setState({
-        winner: user,
-        disableFields: true,
-        winnerColumns: [combination[0], combination[1], combination[2]],
-      });
+  let num = 0;
+  let initial = true;
+  const getNum = () => {
+    if (initial) {
+      initial = false;
+      return num;
     }
+    num++;
+    return num;
   };
 
-  checkGame = (forUser) => {
-    const winnerCombinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-
-    for (let i = 0; i < winnerCombinations.length; i++)
-      this.checkLine(forUser, winnerCombinations[i]);
-  };
-
-  async sendRequest(num) {
-    console.log('called');
-    const docRef = firestore.collection('lobbies').doc(this.props.lobbyId);
-    // const response = await docRef.get();
-    const { fieldTypes, playerId, xIsNext } = this.props.gameState;
-
-    // const data = response.data();
-    const newFieldTypes = [...fieldTypes];
-    newFieldTypes[num] = playerId;
-
-    await docRef.set(
-      { fieldTypes: newFieldTypes, xIsNext: xIsNext === 0 ? 1 : 0 },
-      { merge: true }
-    );
-  }
-  pressed = (num) => {
-    let fieldType = this.state.fieldType,
-      turn = this.state.turn;
-
-    if (fieldType[num] === '') {
-      if (Platform.OS === 'ios') Haptics.selectionAsync();
-
-      if (turn === 'o') fieldType[num] = 'o';
-      else fieldType[num] = 'x';
-
-      this.checkGame(turn);
-
-      if (turn === 'o') this.setState({ fieldType, turn: 'x' });
-      if (turn === 'x') this.setState({ fieldType, turn: 'o' });
-    } else if (Platform.OS === 'ios') Haptics.notificationAsync('error');
-    this.sendRequest(num);
-  };
-
-  getNum = (y, x) => {
-    //TODO: create an algorithm from this pattern (this may not be correct, I don't think the width is accounted for in this pattern)
-    if (x === 1) {
-      return x + y - 2;
-    }
-    if (x === 2) {
-      return x + y;
-    }
-    if (x === 3) {
-      return x + y + 2;
-    }
-  };
-
-  renderGrid = () => {
-    const { size } = this.props;
-    const sizeArray = [...Array(size + 1).keys()].slice(1);
-
-    return (
-      <View>
-        {sizeArray.map((x) => (
-          <View style={{ flexDirection: 'row' }} key={x}>
-            {sizeArray.map((y) => (
-              <Column key={y} action={this.pressed} num={this.getNum(x, y)} {...this.state} />
-            ))}
-          </View>
-        ))}
-      </View>
-    );
-  };
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <View>{this.renderInfo()}</View>
-        {this.renderGrid()}
-      </View>
-    );
-  }
-}
+  return (
+    <View>
+      {sizeArray.map((x) => (
+        <View style={{ flexDirection: 'row' }} key={x}>
+          {sizeArray.map((y) => (
+            <Column
+              key={y}
+              action={handlePress}
+              num={getNum()}
+              fieldType={fieldTypes}
+              winnerColumns={winnerColumns}
+              disableFields={canvasFrozen || Boolean(winnerColumns.length)}
+            />
+          ))}
+        </View>
+      ))}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {

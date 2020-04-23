@@ -5,6 +5,7 @@ const NewGame = (firestore) => async (req, res) => {
 
   const writeResult = await newLobby.set({
     fieldTypes: Array(9).fill(null),
+    xIsNext: 0,
     players: [
       {
         id: shortid.generate(),
