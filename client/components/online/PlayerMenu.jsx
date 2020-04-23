@@ -61,8 +61,9 @@ const PlayerMenu = ({
         type="contained"
         style={textInput.value.length ? styles.button : { ...styles.button, backgroundColor: 'grey' }}
         labelStyle={{ color: 'white' }}
-        contentStyle={{ margin: 10 }}
-      >Join</Button>
+        contentStyle={{ margin: 10 }}>
+        Join
+      </Button>
     </View>
   );
 };

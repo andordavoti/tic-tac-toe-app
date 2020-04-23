@@ -16,9 +16,10 @@ const Spinner = ({ size = 'large', color = colors.main, msg = undefined }) => (
 const styles = StyleSheet.create({
   text: {
     color: 'white',
-    fontWeight: '300',
+    fontWeight: 'bold',
     fontSize: 15,
-    margin: 20
+    margin: 20,
+    textAlign: 'center'
   },
   spinner: {
     marginTop: 20

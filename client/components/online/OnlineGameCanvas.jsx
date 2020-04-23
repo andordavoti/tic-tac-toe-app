@@ -73,8 +73,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId }) => {
             type="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
-            onPress={handleNewGame}
-          >
+            onPress={handleNewGame}>
             New Game
           </Button>
         </View>
@@ -153,4 +152,5 @@ const mapStateToProps = createStructuredSelector({
   fieldTypes: selectFieldTypes,
   gameState: selectGame,
 });
+
 export default connect(mapStateToProps)(OnlineGameCanvas);

@@ -15,7 +15,7 @@ import { setLobbyId, setPlayerId } from '../../redux/game/game.actions';
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = ({ navigation, lobbyId, playerId, setLobbyId, setPlayerId }) => {
+const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,

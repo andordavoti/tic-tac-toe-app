@@ -103,7 +103,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
       <Text style={styles.text}>You are player: {playerId + 1}</Text>
 
       <GameCanvasWithSpinner
-        msg={`Waiting for player. ${playerId + 1} connected`}
+        msg='Waiting for other player...'
         loading={connectedPlayers.length < 2}
         size={3}
       />
