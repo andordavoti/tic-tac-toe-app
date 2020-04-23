@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectGame } from '../../../redux/game/game.selectors';
 import OnlineGameCanvas from '../OnlineGameCanvas';
+import { showToast } from '../../../lib/toast';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -82,7 +83,10 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
     return result;
   }, [game.players]);
 
-  const copyLobbyId = () => Clipboard.setString(lobbyId)
+  const copyLobbyId = () => {
+    showToast('Copied Lobby ID to Clipboard')
+    Clipboard.setString(lobbyId)
+  }
 
   return (
     <View>

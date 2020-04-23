@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Clipboard, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import { colors } from '../../lib/Settings';
+import { showToast } from '../../lib/toast';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu = ({
@@ -15,6 +16,7 @@ const PlayerMenu = ({
   const insertFromClipboard = async () => {
     const text = await Clipboard.getString();
     console.log('insertFromClipboard -> text', text);
+    showToast('Inserted text from Clipboard')
     setTextInput((prevState) => ({ ...prevState, value: text }));
   };
 
