@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const Dropdown = ({ items, placeholder, value, onValueChange, type, styles, label }) => {
-    const theme = 'light'
+    const theme = 'dark'
 
     return <View style={stylesDark.container}>
         <Text style={styles.text}>{label}</Text>

@@ -113,7 +113,7 @@ const AppNavigator = () => {
       <Tab.Navigator screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, size }) => {
           let iconName
-          let color = (focused ? 'white' : 'grey')
+          let color = (focused ? 'white' : 'lightgrey')
           if (route.name === 'Settings') iconName = 'settings'
           else iconName = 'gamepad'
           return <MaterialCommunityIcons color={color} name={iconName} size={size} />

@@ -26,7 +26,6 @@ class SettingsScreen extends React.Component {
                 fontSize: 20,
                 color: 'white',
                 margin: 10,
-                marginBottom: 15
             },
             textAuthor: {
                 textAlign: 'center',
@@ -52,9 +51,8 @@ class SettingsScreen extends React.Component {
                 marginTop: 50
             },
             button: {
-                alignSelf: 'center',
-                margin: 15,
-                borderColor: colors.main
+                margin: 10,
+                backgroundColor: colors.main,
             },
             rowData: {
                 minHeight: 30,
@@ -104,7 +102,7 @@ class SettingsScreen extends React.Component {
                 items={themeDropdownItems} />
             {
                 Platform.OS === 'ios' ?
-                    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={styles.text}>Haptics:</Text>
                         <Switch
                             style={styles.toTheRight}
@@ -122,9 +120,9 @@ class SettingsScreen extends React.Component {
                     {
                         reviewIsAvailable ?
                             <Button
+                                type="contained"
                                 style={styles.button}
-                                color={theme === 'dark' ? 'white' : 'black'}
-                                mode='outlined'
+                                labelStyle={{ color: 'white' }}
                                 onPress={() => {
                                     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
                                     StoreReview.requestReview()
@@ -133,10 +131,11 @@ class SettingsScreen extends React.Component {
                         </Button>
                             : null
                     }
+
                     <Button
+                        type="contained"
                         style={styles.button}
-                        color={theme === 'dark' ? 'white' : 'black'}
-                        mode='outlined'
+                        labelStyle={{ color: 'white' }}
                         onPress={() => {
                             if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
                             Linking.openURL('mailto:andor.davoti@gmail.com')
