@@ -21,14 +21,16 @@ class Column extends React.Component {
     else if (winnerColumns) this.setState({ isWinnerColumn: false });
   };
 
-  getStyles = (isWinnerColumn) => {
+  getStyles = () => {
+    const { disableFields } = this.props;
+    const { isWinnerColumn } = this.state;
     return {
       column: {
         maxWidth: Dimensions.get('window').height * 0.1,
         maxHeight: Dimensions.get('window').height * 0.1,
         width: Dimensions.get('window').width * 0.22,
         height: Dimensions.get('window').width * 0.22,
-        backgroundColor: colors.main,
+        backgroundColor: disableFields ? 'grey' : colors.main,
         borderRadius: 10,
         borderWidth: isWinnerColumn ? 8 : 2,
         borderColor: isWinnerColumn ? colors.mainDark : 'white',
@@ -44,8 +46,7 @@ class Column extends React.Component {
   render() {
     let path;
     const { fieldType, num, action, disableFields } = this.props;
-    const { isWinnerColumn } = this.state;
-    const styles = this.getStyles(isWinnerColumn);
+    const styles = this.getStyles();
     const currentFieldType = fieldType[num];
 
     if (currentFieldType === 'o') path = require(`../assets/images/o.png`);
