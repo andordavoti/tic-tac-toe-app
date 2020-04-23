@@ -2,6 +2,7 @@ export const colors = {
   main: '#689e77',
   mainDark: '#36423a',
   background: '#545454',
+  warning: '#d63c09'
 };
 
 export const urls = {

@@ -111,11 +111,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   infoText: {
-    color: 'red',
+    color: colors.warning,
     margin: 5,
     fontSize: 15,
     textAlign: 'center',
-    fontWeight: '200',
+    fontWeight: 'bold',
   },
   button: {
     width: 200,
