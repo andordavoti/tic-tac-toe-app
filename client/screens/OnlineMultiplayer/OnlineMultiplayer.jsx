@@ -67,14 +67,14 @@ const OnlineMultiplayer = ({ navigation, lobbyId, playerId, setLobbyId, setPlaye
       {lobbyId ? (
         <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
       ) : (
-        //No nested if, loading state passed directly to component
-        <PlayerMenuWithSpinner
-          msg="Connecting to game server"
-          loading={loading}
-          {...{ setTextInput, styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-        />
-        //No nested if, loading state passed directly to component
-      )}
+          //No nested if, loading state passed directly to component
+          <PlayerMenuWithSpinner
+            msg="Connecting to game server"
+            loading={loading}
+            {...{ setTextInput, styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+          />
+          //No nested if, loading state passed directly to component
+        )}
     </View>
   );
 };
@@ -119,7 +119,6 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 200,
-    padding: 10,
     margin: 10,
     backgroundColor: colors.main,
   },

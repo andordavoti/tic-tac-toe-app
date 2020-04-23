@@ -34,12 +34,14 @@ const SelectMode = ({ navigation }) => {
           style={styles.button}
           labelStyle={{ color: 'white' }}
           onPress={() => navigation.navigate("Multiplayer")}
+          contentStyle={{ margin: 10 }}
         >Multiplayer</Button>
         <Button
           type="contained"
           style={styles.button}
           labelStyle={{ color: 'white' }}
           onPress={() => navigation.navigate("Online Multiplayer")}
+          contentStyle={{ margin: 10 }}
         >Online Multiplayer</Button>
       </View>
       {renderWeb()}
@@ -60,7 +62,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   button: {
-    padding: 10,
     margin: 10,
     backgroundColor: colors.main,
   },

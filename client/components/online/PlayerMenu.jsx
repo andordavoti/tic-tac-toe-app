@@ -20,7 +20,13 @@ const PlayerMenu = ({
 
   return (
     <View>
-      <Button onPress={handleNewGame} type="contained" style={styles.button} labelStyle={{ color: 'white' }}>New Game</Button>
+      <Button onPress={handleNewGame}
+        type="contained"
+        style={styles.button}
+        labelStyle={{ color: 'white' }}
+        contentStyle={{ margin: 10 }}>
+        New Game
+      </Button>
       <Text style={styles.text}>Join Game:</Text>
 
       <TextInput
@@ -55,6 +61,7 @@ const PlayerMenu = ({
         type="contained"
         style={textInput.value.length ? styles.button : { ...styles.button, backgroundColor: 'grey' }}
         labelStyle={{ color: 'white' }}
+        contentStyle={{ margin: 10 }}
       >Join</Button>
     </View>
   );
