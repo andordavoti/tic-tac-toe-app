@@ -8,7 +8,7 @@ import * as StoreReview from 'expo-store-review';
 import { Linking } from 'expo';
 
 import { themeDropdownItems } from '../lib/dropdownItems'
-import { colors } from '../lib/colors'
+import { colors } from '../lib/Settings'
 import Dropdown from '../components/Dropdown'
 
 class SettingsScreen extends React.Component {
@@ -19,19 +19,19 @@ class SettingsScreen extends React.Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: (theme === 'dark' ? colors.dark.bg : colors.light.bg),
+                backgroundColor: colors.background
             },
             text: {
                 textAlign: 'center',
                 fontSize: 20,
-                color: (theme === 'dark' ? colors.dark.txtColor : colors.light.txtColor),
+                color: 'white',
                 margin: 10,
                 marginBottom: 15
             },
             textAuthor: {
                 textAlign: 'center',
                 fontSize: 20,
-                color: (theme === 'dark' ? colors.dark.txtColor : colors.light.txtColor),
+                color: 'white',
                 margin: 10,
                 fontStyle: 'italic',
                 lineHeight: 35
@@ -39,14 +39,14 @@ class SettingsScreen extends React.Component {
             textVersion: {
                 textAlign: 'center',
                 fontSize: 20,
-                color: (theme === 'dark' ? colors.dark.txtColor : colors.light.txtColor),
+                color: 'white',
                 margin: 10,
                 fontWeight: 'bold'
             },
             header: {
                 textAlign: 'center',
                 fontSize: 25,
-                color: (theme === 'dark' ? colors.dark.txtColor : colors.light.txtColor),
+                color: 'white',
                 fontWeight: '600',
                 margin: 10,
                 marginTop: 50
@@ -54,7 +54,7 @@ class SettingsScreen extends React.Component {
             button: {
                 alignSelf: 'center',
                 margin: 15,
-                borderColor: (theme === 'dark' ? colors.dark.borderColorBtn : colors.light.borderColorBtn)
+                borderColor: colors.main
             },
             rowData: {
                 minHeight: 30,
@@ -108,7 +108,7 @@ class SettingsScreen extends React.Component {
                         <Text style={styles.text}>Haptics:</Text>
                         <Switch
                             style={styles.toTheRight}
-                            color='grey'
+                            color={colors.main}
                             value={true}
                             onValueChange={() => useHaptics(!hapticsEnabled)
                             } />
