@@ -76,9 +76,6 @@ class SettingsScreen extends React.Component {
                 alignItems: 'center',
                 justifyContent: 'space-between',
             },
-            toTheRight: {
-                marginRight: 10
-            },
         })
     }
 
@@ -121,7 +118,6 @@ class SettingsScreen extends React.Component {
                     <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={styles.text}>Haptics:</Text>
                         <Switch
-                            style={styles.toTheRight}
                             color={colors.main}
                             value={hapticsEnabled}
                             onValueChange={() => useHaptics(!hapticsEnabled)
