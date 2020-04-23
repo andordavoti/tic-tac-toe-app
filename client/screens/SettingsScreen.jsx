@@ -11,9 +11,23 @@ import { themeDropdownItems } from '../lib/dropdownItems'
 import { colors } from '../lib/Settings'
 import Dropdown from '../components/Dropdown'
 
+import { connect } from 'react-redux'
+import { setCurrentTheme, useSystemTheme, useHaptics } from '../redux/settings/settings.action'
+
 class SettingsScreen extends React.Component {
 
-    getStyleSheet = (theme) => {
+    state = { selectedTheme: 'system', reviewIsAvailable: false }
+
+    async componentDidMount() {
+        const { systemTheme, theme } = this.props
+
+        if (systemTheme) this.setState({ selectedTheme: 'system' })
+        else this.setState({ selectedTheme: theme })
+
+        this.setState({ reviewIsAvailable: await StoreReview.hasAction() })
+    }
+
+    getStyleSheet = () => {
         return StyleSheet.create({
             container: {
                 flex: 1,
@@ -88,9 +102,10 @@ class SettingsScreen extends React.Component {
     }
 
     render() {
-        const theme = 'light'
-        const reviewIsAvailable = true
         const styles = this.getStyleSheet(theme)
+
+        const { reviewIsAvailable } = this.state
+        const { theme, useHaptics, hapticsEnabled } = this.props
 
         return <View style={styles.container}>
             <Dropdown
@@ -108,7 +123,7 @@ class SettingsScreen extends React.Component {
                         <Switch
                             style={styles.toTheRight}
                             color={colors.main}
-                            value={true}
+                            value={hapticsEnabled}
                             onValueChange={() => useHaptics(!hapticsEnabled)
                             } />
                     </View>
@@ -150,4 +165,10 @@ class SettingsScreen extends React.Component {
     }
 }
 
-export default SettingsScreen
+const mapStateToProps = ({ settings: { theme, useSystemTheme, hapticsEnabled } }) => ({
+    theme,
+    useSystemTheme,
+    hapticsEnabled
+})
+
+export default connect(mapStateToProps, { setCurrentTheme, useSystemTheme, useHaptics })(SettingsScreen)
