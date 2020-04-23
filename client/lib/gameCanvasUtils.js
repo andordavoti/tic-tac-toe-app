@@ -32,3 +32,8 @@ export const checkGame = (fieldTypes) => {
   }
   return { winner, winnerColumns };
 };
+
+export const getPlayerName = playerId => {
+  if (playerId === 0) return 'X'
+  else if (playerId === 1) return 'O'
+}

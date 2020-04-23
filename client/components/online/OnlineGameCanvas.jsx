@@ -97,7 +97,7 @@ const RenderGrid = ({ fieldTypes, size, handlePress, winnerColumns, canvasFrozen
     }
     num++;
     return num;
-  };
+  }
 
   return (
     <View>

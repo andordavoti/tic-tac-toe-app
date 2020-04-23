@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
+import { getPlayerName } from '../../../lib/gameCanvasUtils'
 import { withSpinner } from '../../Spinner';
 import {
   setGameStateChange,
@@ -81,9 +82,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
     return result;
   }, [game.players]);
 
-  const copyLobbyId = () => {
-    Clipboard.setString(lobbyId);
-  };
+  const copyLobbyId = () => Clipboard.setString(lobbyId)
 
   return (
     <View>
@@ -100,7 +99,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
         </TouchableOpacity>
       </View>
 
-      <Text style={styles.text}>You are player: {playerId + 1}</Text>
+      <Text style={styles.text}>You are player: {getPlayerName(playerId)}</Text>
 
       <GameCanvasWithSpinner
         msg='Waiting for other player...'
