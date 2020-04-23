@@ -26,14 +26,15 @@ class SettingsScreen extends React.Component {
                 fontSize: 20,
                 color: 'white',
                 margin: 10,
+                fontWeight: 'bold'
             },
-            textAuthor: {
+            textAuthors: {
                 textAlign: 'center',
                 fontSize: 20,
                 color: 'white',
-                margin: 10,
+                margin: 5,
+                marginBottom: 20,
                 fontStyle: 'italic',
-                lineHeight: 35
             },
             textVersion: {
                 textAlign: 'center',
@@ -116,6 +117,8 @@ class SettingsScreen extends React.Component {
 
             <View styles={{ marginBottom: getBottomSpace() }}>
                 <Text style={styles.header}>About the App:</Text>
+                <Text style={styles.text}>Developed by:</Text>
+                <Text style={styles.textAuthors}>Andor Davoti &#38; Sanna Jammeh</Text>
                 <View style={{ flexDirection: 'row' }}>
                     {
                         reviewIsAvailable ?
@@ -128,10 +131,8 @@ class SettingsScreen extends React.Component {
                                     StoreReview.requestReview()
                                 }}>
                                 Rate App
-                        </Button>
-                            : null
+                        </Button> : null
                     }
-
                     <Button
                         type="contained"
                         style={styles.button}
@@ -141,14 +142,12 @@ class SettingsScreen extends React.Component {
                             Linking.openURL('mailto:andor.davoti@gmail.com')
                         }}>
                         Contact us
-                        </Button>
+                    </Button>
                 </View>
-                <Text style={styles.textAuthor}>Developed by:{'\n'}Andor Davoti{'\n'}&{'\n'}Sanna Jammeh</Text>
                 <Text style={styles.textVersion}>Version: {Constants.manifest.version}</Text>
             </View>
         </View>
     }
 }
-
 
 export default SettingsScreen
