@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 
 import { colors } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
@@ -10,6 +11,9 @@ import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
 import AboutScreen from '../screens/AboutScreen';
+
+import { connect } from 'react-redux'
+import { setCurrentTheme } from '../redux/settings/settings.action'
 
 const Tab = createBottomTabNavigator()
 
@@ -107,32 +111,41 @@ const SettingsStackScreen = () => {
   </SettingsStack.Navigator>
 }
 
-const AppNavigator = () => {
+const AppNavigator = ({ systemTheme }) => {
+  const deviceTheme = useColorScheme()
+  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemTheme) {
+    setCurrentTheme(deviceTheme)
+  }
+
   return (
-    <NavigationContainer>
-      <Tab.Navigator screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, size }) => {
-          let iconName
-          let color = (focused ? 'white' : 'lightgrey')
-          if (route.name === 'Settings') iconName = 'settings'
-          else iconName = 'gamepad'
-          return <MaterialCommunityIcons color={color} name={iconName} size={size} />
-        }
-      })}
-        tabBarOptions={{
-          showLabel: false,
-          showIcon: true,
-          style: {
-            backgroundColor: colors.main,
-            shadowColor: 'transparent',
-            borderTopWidth: 0,
-          },
-        }} >
-        <Tab.Screen name='Home' component={GameStackScreen} />
-        <Tab.Screen name='Settings' component={SettingsStackScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <AppearanceProvider>
+      <NavigationContainer>
+        <Tab.Navigator screenOptions={({ route }) => ({
+          tabBarIcon: ({ focused, size }) => {
+            let iconName
+            let color = (focused ? 'white' : 'lightgrey')
+            if (route.name === 'Settings') iconName = 'settings'
+            else iconName = 'gamepad'
+            return <MaterialCommunityIcons color={color} name={iconName} size={size} />
+          }
+        })}
+          tabBarOptions={{
+            showLabel: false,
+            showIcon: true,
+            style: {
+              backgroundColor: colors.main,
+              shadowColor: 'transparent',
+              borderTopWidth: 0,
+            },
+          }} >
+          <Tab.Screen name='Home' component={GameStackScreen} />
+          <Tab.Screen name='Settings' component={SettingsStackScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </AppearanceProvider>
   );
 };
 
-export default AppNavigator;
+const mapStateToProps = ({ settings: { theme, systemTheme } }) => ({ theme, systemTheme })
+
+export default connect(mapStateToProps, { setCurrentTheme })(AppNavigator);

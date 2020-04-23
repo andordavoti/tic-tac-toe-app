@@ -104,14 +104,14 @@ class SettingsScreen extends React.Component {
     render() {
         const styles = this.getStyleSheet(theme)
 
-        const { reviewIsAvailable } = this.state
+        const { reviewIsAvailable, selectedTheme } = this.state
         const { theme, useHaptics, hapticsEnabled } = this.props
 
         return <View style={styles.container}>
             <Dropdown
                 label='Theme:'
                 styles={styles}
-                value={'light'}
+                value={selectedTheme}
                 onValueChange={this.onValueChange}
                 type='theme'
                 placeholder={{ label: 'Select Theme', value: null, color: '#9EA0A4' }}
@@ -165,9 +165,9 @@ class SettingsScreen extends React.Component {
     }
 }
 
-const mapStateToProps = ({ settings: { theme, useSystemTheme, hapticsEnabled } }) => ({
+const mapStateToProps = ({ settings: { theme, systemTheme, hapticsEnabled } }) => ({
     theme,
-    useSystemTheme,
+    systemTheme,
     hapticsEnabled
 })
 
