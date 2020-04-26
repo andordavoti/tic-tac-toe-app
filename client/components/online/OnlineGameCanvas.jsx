@@ -13,15 +13,15 @@ import {
   selectPlayerId,
   selectGame,
 } from '../../redux/game/game.selectors';
+import { selectHaptics } from '../../redux/settings/settings.selectors';
 import { connect } from 'react-redux';
 import { getFieldType, checkGame, getPlayerName } from '../../lib/gameCanvasUtils';
-
 const initialState = {
   winner: null,
   winnerColumns: [],
 };
 
-const OnlineGameCanvas = ({ size, gameState, lobbyId }) => {
+const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
   const [winnerDetails, setWinnerDetails] = useState(initialState);
   const { winner, winnerColumns } = winnerDetails;
   const { fieldTypes, playerId, xIsNext } = gameState;
@@ -49,7 +49,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId }) => {
   };
 
   const handleNewGame = () => {
-    if (Platform.OS === 'ios') Haptics.selectionAsync();
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
     resetLobby();
   };
 
@@ -158,6 +158,7 @@ const mapStateToProps = createStructuredSelector({
   playerId: selectPlayerId,
   fieldTypes: selectFieldTypes,
   gameState: selectGame,
+  hapticsEnabled: selectHaptics
 });
 
 export default connect(mapStateToProps)(OnlineGameCanvas);

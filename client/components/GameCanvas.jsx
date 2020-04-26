@@ -5,6 +5,7 @@ import * as Haptics from 'expo-haptics';
 
 import { colors } from '../lib/Settings';
 import Column from './Column';
+import { connect } from 'react-redux';
 
 class GameCanvas extends React.Component {
   state = {
@@ -33,6 +34,7 @@ class GameCanvas extends React.Component {
 
   renderInfo = () => {
     const { disableFields, winner, gameStart } = this.state;
+    const { hapticsEnabled } = this.props;
     let winnerOutput = '';
 
     if (winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
@@ -48,7 +50,7 @@ class GameCanvas extends React.Component {
             style={styles.button}
             labelStyle={{ color: 'white' }}
             onPress={() => {
-              if (Platform.OS === 'ios') Haptics.selectionAsync();
+              if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
               this.setState({
                 fieldType: ['', '', '', '', '', '', '', '', ''],
                 disableFields: false,
@@ -64,13 +66,14 @@ class GameCanvas extends React.Component {
 
   checkLine = (user, combination) => {
     const { fieldType } = this.state;
+    const { hapticsEnabled } = this.props;
 
     if (
       fieldType[combination[0]] === user &&
       fieldType[combination[1]] === user &&
       fieldType[combination[2]] === user
     ) {
-      if (Platform.OS === 'ios') Haptics.notificationAsync('success');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
       this.setState({
         winner: user,
         disableFields: true,
@@ -96,11 +99,13 @@ class GameCanvas extends React.Component {
   };
 
   pressed = num => {
+    const { hapticsEnabled } = this.props;
+
     let fieldType = this.state.fieldType,
       turn = this.state.turn;
 
     if (fieldType[num] === '') {
-      if (Platform.OS === 'ios') Haptics.selectionAsync();
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
 
       if (turn === 'o') fieldType[num] = 'o';
       else fieldType[num] = 'x';
@@ -109,7 +114,7 @@ class GameCanvas extends React.Component {
 
       if (turn === 'o') this.setState({ fieldType, turn: 'x' });
       if (turn === 'x') this.setState({ fieldType, turn: 'o' });
-    } else if (Platform.OS === 'ios') Haptics.notificationAsync('error');
+    } else if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
   };
 
   getNum = (y, x) => {
@@ -178,6 +183,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.main,
     color: 'white'
   },
-});
+})
 
-export default GameCanvas;
+const mapStateToProps = ({ settings: { hapticsEnabled } }) => ({ hapticsEnabled })
+
+export default connect(mapStateToProps)(GameCanvas)
