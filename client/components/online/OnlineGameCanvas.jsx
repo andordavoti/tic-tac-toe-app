@@ -14,17 +14,22 @@ import {
   selectGame,
 } from '../../redux/game/game.selectors';
 import { selectHaptics } from '../../redux/settings/settings.selectors';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { getFieldType, checkGame, getPlayerName } from '../../lib/gameCanvasUtils';
+import { quitGame } from '../../redux/game/game.actions';
+import { showToast } from '../../lib/toast';
 const initialState = {
   winner: null,
+  tied: false,
   winnerColumns: [],
 };
 
 const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
+  const dispatch = useDispatch();
+  const [timers, setTimers] = useState([]);
   const [winnerDetails, setWinnerDetails] = useState(initialState);
-  const { winner, winnerColumns } = winnerDetails;
-  const { fieldTypes, playerId, xIsNext } = gameState;
+  const { winner, winnerColumns, tied } = winnerDetails;
+  const { fieldTypes, playerId, xIsNext, gameStarted } = gameState;
 
   const canvasFrozen = playerId !== xIsNext;
 
@@ -37,7 +42,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
     newFieldTypes[num] = getFieldType(playerId);
 
     await docRef.set(
-      { xIsNext: xIsNext === 0 ? 1 : 0, fieldTypes: newFieldTypes },
+      { gameStarted: true, xIsNext: xIsNext === 0 ? 1 : 0, fieldTypes: newFieldTypes },
       { merge: true }
     );
   };
@@ -60,16 +65,44 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
     } else if (winner) {
       setWinnerDetails(initialState);
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+    } else if (result.tied) {
+      setWinnerDetails({ ...initialState, tied: true });
     }
-  }, [fieldTypes]);
 
+    timers.forEach((timer) => {
+      clearTimeout(timer);
+      timers.shift();
+    });
+
+    const playerOnlineTimer = setTimeout(() => {
+      if (gameStarted && (!winner || !result.tied)) {
+        dispatch(quitGame());
+        showToast('Lobby dispanded due to inactivity', 3500);
+      }
+    }, 60000);
+
+    setTimers([...timers, playerOnlineTimer]);
+
+    return () => {
+      timers.forEach((timer) => {
+        clearTimeout(timer);
+        timers.shift();
+      });
+    };
+  }, [fieldTypes]);
+  console.log('Tied -> ', tied);
   return (
     <View style={styles.container}>
       <Text style={styles.text}> Turn: Player {getPlayerName(xIsNext)}</Text>
-      {Boolean(winner) && (
+      {Boolean(winner) || tied ? (
         <View>
-          <Text style={styles.gameOverText}>Game Over</Text>
-          <Text>The winner is player {winner}</Text>
+          <Text style={styles.gameOverText}>
+            {Boolean(winner)
+              ? winner === getFieldType(playerId)
+                ? 'You won'
+                : 'You lost'
+              : `It's a tie`}
+          </Text>
           <Button
             type="contained"
             style={styles.button}
@@ -79,15 +112,15 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
             New Game
           </Button>
         </View>
-      )}
+      ) : null}
       <RenderGrid
-        {...{ fieldTypes, size, handlePress: handleFieldPress, winnerColumns, canvasFrozen }}
+        {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winnerColumns, canvasFrozen }}
       />
     </View>
   );
 };
 
-const RenderGrid = ({ fieldTypes, size, handlePress, winnerColumns, canvasFrozen }) => {
+const RenderGrid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen }) => {
   const sizeArray = [...Array(size).keys()];
 
   let num = 0;
@@ -112,7 +145,7 @@ const RenderGrid = ({ fieldTypes, size, handlePress, winnerColumns, canvasFrozen
               num={getNum()}
               fieldType={fieldTypes}
               winnerColumns={winnerColumns}
-              disableFields={canvasFrozen || Boolean(winnerColumns.length)}
+              disableFields={canvasFrozen || Boolean(winnerColumns.length) || tied}
             />
           ))}
         </View>

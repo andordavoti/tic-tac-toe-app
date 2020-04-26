@@ -2,6 +2,7 @@ export const getFieldType = (playerId) => (playerId === 0 ? 'x' : 'o');
 
 export const checkGame = (fieldTypes) => {
   const users = ['x', 'o'];
+  let tied = false;
   let winner = null;
   let winnerColumns = [];
   const winnerCombinations = [
@@ -27,7 +28,14 @@ export const checkGame = (fieldTypes) => {
       }
     }
   }
-  return { winner, winnerColumns };
+
+  let stringValues = 0;
+  fieldTypes.forEach((fieldType) => {
+    if (typeof fieldType === 'string') stringValues++;
+  });
+
+  if (!winner && stringValues === fieldTypes.length) tied = true;
+  return { winner, winnerColumns, tied };
 };
 
 export const getPlayerName = (playerId) => {
