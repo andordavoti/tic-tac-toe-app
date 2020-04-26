@@ -1,5 +1,3 @@
-import { Platform } from 'react-native';
-import * as Haptics from 'expo-haptics';
 export const getFieldType = (playerId) => (playerId === 0 ? 'x' : 'o');
 
 export const checkGame = (fieldTypes) => {
@@ -23,8 +21,6 @@ export const checkGame = (fieldTypes) => {
         fieldTypes[combination[1]] === user &&
         fieldTypes[combination[2]] === user
       ) {
-        //TODO: add conditional for haptics
-        if (Platform.OS === 'ios') Haptics.notificationAsync('success');
         winner = user;
         winnerColumns = [combination[0], combination[1], combination[2]];
         break;
@@ -34,7 +30,7 @@ export const checkGame = (fieldTypes) => {
   return { winner, winnerColumns };
 };
 
-export const getPlayerName = playerId => {
-  if (playerId === 0) return 'X'
-  else if (playerId === 1) return 'O'
-}
+export const getPlayerName = (playerId) => {
+  if (playerId === 0) return 'X';
+  else if (playerId === 1) return 'O';
+};
