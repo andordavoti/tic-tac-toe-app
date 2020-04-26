@@ -36,7 +36,8 @@
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "@react-native-community/netinfo": "5.5.1"
   },
   "devDependencies": {
     "babel-preset-expo": "^8.1.0",

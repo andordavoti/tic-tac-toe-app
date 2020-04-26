@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import * as Haptics from 'expo-haptics'
+import NetInfo from '@react-native-community/netinfo';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
@@ -22,6 +24,17 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, haptics
     value: '',
     err: false,
   });
+
+  const [connected, isConnected] = useState(false)
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      isConnected(state.isConnected)
+    })
+
+    return () => unsubscribe()
+  }, [])
+
   const [loading, setLoading] = useState(false);
   const handleNewGame = async () => {
     setLoading(true);
@@ -70,21 +83,28 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, haptics
     setTextInput({ ...textInput, value: text });
   };
 
-  return (
-    <View style={styles.container}>
-      {lobbyId ? (
-        <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
-      ) : (
-          //No nested if, loading state passed directly to component
-          <PlayerMenuWithSpinner
-            msg="Connecting to game server"
-            loading={loading}
-            {...{ setTextInput, styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
-          />
-          //No nested if, loading state passed directly to component
-        )}
+  if (connected) {
+    return (
+      <View style={styles.container}>
+        {lobbyId ? (
+          <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
+        ) : (
+            //No nested if, loading state passed directly to component
+            <PlayerMenuWithSpinner
+              msg="Connecting to game server"
+              loading={loading}
+              {...{ setTextInput, styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+            />
+            //No nested if, loading state passed directly to component
+          )}
+      </View>
+    );
+  } else {
+    return <View style={styles.container}>
+      <MaterialCommunityIcons color='white' name='wifi-strength-alert-outline' size={30} />
+      <Text style={styles.text}>Please check your{'\n'}network connection!</Text>
     </View>
-  );
+  }
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -111,6 +131,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontWeight: '500',
+    lineHeight: 26
   },
   lobbyId: {
     color: 'white',
