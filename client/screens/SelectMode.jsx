@@ -5,6 +5,8 @@ import * as Haptics from 'expo-haptics'
 
 import { colors } from "../lib/Settings";
 import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import { selectHaptics } from "../redux/settings/settings.selectors";
 
 const SelectMode = ({ navigation, hapticsEnabled }) => {
   const renderWeb = () => {
@@ -88,6 +90,8 @@ const styles = StyleSheet.create({
   }
 })
 
-const mapStateToProps = ({ settings: { hapticsEnabled } }) => ({ hapticsEnabled })
+const mapStateToProps = createStructuredSelector({
+  hapticsEnabled: selectHaptics
+})
 
 export default connect(mapStateToProps)(SelectMode)

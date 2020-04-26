@@ -12,8 +12,10 @@ import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
 import AboutScreen from '../screens/AboutScreen';
 
+import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux'
 import { setCurrentTheme } from '../redux/settings/settings.action'
+import { selectTheme, selectSystemTheme } from '../redux/settings/settings.selectors';
 
 const Tab = createBottomTabNavigator()
 
@@ -146,6 +148,9 @@ const AppNavigator = ({ systemTheme }) => {
   );
 };
 
-const mapStateToProps = ({ settings: { theme, systemTheme } }) => ({ theme, systemTheme })
+const mapStateToProps = createStructuredSelector({
+  theme: selectTheme,
+  systemTheme: selectSystemTheme
+})
 
 export default connect(mapStateToProps, { setCurrentTheme })(AppNavigator);

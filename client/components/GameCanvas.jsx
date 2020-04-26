@@ -6,6 +6,8 @@ import * as Haptics from 'expo-haptics';
 import { colors } from '../lib/Settings';
 import Column from './Column';
 import { connect } from 'react-redux';
+import { selectHaptics } from '../redux/settings/settings.selectors';
+import { createStructuredSelector } from 'reselect';
 
 class GameCanvas extends React.Component {
   state = {
@@ -185,6 +187,8 @@ const styles = StyleSheet.create({
   },
 })
 
-const mapStateToProps = ({ settings: { hapticsEnabled } }) => ({ hapticsEnabled })
+const mapStateToProps = createStructuredSelector({
+  hapticsEnabled: selectHaptics
+})
 
 export default connect(mapStateToProps)(GameCanvas)
