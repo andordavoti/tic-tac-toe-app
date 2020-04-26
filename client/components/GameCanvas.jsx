@@ -11,7 +11,6 @@ import { createStructuredSelector } from 'reselect';
 
 class GameCanvas extends React.Component {
   state = {
-    //TODO: generate fieldtype array dynamically from the size prop in component did mount (Math.pow(size, 2) to generate the length)
     fieldType: ['', '', '', '', '', '', '', '', ''],
     turn: 'o',
     disableFields: false,
@@ -120,7 +119,7 @@ class GameCanvas extends React.Component {
   };
 
   getNum = (y, x) => {
-    //TODO: create an algorithm from this pattern (this may not be correct, I don't think the width is accounted for in this pattern)
+    //TODO: adopt same getNum as in onlineMultiplayer component
     if (x === 1) {
       return x + y - 2;
     }
