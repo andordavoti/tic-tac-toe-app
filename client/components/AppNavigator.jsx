@@ -10,7 +10,6 @@ import SelectMode from '../screens/SelectMode';
 import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
-import AboutScreen from '../screens/AboutScreen';
 
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux'
@@ -83,22 +82,6 @@ const SettingsStackScreen = () => {
       component={SettingsScreen}
       options={{
         title: 'Settings',
-        headerStyle: {
-          backgroundColor: colors.main,
-          shadowColor: 'transparent',
-          borderBottomWidth: 0,
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-        headerTintColor: '#fff',
-      }}
-    />
-    <SettingsStack.Screen
-      name="About"
-      component={AboutScreen}
-      options={{
-        title: 'About',
         headerStyle: {
           backgroundColor: colors.main,
           shadowColor: 'transparent',
