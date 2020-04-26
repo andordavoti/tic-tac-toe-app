@@ -59,6 +59,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
     } else if (winner) {
       setWinnerDetails(initialState);
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
     }
   }, [fieldTypes]);
 
@@ -73,7 +74,8 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
             type="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
-            onPress={handleNewGame}>
+            onPress={handleNewGame}
+          >
             New Game
           </Button>
         </View>
@@ -97,7 +99,7 @@ const RenderGrid = ({ fieldTypes, size, handlePress, winnerColumns, canvasFrozen
     }
     num++;
     return num;
-  }
+  };
 
   return (
     <View>
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     fontWeight: '500',
-    marginBottom: 20
+    marginBottom: 20,
   },
   button: {
     marginBottom: 40,
@@ -158,7 +160,7 @@ const mapStateToProps = createStructuredSelector({
   playerId: selectPlayerId,
   fieldTypes: selectFieldTypes,
   gameState: selectGame,
-  hapticsEnabled: selectHaptics
+  hapticsEnabled: selectHaptics,
 });
 
 export default connect(mapStateToProps)(OnlineGameCanvas);
