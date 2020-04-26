@@ -1,11 +1,13 @@
 import React from 'react'
-import { View, StyleSheet, Text, Platform } from 'react-native'
+import { View, StyleSheet, Text, Platform, TouchableOpacity } from 'react-native'
 import { Switch, Button } from 'react-native-paper';
 import { getBottomSpace } from 'react-native-iphone-x-helper'
 import Constants from 'expo-constants'
 import * as Haptics from 'expo-haptics'
 import * as StoreReview from 'expo-store-review';
 import { Linking } from 'expo';
+import * as WebBrowser from 'expo-web-browser';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { themeDropdownItems } from '../lib/dropdownItems'
 import { colors } from '../lib/Settings'
@@ -37,6 +39,11 @@ class SettingsScreen extends React.Component {
                 alignItems: 'center',
                 backgroundColor: colors.background
             },
+            row: {
+                flexDirection: 'row',
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
             text: {
                 textAlign: 'center',
                 fontSize: 20,
@@ -44,7 +51,7 @@ class SettingsScreen extends React.Component {
                 margin: 10,
                 fontWeight: 'bold'
             },
-            textAuthors: {
+            textAuthor: {
                 textAlign: 'center',
                 fontSize: 20,
                 color: 'white',
@@ -56,7 +63,7 @@ class SettingsScreen extends React.Component {
                 textAlign: 'center',
                 fontSize: 20,
                 color: 'white',
-                margin: 10,
+                margin: 20,
                 fontWeight: 'bold'
             },
             header: {
@@ -64,8 +71,9 @@ class SettingsScreen extends React.Component {
                 fontSize: 25,
                 color: 'white',
                 fontWeight: '600',
-                margin: 10,
-                marginTop: 50
+                margin: 20,
+                marginTop: 50,
+                textDecorationLine: 'underline'
             },
             button: {
                 margin: 10,
@@ -100,11 +108,19 @@ class SettingsScreen extends React.Component {
         }
     }
 
+    openLink = async link => await WebBrowser.openBrowserAsync(link)
+
     render() {
         const styles = this.getStyleSheet(theme)
 
         const { reviewIsAvailable, selectedTheme } = this.state
         const { theme, useHaptics, hapticsEnabled } = this.props
+
+        const link = {
+            andor: 'https://andordavoti.com',
+            sanna: 'https://github.com/sannajammeh',
+            project: 'https://github.com/andordavoti/tic-tac-toe-app'
+        }
 
         return <View style={styles.container}>
             <Dropdown
@@ -117,7 +133,7 @@ class SettingsScreen extends React.Component {
                 items={themeDropdownItems} />
             {
                 Platform.OS === 'ios' ?
-                    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={styles.row}>
                         <Text style={styles.text}>Haptics:</Text>
                         <Switch
                             color={colors.main}
@@ -130,8 +146,24 @@ class SettingsScreen extends React.Component {
 
             <View styles={{ marginBottom: getBottomSpace() }}>
                 <Text style={styles.header}>About the App:</Text>
-                <Text style={styles.text}>Developed by:</Text>
-                <Text style={styles.textAuthors}>Andor Davoti &#38; Sanna Jammeh</Text>
+                <Text style={{ ...styles.text, marginBottom: 20 }}>Developed by:</Text>
+                <View style={styles.row}>
+                    <TouchableOpacity onPress={() => this.openLink(link.andor)}>
+                        <Text style={styles.textAuthor}>Andor Davoti</Text>
+                    </TouchableOpacity>
+                    <Text style={{ ...styles.text, marginBottom: 20, margin: 5 }}>&#38; </Text>
+
+                    <TouchableOpacity onPress={() => this.openLink(link.sanna)}>
+                        <Text style={styles.textAuthor}>Sanna Jammeh</Text>
+                    </TouchableOpacity>
+                </View>
+
+
+                <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => this.openLink(link.project)}>
+                    <MaterialCommunityIcons color='white' name='github-circle' size={25} />
+                    <Text style={styles.text}>Project on GitHub</Text>
+                    <MaterialCommunityIcons color='white' name='github-circle' size={25} />
+                </TouchableOpacity>
                 <View style={{ flexDirection: 'row' }}>
                     {
                         reviewIsAvailable ?
@@ -159,7 +191,7 @@ class SettingsScreen extends React.Component {
                 </View>
                 <Text style={styles.textVersion}>Version: {Constants.manifest.version}</Text>
             </View>
-        </View>
+        </View >
     }
 }
 
