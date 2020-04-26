@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import * as Haptics from 'expo-haptics'
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, urls } from '../lib/Settings';
+import { colorsWithTheme, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import { withSpinner } from '../components/Spinner';
@@ -14,12 +14,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
 import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
-import { selectHaptics } from '../redux/settings/settings.selectors';
+import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, hapticsEnabled }) => {
+const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, hapticsEnabled }) => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
@@ -32,6 +32,66 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, haptics
 
     return () => unsubscribe()
   }, [])
+
+  const getStyleSheet = () => {
+    return StyleSheet.create({
+      container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.bg : colorsWithTheme.light.bg
+      },
+      text: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        marginTop: 20,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: '500',
+        lineHeight: 26
+      },
+      lobbyId: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        marginTop: 20,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
+      infoText: {
+        color: theme === 'dark' ? colorsWithTheme.dark.warning : colorsWithTheme.light.warning,
+        margin: 5,
+        fontSize: 15,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
+      button: {
+        width: 200,
+        margin: 10,
+        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+      },
+      quitButton: {
+        margin: 20,
+        marginBottom: 40,
+        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+      },
+      image: {
+        flex: 1,
+        height: 60,
+        width: 200,
+        margin: 10,
+      },
+      input: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        textAlign: 'center',
+        backgroundColor: 'grey',
+        height: 40,
+        width: 200,
+        margin: 10,
+        borderRadius: 5,
+        borderColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        fontSize: 20,
+      },
+    });
+  }
 
   const [loading, setLoading] = useState(false);
   const handleNewGame = async () => {
@@ -82,6 +142,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, haptics
   };
 
   if (connected) {
+    const styles = getStyleSheet()
     return (
       <View style={styles.container}>
         {lobbyId ? (
@@ -108,6 +169,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, haptics
 const mapStateToProps = createStructuredSelector({
   playerId: selectPlayerId,
   lobbyId: selectLobbyId,
+  theme: selectTheme,
   hapticsEnabled: selectHaptics
 });
 const actions = {
@@ -115,61 +177,3 @@ const actions = {
   setPlayerId,
 };
 export default connect(mapStateToProps, actions)(OnlineMultiplayer);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: colors.bg,
-  },
-  text: {
-    color: 'white',
-    marginTop: 20,
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: '500',
-    lineHeight: 26
-  },
-  lobbyId: {
-    color: 'white',
-    marginTop: 20,
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  infoText: {
-    color: colors.warning,
-    margin: 5,
-    fontSize: 15,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  button: {
-    width: 200,
-    margin: 10,
-    backgroundColor: colors.main,
-  },
-  quitButton: {
-    margin: 20,
-    marginBottom: 40,
-    backgroundColor: colors.main,
-  },
-  image: {
-    flex: 1,
-    height: 60,
-    width: 200,
-    margin: 10,
-  },
-  input: {
-    color: 'white',
-    textAlign: 'center',
-    backgroundColor: 'grey',
-    height: 40,
-    width: 200,
-    margin: 10,
-    borderRadius: 5,
-    borderColor: colors.main,
-    fontSize: 20,
-  },
-});

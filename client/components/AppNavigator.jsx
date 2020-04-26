@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 
-import { colors } from '../lib/Settings';
+import { colors, colorsWithTheme } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
 import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
@@ -14,14 +14,14 @@ import SettingsScreen from '../screens/SettingsScreen';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux'
 import { setCurrentTheme } from '../redux/settings/settings.action'
-import { selectSystemTheme } from '../redux/settings/settings.selectors';
+import { selectSystemTheme, selectTheme } from '../redux/settings/settings.selectors';
 
 const Tab = createBottomTabNavigator()
 
 const GameStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
-const GameStackScreen = () => {
+const GameStackScreen = (theme) => {
   return <GameStack.Navigator>
     <GameStack.Screen
       name="Select Mode"
@@ -29,7 +29,7 @@ const GameStackScreen = () => {
       options={{
         title: 'Tic Tac Toe',
         headerStyle: {
-          backgroundColor: colors.main,
+          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -46,7 +46,7 @@ const GameStackScreen = () => {
       options={{
         headerBackTitle: 'Back',
         headerStyle: {
-          backgroundColor: colors.main,
+          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -62,7 +62,7 @@ const GameStackScreen = () => {
       options={{
         headerBackTitle: 'Back',
         headerStyle: {
-          backgroundColor: colors.main,
+          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -75,7 +75,7 @@ const GameStackScreen = () => {
   </GameStack.Navigator>
 }
 
-const SettingsStackScreen = () => {
+const SettingsStackScreen = (theme) => {
   return <SettingsStack.Navigator>
     <SettingsStack.Screen
       name="Settings"
@@ -83,7 +83,7 @@ const SettingsStackScreen = () => {
       options={{
         title: 'Settings',
         headerStyle: {
-          backgroundColor: colors.main,
+          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -96,7 +96,7 @@ const SettingsStackScreen = () => {
   </SettingsStack.Navigator>
 }
 
-const AppNavigator = ({ systemTheme, setCurrentTheme }) => {
+const AppNavigator = ({ theme, systemTheme, setCurrentTheme }) => {
   const deviceTheme = useColorScheme()
 
   if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemTheme) {
@@ -120,13 +120,13 @@ const AppNavigator = ({ systemTheme, setCurrentTheme }) => {
             showLabel: false,
             showIcon: true,
             style: {
-              backgroundColor: colors.main,
+              backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
               shadowColor: 'transparent',
               borderTopWidth: 0,
             },
           }} >
-          <Tab.Screen name='Home' component={GameStackScreen} />
-          <Tab.Screen name='Settings' component={SettingsStackScreen} />
+          <Tab.Screen name='Home' component={() => GameStackScreen(theme)} />
+          <Tab.Screen name='Settings' component={() => SettingsStackScreen(theme)} />
         </Tab.Navigator>
       </NavigationContainer>
     </AppearanceProvider>
@@ -134,6 +134,7 @@ const AppNavigator = ({ systemTheme, setCurrentTheme }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
+  theme: selectTheme,
   systemTheme: selectSystemTheme
 })
 

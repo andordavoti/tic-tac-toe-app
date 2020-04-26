@@ -54,7 +54,7 @@ class GameCanvas extends React.Component {
         margin: 20,
         fontSize: 20,
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontWeight: '400'
       },
       button: {
         margin: 20,

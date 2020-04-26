@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, Clipboard, Platform } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper';
-import { colors } from '../../lib/Settings';
+import { colors, colorsWithTheme } from '../../lib/Settings';
 import { showToast } from '../../lib/toast';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectHaptics } from '../../redux/settings/settings.selectors';
+import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import * as Haptics from 'expo-haptics'
 
 // Menu that displays "new game" or "Join game" options
@@ -16,6 +17,7 @@ const PlayerMenu = ({
   handleInputChange,
   handleNewGame,
   handleJoinGame,
+  theme,
   hapticsEnabled
 }) => {
   const insertFromClipboard = async () => {
@@ -57,10 +59,11 @@ const PlayerMenu = ({
       {
         Platform.OS === 'web' ? null :
           <TouchableOpacity onPress={insertFromClipboard}>
-            <Image
-              style={{ width: 30, height: 30, alignSelf: 'center' }}
-              source={require(`../../assets/images/clipboard.png`)}
-            />
+            <MaterialCommunityIcons
+              color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+              name='clipboard-text-outline'
+              style={{ textAlign: 'center' }}
+              size={30} />
           </TouchableOpacity>
       }
 
@@ -80,6 +83,7 @@ const PlayerMenu = ({
 };
 
 const mapStateToProps = createStructuredSelector({
+  theme: selectTheme,
   hapticsEnabled: selectHaptics
 })
 
