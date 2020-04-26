@@ -3,6 +3,10 @@ import { View, Text, TextInput, Image, TouchableOpacity, Clipboard, Platform } f
 import { Button } from 'react-native-paper';
 import { colors } from '../../lib/Settings';
 import { showToast } from '../../lib/toast';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectHaptics } from '../../redux/settings/settings.selectors';
+import * as Haptics from 'expo-haptics'
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu = ({
@@ -12,17 +16,22 @@ const PlayerMenu = ({
   handleInputChange,
   handleNewGame,
   handleJoinGame,
+  hapticsEnabled
 }) => {
   const insertFromClipboard = async () => {
     const text = await Clipboard.getString();
     console.log('insertFromClipboard -> text', text);
     showToast('Inserted text from Clipboard')
     setTextInput((prevState) => ({ ...prevState, value: text }));
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   };
 
   return (
     <View>
-      <Button onPress={handleNewGame}
+      <Button onPress={() => {
+        handleNewGame()
+        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+      }}
         type="contained"
         style={styles.button}
         labelStyle={{ color: 'white' }}
@@ -70,4 +79,8 @@ const PlayerMenu = ({
   );
 };
 
-export default PlayerMenu;
+const mapStateToProps = createStructuredSelector({
+  hapticsEnabled: selectHaptics
+})
+
+export default connect(mapStateToProps)(PlayerMenu)

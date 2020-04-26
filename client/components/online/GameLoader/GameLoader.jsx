@@ -16,10 +16,11 @@ import { createStructuredSelector } from 'reselect';
 import { selectGame } from '../../../redux/game/game.selectors';
 import OnlineGameCanvas from '../OnlineGameCanvas';
 import { showToast } from '../../../lib/toast';
+import { selectHaptics } from '../../../redux/settings/settings.selectors';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
-const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame }) => {
+const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame, hapticsEnabled }) => {
   const { playerId, lobbyId } = game;
 
   const disconnectPlayer = async () => {
@@ -86,6 +87,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
   const copyLobbyId = () => {
     showToast('Copied Lobby ID to Clipboard')
     Clipboard.setString(lobbyId)
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   }
 
   return (
@@ -116,7 +118,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
         style={styles.quitButton}
         labelStyle={{ color: 'white' }}
         onPress={() => {
-          if (Platform.OS === 'ios') Haptics.selectionAsync();
+          if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
           disconnectPlayer();
         }}>Quit Game</Button>
     </View>
@@ -125,6 +127,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame 
 
 const mapStateToProps = createStructuredSelector({
   game: selectGame,
+  hapticsEnabled: selectHaptics
 });
 
 const actions = {

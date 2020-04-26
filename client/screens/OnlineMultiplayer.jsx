@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet } from 'react-native';
+import * as Haptics from 'expo-haptics'
 import { colors, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
@@ -11,11 +12,12 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
 import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
+import { selectHaptics } from '../redux/settings/settings.selectors';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
+const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, hapticsEnabled }) => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
@@ -44,18 +46,24 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
     const snapshot = await firestore.collection('lobbies').doc(textInput.value).get();
 
     // Checking if lobby exists
-    if (!snapshot.exists)
+    if (!snapshot.exists) {
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
       return setTextInput({ ...textInput, err: 'This lobby does not exist...' });
+    }
 
     const players = snapshot.data().players;
     const connected = getConnectedPlayers(players);
     // const playerId = connected.length ? 1 : 0;
     const playerId = players[0].connected ? 1 : players[1].connected ? 0 : 0;
 
-    if (connected.length >= 2) return setTextInput({ ...textInput, err: 'Lobby is full...' });
+    if (connected.length >= 2) {
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
+      return setTextInput({ ...textInput, err: 'Lobby is full...' });
+    }
 
     setPlayerId(playerId);
     setLobbyId(textInput.value);
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   };
 
   const handleInputChange = (text) => {
@@ -82,6 +90,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId }) => {
 const mapStateToProps = createStructuredSelector({
   playerId: selectPlayerId,
   lobbyId: selectLobbyId,
+  hapticsEnabled: selectHaptics
 });
 const actions = {
   setLobbyId,
