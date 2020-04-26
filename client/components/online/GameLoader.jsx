@@ -1,22 +1,22 @@
 import React, { useEffect, useMemo } from 'react';
-import { firestore, modifyPlayer, getConnectedPlayers } from '../../../lib/firebaseUtils';
-import { getPlayerName } from '../../../lib/gameCanvasUtils'
-import { withSpinner } from '../../Spinner';
+import { firestore, modifyPlayer, getConnectedPlayers } from '../../lib/firebaseUtils';
+import { getPlayerName } from '../../lib/gameCanvasUtils'
+import { withSpinner } from '../Spinner';
 import {
   setGameStateChange,
   setGameLoaded,
   setLobbyId,
   quitGame,
-} from '../../../redux/game/game.actions';
+} from '../../redux/game/game.actions';
 import { View, Text, Clipboard, TouchableOpacity, Image, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { selectGame } from '../../../redux/game/game.selectors';
-import OnlineGameCanvas from '../OnlineGameCanvas';
-import { showToast } from '../../../lib/toast';
-import { selectHaptics } from '../../../redux/settings/settings.selectors';
+import { selectGame } from '../../redux/game/game.selectors';
+import OnlineGameCanvas from './OnlineGameCanvas';
+import { showToast } from '../../lib/toast';
+import { selectHaptics } from '../../redux/settings/settings.selectors';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -99,7 +99,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
             <Text style={styles.lobbyId}> {lobbyId}</Text>
             <Image
               style={{ marginTop: 15, marginLeft: 5, width: 30, height: 30 }}
-              source={require(`../../../assets/images/clipboard.png`)}
+              source={require(`../../assets/images/clipboard.png`)}
             />
           </View>
         </TouchableOpacity>
@@ -135,5 +135,6 @@ const actions = {
   setGameLoaded,
   setLobbyId,
   quitGame,
-};
+}
+
 export default connect(mapStateToProps, actions)(GameLoader);

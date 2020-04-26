@@ -6,7 +6,7 @@ import { colors, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import { withSpinner } from '../components/Spinner';
-import GameLoader from '../components/online/GameLoader/GameLoader';
+import GameLoader from '../components/online/GameLoader';
 // Redux
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
