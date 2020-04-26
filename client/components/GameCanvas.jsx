@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
-import { colors } from '../lib/Settings';
+import { colorsWithTheme } from '../lib/Settings';
 import Column from './Column';
 import { connect } from 'react-redux';
-import { selectHaptics } from '../redux/settings/settings.selectors';
+import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 import { createStructuredSelector } from 'reselect';
 
 class GameCanvas extends React.Component {
@@ -33,9 +33,42 @@ class GameCanvas extends React.Component {
     }
   }
 
+  getStyleSheet = () => {
+    const { theme } = this.props
+
+    return StyleSheet.create({
+      container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      gameOverText: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        margin: 20,
+        fontSize: 30,
+        textAlign: 'center',
+        fontWeight: '500',
+      },
+      winnerText: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        margin: 20,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
+      button: {
+        margin: 20,
+        marginBottom: 40,
+        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        color: 'white'
+      },
+    })
+  }
+
   renderInfo = () => {
     const { disableFields, winner, gameStart } = this.state;
-    const { hapticsEnabled } = this.props;
+    const { hapticsEnabled, } = this.props;
+    const styles = this.getStyleSheet()
     let winnerOutput = '';
 
     if (winner === 'tied') winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
@@ -149,6 +182,8 @@ class GameCanvas extends React.Component {
   };
 
   render() {
+    const styles = this.getStyleSheet()
+
     return (
       <View style={styles.container}>
         <View>{this.renderInfo()}</View>
@@ -158,35 +193,8 @@ class GameCanvas extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  gameOverText: {
-    color: 'white',
-    margin: 20,
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-  winnerText: {
-    color: 'white',
-    margin: 20,
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  button: {
-    margin: 20,
-    marginBottom: 40,
-    backgroundColor: colors.main,
-    color: 'white'
-  },
-})
-
 const mapStateToProps = createStructuredSelector({
+  theme: selectTheme,
   hapticsEnabled: selectHaptics
 })
 
