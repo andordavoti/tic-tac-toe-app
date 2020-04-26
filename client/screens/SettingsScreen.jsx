@@ -13,6 +13,8 @@ import Dropdown from '../components/Dropdown'
 
 import { connect } from 'react-redux'
 import { setCurrentTheme, useSystemTheme, useHaptics } from '../redux/settings/settings.action'
+import { createStructuredSelector } from 'reselect';
+import { selectTheme, selectSystemTheme, selectHaptics } from '../redux/settings/settings.selectors';
 
 class SettingsScreen extends React.Component {
 
@@ -161,10 +163,10 @@ class SettingsScreen extends React.Component {
     }
 }
 
-const mapStateToProps = ({ settings: { theme, systemTheme, hapticsEnabled } }) => ({
-    theme,
-    systemTheme,
-    hapticsEnabled
+const mapStateToProps = createStructuredSelector({
+    theme: selectTheme,
+    systemTheme: selectSystemTheme,
+    hapticsEnabled: selectHaptics
 })
 
 export default connect(mapStateToProps, { setCurrentTheme, useSystemTheme, useHaptics })(SettingsScreen)
