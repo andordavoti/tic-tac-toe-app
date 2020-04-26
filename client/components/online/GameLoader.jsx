@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../lib/firebaseUtils';
 import { getPlayerName } from '../../lib/gameCanvasUtils'
 import { withSpinner } from '../Spinner';
@@ -16,11 +17,12 @@ import { createStructuredSelector } from 'reselect';
 import { selectGame } from '../../redux/game/game.selectors';
 import OnlineGameCanvas from './OnlineGameCanvas';
 import { showToast } from '../../lib/toast';
-import { selectHaptics } from '../../redux/settings/settings.selectors';
+import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
+import { colorsWithTheme } from '../../lib/Settings';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
-const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame, hapticsEnabled }) => {
+const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame, theme, hapticsEnabled }) => {
   const { playerId, lobbyId } = game;
 
   const disconnectPlayer = async () => {
@@ -97,10 +99,12 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
         <TouchableOpacity onPress={copyLobbyId}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>
-            <Image
-              style={{ marginTop: 15, marginLeft: 5, width: 30, height: 30 }}
-              source={require(`../../assets/images/clipboard.png`)}
-            />
+            <MaterialCommunityIcons
+              color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+              name='clipboard-text-outline'
+              style={{ marginLeft: 10, marginTop: 15 }}
+              size={30} />
+
           </View>
         </TouchableOpacity>
       </View>
@@ -127,6 +131,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
 
 const mapStateToProps = createStructuredSelector({
   game: selectGame,
+  theme: selectTheme,
   hapticsEnabled: selectHaptics
 });
 

@@ -28,7 +28,6 @@ export default class App extends React.Component {
     const imageAssets = cacheImages([
       require('./assets/images/o.png'),
       require('./assets/images/x.png'),
-      require('./assets/images/clipboard.png'),
     ]);
 
     await Promise.all([...imageAssets]);
