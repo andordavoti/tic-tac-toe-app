@@ -33,7 +33,7 @@ class Column extends React.Component {
         backgroundColor: disableFields ? 'grey' : colors.main,
         borderRadius: 10,
         borderWidth: isWinnerColumn ? 8 : 2,
-        borderColor: isWinnerColumn ? colors.mainDark : 'white',
+        borderColor: isWinnerColumn ? colors.main : 'white',
         margin: 10,
       },
       image: {
