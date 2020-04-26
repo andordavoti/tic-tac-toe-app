@@ -1,10 +1,12 @@
 import * as React from "react";
 import { View, Text, Image, StyleSheet, Platform } from "react-native";
 import { Button } from "react-native-paper";
+import * as Haptics from 'expo-haptics'
 
 import { colors } from "../lib/Settings";
+import { connect } from "react-redux";
 
-const SelectMode = ({ navigation }) => {
+const SelectMode = ({ navigation, hapticsEnabled }) => {
   const renderWeb = () => {
     if (Platform.OS === "web") {
       return (
@@ -33,14 +35,20 @@ const SelectMode = ({ navigation }) => {
           type="contained"
           style={styles.button}
           labelStyle={{ color: 'white' }}
-          onPress={() => navigation.navigate("Multiplayer")}
+          onPress={() => {
+            navigation.navigate("Multiplayer")
+            if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
+          }}
           contentStyle={{ margin: 10 }}
         >Multiplayer</Button>
         <Button
           type="contained"
           style={styles.button}
           labelStyle={{ color: 'white' }}
-          onPress={() => navigation.navigate("Online Multiplayer")}
+          onPress={() => {
+            navigation.navigate("Online Multiplayer")
+            if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
+          }}
           contentStyle={{ margin: 10 }}
         >Online Multiplayer</Button>
       </View>
@@ -78,6 +86,8 @@ const styles = StyleSheet.create({
     width: 200,
     margin: 10
   }
-});
+})
 
-export default SelectMode;
+const mapStateToProps = ({ settings: { hapticsEnabled } }) => ({ hapticsEnabled })
+
+export default connect(mapStateToProps)(SelectMode)
