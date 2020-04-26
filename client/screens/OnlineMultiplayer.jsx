@@ -25,12 +25,10 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, haptics
     err: false,
   });
 
-  const [connected, isConnected] = useState(false)
+  const [connected, isConnected] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
-      isConnected(state.isConnected)
-    })
+    const unsubscribe = NetInfo.addEventListener(state => isConnected(state.isConnected))
 
     return () => unsubscribe()
   }, [])
