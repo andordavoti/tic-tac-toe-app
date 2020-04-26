@@ -3,6 +3,7 @@
     "name": "Tic Tac Toe",
     "slug": "tic-tac-toe",
     "privacy": "public",
+    "userInterfaceStyle": "automatic",
     "platforms": [
       "ios",
       "android",

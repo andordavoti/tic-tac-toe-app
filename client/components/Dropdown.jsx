@@ -2,9 +2,11 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+import { selectTheme } from '../redux/settings/settings.selectors'
 
-const Dropdown = ({ items, placeholder, value, onValueChange, type, styles, label }) => {
-    const theme = 'dark'
+const Dropdown = ({ theme, items, placeholder, value, onValueChange, type, styles, label }) => {
 
     return <View style={stylesDark.container}>
         <Text style={styles.text}>{label}</Text>
@@ -80,5 +82,8 @@ const stylesLight = StyleSheet.create({
     },
 })
 
+const mapStateToProps = createStructuredSelector({
+    theme: selectTheme
+})
 
-export default Dropdown
+export default connect(mapStateToProps)(Dropdown)

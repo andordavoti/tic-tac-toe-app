@@ -14,7 +14,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux'
 import { setCurrentTheme } from '../redux/settings/settings.action'
-import { selectTheme, selectSystemTheme } from '../redux/settings/settings.selectors';
+import { selectSystemTheme } from '../redux/settings/settings.selectors';
 
 const Tab = createBottomTabNavigator()
 
@@ -96,10 +96,12 @@ const SettingsStackScreen = () => {
   </SettingsStack.Navigator>
 }
 
-const AppNavigator = ({ systemTheme }) => {
+const AppNavigator = ({ systemTheme, setCurrentTheme }) => {
   const deviceTheme = useColorScheme()
+
   if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemTheme) {
     setCurrentTheme(deviceTheme)
+    //console.log('setting theme to: ', deviceTheme)
   }
 
   return (
@@ -132,7 +134,6 @@ const AppNavigator = ({ systemTheme }) => {
 };
 
 const mapStateToProps = createStructuredSelector({
-  theme: selectTheme,
   systemTheme: selectSystemTheme
 })
 

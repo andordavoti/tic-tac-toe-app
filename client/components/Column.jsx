@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, TouchableOpacity, Image, Text } from 'react-native';
-import { colors } from '../lib/Settings';
+import { colors, colorsWithTheme } from '../lib/Settings';
 
 class Column extends React.Component {
   state = { isWinnerColumn: false };
@@ -21,6 +21,19 @@ class Column extends React.Component {
     else if (winnerColumns) this.setState({ isWinnerColumn: false });
   };
 
+  getWinnerColumnColor = () => {
+    const { isWinnerColumn } = this.state;
+    const { theme } = this.props
+
+    if (isWinnerColumn) {
+      if (theme === 'dark') return colorsWithTheme.dark.main
+      else return colorsWithTheme.light.main
+    } else {
+      if (theme === 'dark') return colorsWithTheme.dark.text
+      else return colorsWithTheme.light.text
+    }
+  }
+
   getStyles = () => {
     const { disableFields } = this.props;
     const { isWinnerColumn } = this.state;
@@ -33,7 +46,7 @@ class Column extends React.Component {
         backgroundColor: disableFields ? 'grey' : colors.main,
         borderRadius: 10,
         borderWidth: isWinnerColumn ? 8 : 2,
-        borderColor: isWinnerColumn ? colors.main : 'white',
+        borderColor: this.getWinnerColumnColor(),
         margin: 10,
       },
       image: {

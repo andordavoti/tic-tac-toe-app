@@ -16,7 +16,7 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.background : colorsWithTheme.light.background
+        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.bg : colorsWithTheme.light.bg
       },
       buttonContainer: {
         width: 250,
