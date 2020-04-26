@@ -29,8 +29,6 @@ export default class App extends React.Component {
       require('./assets/images/o.png'),
       require('./assets/images/x.png'),
       require('./assets/images/clipboard.png'),
-      require('./assets/images/app-store.png'),
-      require('./assets/images/google-play.png'),
     ]);
 
     await Promise.all([...imageAssets]);
