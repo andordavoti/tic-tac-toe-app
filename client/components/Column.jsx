@@ -1,69 +1,53 @@
 import React from 'react';
-import { Dimensions, TouchableOpacity, Image, Text } from 'react-native';
-import { colors, colorsWithTheme } from '../lib/Settings';
+import { Dimensions, TouchableOpacity, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { colorsWithTheme } from '../lib/Settings';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectTheme } from '../redux/settings/settings.selectors';
 
 class Column extends React.Component {
   state = { isWinnerColumn: false };
 
   componentDidUpdate(prevProps) {
-    if (prevProps.winnerColumns !== this.props.winnerColumns) this.checkIfWinnerColumn();
+    if (prevProps.winnerColumns !== this.props.winnerColumns) this.checkIfWinnerColumn()
   }
 
   checkIfWinnerColumn = () => {
-    const { winnerColumns, num } = this.props,
-      { isWinnerColumn } = this.state;
-
-    if (
-      (winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num) &&
-      !isWinnerColumn
-    )
-      this.setState({ isWinnerColumn: true });
-    else if (winnerColumns) this.setState({ isWinnerColumn: false });
-  };
-
-  getWinnerColumnColor = () => {
+    const { winnerColumns, num } = this.props
     const { isWinnerColumn } = this.state;
-    const { theme } = this.props
 
-    if (isWinnerColumn) {
-      if (theme === 'dark') return colorsWithTheme.dark.main
-      else return colorsWithTheme.light.main
-    } else {
-      if (theme === 'dark') return colorsWithTheme.dark.text
-      else return colorsWithTheme.light.text
+    if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num) && !isWinnerColumn) {
+      this.setState({ isWinnerColumn: true })
     }
+    else if (winnerColumns) this.setState({ isWinnerColumn: false });
   }
 
   getStyles = () => {
-    const { disableFields } = this.props;
-    const { isWinnerColumn } = this.state;
+    const { disableFields, theme } = this.props;
     return {
       column: {
         maxWidth: Dimensions.get('window').height * 0.1,
         maxHeight: Dimensions.get('window').height * 0.1,
         width: Dimensions.get('window').width * 0.22,
         height: Dimensions.get('window').width * 0.22,
-        backgroundColor: disableFields ? 'grey' : colors.main,
+        backgroundColor: disableFields ? 'grey' : (theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main),
         borderRadius: 10,
-        borderWidth: isWinnerColumn ? 8 : 2,
-        borderColor: this.getWinnerColumnColor(),
         margin: 10,
-      },
-      image: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
       },
     };
   };
+
   render() {
-    let path;
-    const { fieldType, num, action, disableFields } = this.props;
+    let icon;
+    const { fieldType, num, action, disableFields, theme } = this.props;
+    const { isWinnerColumn } = this.state;
     const styles = this.getStyles();
     const currentFieldType = fieldType[num];
 
-    if (currentFieldType === 'o') path = require(`../assets/images/o.png`);
-    if (currentFieldType === 'x') path = require(`../assets/images/x.png`);
+    if (currentFieldType === 'o') icon = 'circle-outline'
+    else if (currentFieldType === 'x') icon = 'close'
 
     return (
       <TouchableOpacity
@@ -71,12 +55,23 @@ class Column extends React.Component {
         style={styles.column}
         onPress={() => {
           if (!currentFieldType) action(num);
-        }}
-      >
-        {currentFieldType !== '' ? <Image style={styles.image} source={path} /> : null}
+        }}>
+        {currentFieldType !== '' ?
+          <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
+            <MaterialCommunityIcons
+              style={{ textAlign: 'center', marginTop: 5 }}
+              color={!isWinnerColumn ? 'white' : (theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.dark.main)}
+              name={icon}
+              size={70} />
+          </View>
+          : null}
       </TouchableOpacity>
     );
   }
 }
 
-export default Column;
+const mapStateToProps = createStructuredSelector({
+  theme: selectTheme
+})
+
+export default connect(mapStateToProps)(Column)

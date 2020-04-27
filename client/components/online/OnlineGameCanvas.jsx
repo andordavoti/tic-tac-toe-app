@@ -45,6 +45,8 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
       { gameStarted: true, xIsNext: xIsNext === 0 ? 1 : 0, fieldTypes: newFieldTypes },
       { merge: true }
     );
+
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
   };
 
   const resetLobby = async () => {
@@ -62,11 +64,13 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
     const result = checkGame(fieldTypes);
     if (result.winner && result.winnerColumns.length) {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
     } else if (winner) {
       setWinnerDetails(initialState);
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
     } else if (result.tied) {
       setWinnerDetails({ ...initialState, tied: true });
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
     }
 
     timers.forEach((timer) => {
@@ -107,8 +111,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
             type="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
-            onPress={handleNewGame}
-          >
+            onPress={handleNewGame}>
             New Game
           </Button>
         </View>

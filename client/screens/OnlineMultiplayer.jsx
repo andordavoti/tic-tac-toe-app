@@ -124,7 +124,6 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
 
     const players = snapshot.data().players;
     const connected = getConnectedPlayers(players);
-    // const playerId = connected.length ? 1 : 0;
     const playerId = players[0].connected ? 1 : players[1].connected ? 0 : 0;
 
     if (connected.length >= 2) {
