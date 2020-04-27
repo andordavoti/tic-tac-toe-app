@@ -16,12 +16,17 @@ import { connect } from 'react-redux'
 import { setCurrentTheme } from '../redux/settings/settings.action'
 import { selectSystemTheme, selectTheme } from '../redux/settings/settings.selectors';
 
+//TODO: make the theme state global in the file in some way, so it's accessible to the GameStackScreen and SettingsStackScreen
+// so the headers can change color based on the theme
+let appTheme = 'light'
+
 const Tab = createBottomTabNavigator()
 
 const GameStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
-const GameStackScreen = (theme) => {
+const GameStackScreen = () => {
+  console.log('GameStackScreen', appTheme)
   return <GameStack.Navigator>
     <GameStack.Screen
       name="Select Mode"
@@ -29,7 +34,7 @@ const GameStackScreen = (theme) => {
       options={{
         title: 'Tic Tac Toe',
         headerStyle: {
-          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -46,7 +51,7 @@ const GameStackScreen = (theme) => {
       options={{
         headerBackTitle: 'Back',
         headerStyle: {
-          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -62,7 +67,7 @@ const GameStackScreen = (theme) => {
       options={{
         headerBackTitle: 'Back',
         headerStyle: {
-          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -75,7 +80,8 @@ const GameStackScreen = (theme) => {
   </GameStack.Navigator>
 }
 
-const SettingsStackScreen = (theme) => {
+const SettingsStackScreen = () => {
+  console.log('SettingsStackScreen', appTheme)
   return <SettingsStack.Navigator>
     <SettingsStack.Screen
       name="Settings"
@@ -83,7 +89,7 @@ const SettingsStackScreen = (theme) => {
       options={{
         title: 'Settings',
         headerStyle: {
-          backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -101,6 +107,7 @@ const AppNavigator = ({ theme, systemTheme, setCurrentTheme }) => {
 
   if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemTheme) {
     setCurrentTheme(deviceTheme)
+    appTheme = deviceTheme
     //console.log('setting theme to: ', deviceTheme)
   }
 
@@ -125,8 +132,8 @@ const AppNavigator = ({ theme, systemTheme, setCurrentTheme }) => {
               borderTopWidth: 0,
             },
           }} >
-          <Tab.Screen name='Home' component={() => GameStackScreen(theme)} />
-          <Tab.Screen name='Settings' component={() => SettingsStackScreen(theme)} />
+          <Tab.Screen name='Home' component={GameStackScreen} />
+          <Tab.Screen name='Settings' component={SettingsStackScreen} />
         </Tab.Navigator>
       </NavigationContainer>
     </AppearanceProvider>
