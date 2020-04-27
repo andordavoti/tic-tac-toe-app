@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../lib/Settings';
+import { colorsWithTheme } from '../lib/Settings';
 import { ActivityIndicator } from "react-native-paper";
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { selectTheme } from '../redux/settings/settings.selectors';
 
 export const withSpinner = WrappedComponent => ({ loading = true, msg, ...props }) =>
   loading ? <Spinner msg={msg} /> : <WrappedComponent {...props} />;
 
-const Spinner = ({ size = 'large', color = colors.main, msg = undefined }) => (
+const Spinner = ({ theme, size = 'large', color = (theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main), msg = undefined }) => (
   <View>
     <ActivityIndicator style={styles.spinner} size={size} color={color} />
     {msg && <Text style={styles.text}>{msg}</Text>}
@@ -26,4 +29,8 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Spinner;
+const mapStateToProps = createStructuredSelector({
+  theme: selectTheme
+})
+
+export default connect(mapStateToProps)(Spinner);

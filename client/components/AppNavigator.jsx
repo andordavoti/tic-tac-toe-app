@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 
-import { colors, colorsWithTheme } from '../lib/Settings';
+import { colorsWithTheme } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
 import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
