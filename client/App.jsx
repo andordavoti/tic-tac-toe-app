@@ -26,14 +26,12 @@ export default class App extends React.Component {
 
   async _loadAssetsAsync() {
     const imageAssets = cacheImages([
-      require('./assets/images/o.png'),
-      require('./assets/images/x.png'),
+      //Cache images here
+      //require('IMAGE_PATH'),
     ]);
 
     await Promise.all([...imageAssets]);
   }
-
-
 
   render() {
     if (!this.state.isReady) {

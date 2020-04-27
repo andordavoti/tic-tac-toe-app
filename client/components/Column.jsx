@@ -35,9 +35,9 @@ const Column = ({ winnerColumns, num, disableFields, fieldType, action, theme })
     })
   }
 
-  let icon;
+  let icon
   const styles = getStyleSheet()
-  const currentFieldType = fieldType[num];
+  const currentFieldType = fieldType[num]
 
   if (currentFieldType === 'o') icon = 'circle-outline'
   else if (currentFieldType === 'x') icon = 'close'
@@ -46,9 +46,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldType, action, theme })
     <TouchableOpacity
       disabled={disableFields || Boolean(currentFieldType)}
       style={styles.column}
-      onPress={() => {
-        if (!currentFieldType) action(num);
-      }}>
+      onPress={() => { if (!currentFieldType) action(num) }}>
       {currentFieldType !== '' ?
         <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
           <MaterialCommunityIcons
@@ -63,7 +61,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldType, action, theme })
 }
 
 const mapStateToProps = createStructuredSelector({
-  theme: selectTheme
+  theme: selectTheme,
 })
 
 export default connect(mapStateToProps)(Column)
