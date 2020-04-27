@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import * as Haptics from 'expo-haptics'
+import Toast from 'react-native-tiny-toast';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu = ({
@@ -22,11 +23,16 @@ const PlayerMenu = ({
 }) => {
   const insertFromClipboard = async () => {
     const text = await Clipboard.getString();
-    console.log('insertFromClipboard -> text', text);
     showToast('Inserted text from Clipboard')
     setTextInput((prevState) => ({ ...prevState, value: text }));
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   };
+
+  const clearInput = () => {
+    setTextInput((prevState) => ({ ...prevState, value: '' }))
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+    Toast.hide()
+  }
 
   return (
     <View>
@@ -55,17 +61,20 @@ const PlayerMenu = ({
         underlineColorAndroid='transparent'
       />
 
-
-      {
-        Platform.OS === 'web' ? null :
-          <TouchableOpacity onPress={insertFromClipboard}>
-            <MaterialCommunityIcons
-              color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
-              name='clipboard-text-outline'
-              style={{ textAlign: 'center' }}
-              size={30} />
-          </TouchableOpacity>
-      }
+      <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+        <TouchableOpacity onPress={insertFromClipboard}>
+          <MaterialCommunityIcons
+            color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+            name='clipboard-text-outline'
+            size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={clearInput}>
+          <MaterialCommunityIcons
+            color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+            name='backspace-outline'
+            size={30} />
+        </TouchableOpacity>
+      </View>
 
       {textInput.err && <Text style={styles.infoText}>{textInput.err}</Text>}
 

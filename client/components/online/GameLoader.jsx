@@ -104,7 +104,6 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
               name='clipboard-text-outline'
               style={{ marginLeft: 10, marginTop: 15 }}
               size={30} />
-
           </View>
         </TouchableOpacity>
       </View>
