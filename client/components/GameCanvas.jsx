@@ -11,7 +11,7 @@ import { createStructuredSelector } from 'reselect';
 
 class GameCanvas extends React.Component {
   state = {
-    fieldType: ['', '', '', '', '', '', '', '', ''],
+    fieldTypes: ['', '', '', '', '', '', '', '', ''],
     turn: 'o',
     disableFields: false,
     winnerColumns: [],
@@ -20,13 +20,13 @@ class GameCanvas extends React.Component {
   };
 
   componentDidUpdate(prevState) {
-    const { fieldType, disableFields, gameStart } = this.state;
+    const { fieldTypes, disableFields, gameStart } = this.state;
     const { size } = this.props;
 
     //check if all fields are pressed
-    if (prevState.fieldType !== fieldType) {
+    if (prevState.fieldTypes !== fieldTypes) {
       let counter = 0;
-      for (let i = 0; i < fieldType.length; i++) if (fieldType[i] !== '') counter++;
+      for (let i = 0; i < fieldTypes.length; i++) if (fieldTypes[i] !== '') counter++;
       if (counter === Math.pow(size, 2) && !disableFields)
         this.setState({ disableFields: true, winner: 'tied' });
       if (counter !== 0 && !gameStart) this.setState({ gameStart: true });
@@ -85,7 +85,7 @@ class GameCanvas extends React.Component {
             onPress={() => {
               if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
               this.setState({
-                fieldType: ['', '', '', '', '', '', '', '', ''],
+                fieldTypes: ['', '', '', '', '', '', '', '', ''],
                 disableFields: false,
                 winnerColumns: [],
                 gameStart: false,
@@ -98,13 +98,13 @@ class GameCanvas extends React.Component {
   };
 
   checkLine = (user, combination) => {
-    const { fieldType } = this.state;
+    const { fieldTypes } = this.state;
     const { hapticsEnabled } = this.props;
 
     if (
-      fieldType[combination[0]] === user &&
-      fieldType[combination[1]] === user &&
-      fieldType[combination[2]] === user
+      fieldTypes[combination[0]] === user &&
+      fieldTypes[combination[1]] === user &&
+      fieldTypes[combination[2]] === user
     ) {
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
       this.setState({
@@ -134,19 +134,19 @@ class GameCanvas extends React.Component {
   pressed = num => {
     const { hapticsEnabled } = this.props;
 
-    let fieldType = this.state.fieldType,
+    let fieldTypes = this.state.fieldTypes,
       turn = this.state.turn;
 
-    if (fieldType[num] === '') {
+    if (fieldTypes[num] === '') {
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
 
-      if (turn === 'o') fieldType[num] = 'o';
-      else fieldType[num] = 'x';
+      if (turn === 'o') fieldTypes[num] = 'o';
+      else fieldTypes[num] = 'x';
 
       this.checkGame(turn);
 
-      if (turn === 'o') this.setState({ fieldType, turn: 'x' });
-      if (turn === 'x') this.setState({ fieldType, turn: 'o' });
+      if (turn === 'o') this.setState({ fieldTypes, turn: 'x' });
+      if (turn === 'x') this.setState({ fieldTypes, turn: 'o' });
     } else if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
   };
 
