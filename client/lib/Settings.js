@@ -8,7 +8,7 @@ export const colors = {
 export const colorsWithTheme = {
   light: {
     main: '#689e77',
-    text: 'black',
+    text: '#2A2D34',
     bg: '#E6EAEB',
     warning: '#d63c09'
 
