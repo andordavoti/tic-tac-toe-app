@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
-import { withSpinner } from '../components/Spinner';
+import withSpinner from '../components/withSpinner'
 import GameLoader from '../components/online/GameLoader';
 // Redux
 import { connect } from 'react-redux';

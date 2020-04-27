@@ -2,7 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../lib/firebaseUtils';
 import { getPlayerName } from '../../lib/gameCanvasUtils'
-import { withSpinner } from '../Spinner';
+import withSpinner from '../withSpinner'
 import {
   setGameStateChange,
   setGameLoaded,

@@ -6,9 +6,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
-export const withSpinner = WrappedComponent => ({ loading = true, msg, ...props }) =>
-  loading ? <Spinner msg={msg} /> : <WrappedComponent {...props} />;
-
 const Spinner = ({ theme, msg, size = 'large' }) => {
 
   const getStyleSheet = () => {
@@ -23,8 +20,6 @@ const Spinner = ({ theme, msg, size = 'large' }) => {
     })
   }
 
-  //TODO: why the fuck is theme returning undefined?
-  console.log('theme in spinner: ', theme)
   const styles = getStyleSheet()
 
   return <View>
@@ -37,7 +32,7 @@ const Spinner = ({ theme, msg, size = 'large' }) => {
 }
 
 const mapStateToProps = createStructuredSelector({
-  theme: selectTheme
+  theme: selectTheme,
 })
 
 export default connect(mapStateToProps)(Spinner)
