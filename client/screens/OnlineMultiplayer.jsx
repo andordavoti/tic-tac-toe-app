@@ -80,7 +80,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
         margin: 10,
       },
       input: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
+        color: 'white',
         textAlign: 'center',
         backgroundColor: 'grey',
         height: 40,

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Text, Platform, TouchableOpacity } from 'react-native'
 import { Switch, Button } from 'react-native-paper';
 import { getBottomSpace } from 'react-native-iphone-x-helper'
@@ -18,22 +18,16 @@ import { setCurrentTheme, useSystemTheme, useHaptics } from '../redux/settings/s
 import { createStructuredSelector } from 'reselect';
 import { selectTheme, selectSystemTheme, selectHaptics } from '../redux/settings/settings.selectors';
 
-class SettingsScreen extends React.Component {
+const SettingsScreen = ({ theme, systemTheme, setCurrentTheme, useSystemTheme, useHaptics, hapticsEnabled }) => {
 
-    state = { selectedTheme: 'system', reviewIsAvailable: false }
+    const [selectedTheme, setSelectedTheme] = useState('system')
 
-    async componentDidMount() {
-        const { systemTheme, theme } = this.props
+    useEffect(() => {
+        if (systemTheme) setSelectedTheme('system')
+        else setSelectedTheme(theme)
+    }, [])
 
-        if (systemTheme) this.setState({ selectedTheme: 'system' })
-        else this.setState({ selectedTheme: theme })
-
-        this.setState({ reviewIsAvailable: await StoreReview.hasAction() })
-    }
-
-    getStyleSheet = () => {
-        const { theme } = this.props
-
+    const getStyleSheet = () => {
         return StyleSheet.create({
             container: {
                 flex: 1,
@@ -91,109 +85,96 @@ class SettingsScreen extends React.Component {
         })
     }
 
-    onValueChange = (type, value) => {
-        const { setCurrentTheme, useSystemTheme, setMaxResults } = this.props
-
+    const onValueChange = (type, value) => {
         if (type === 'theme') {
             if (value === 'system') {
                 useSystemTheme(true)
-                this.setState({ selectedTheme: 'system' })
+                setSelectedTheme('system')
             }
             if (value === 'light' || value === 'dark') {
-                this.setState({ selectedTheme: value })
+                setSelectedTheme(value)
                 setCurrentTheme(value)
                 useSystemTheme(false)
             }
         }
-        if (type === 'maxResults') {
-            setMaxResults(value)
-        }
     }
 
-    openLink = async link => await WebBrowser.openBrowserAsync(link)
+    const openLink = async link => await WebBrowser.openBrowserAsync(link)
 
-    render() {
-        const styles = this.getStyleSheet(theme)
+    const styles = getStyleSheet()
 
-        const { reviewIsAvailable, selectedTheme } = this.state
-        const { theme, useHaptics, hapticsEnabled } = this.props
+    const links = {
+        andor: 'https://andordavoti.com',
+        sanna: 'https://github.com/sannajammeh',
+        project: 'https://github.com/andordavoti/tic-tac-toe-app'
+    }
 
-        const link = {
-            andor: 'https://andordavoti.com',
-            sanna: 'https://github.com/sannajammeh',
-            project: 'https://github.com/andordavoti/tic-tac-toe-app'
-        }
-
-        return <View style={styles.container}>
-            <Dropdown
-                label='Theme:'
-                styles={styles}
-                value={selectedTheme}
-                onValueChange={this.onValueChange}
-                type='theme'
-                placeholder={{ label: 'Select Theme', value: null, color: '#9EA0A4' }}
-                items={themeDropdownItems} />
-            {
-                Platform.OS === 'ios' ?
-                    <View style={styles.row}>
-                        <Text style={styles.text}>Haptics:</Text>
-                        <Switch
-                            color={theme === 'dark' ? colors.dark.main : colors.light.main}
-                            value={hapticsEnabled}
-                            onValueChange={() => useHaptics(!hapticsEnabled)} />
-                    </View>
-                    : null
-            }
-
-            <View styles={{ marginBottom: getBottomSpace() }}>
-                <Text style={styles.header}>About the App:</Text>
-                <Text style={{ ...styles.text, marginBottom: 20 }}>Developed by:</Text>
+    return <View style={styles.container}>
+        <Dropdown
+            label='Theme:'
+            styles={styles}
+            value={selectedTheme}
+            onValueChange={onValueChange}
+            type='theme'
+            placeholder={{ label: 'Select Theme', value: null, color: '#9EA0A4' }}
+            items={themeDropdownItems} />
+        {
+            Platform.OS === 'ios' ?
                 <View style={styles.row}>
-                    <TouchableOpacity onPress={() => this.openLink(link.andor)}>
-                        <Text style={styles.textAuthor}>Andor Davoti</Text>
-                    </TouchableOpacity>
-                    <Text style={{ ...styles.text, marginBottom: 20, margin: 5 }}>&#38; </Text>
-
-                    <TouchableOpacity onPress={() => this.openLink(link.sanna)}>
-                        <Text style={styles.textAuthor}>Sanna Jammeh</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.text}>Haptics:</Text>
+                    <Switch
+                        color={theme === 'dark' ? colors.dark.main : colors.light.main}
+                        value={hapticsEnabled}
+                        onValueChange={() => useHaptics(!hapticsEnabled)} />
                 </View>
+                : null
+        }
 
-
-                <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => this.openLink(link.project)}>
-                    <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
-                    <Text style={styles.text}>Project on GitHub</Text>
-                    <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
+        <View styles={{ marginBottom: getBottomSpace() }}>
+            <Text style={styles.header}>About the App:</Text>
+            <Text style={{ ...styles.text, marginBottom: 20 }}>Developed by:</Text>
+            <View style={styles.row}>
+                <TouchableOpacity onPress={() => openLink(links.andor)}>
+                    <Text style={styles.textAuthor}>Andor Davoti</Text>
                 </TouchableOpacity>
-                <View style={{ flexDirection: 'row' }}>
-                    {
-                        reviewIsAvailable ?
-                            <Button
-                                type="contained"
-                                style={styles.button}
-                                labelStyle={{ color: 'white' }}
-                                onPress={() => {
-                                    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
-                                    StoreReview.requestReview()
-                                }}>
-                                Rate App
-                        </Button> : null
-                    }
-                    <Button
-                        type="contained"
-                        style={styles.button}
-                        labelStyle={{ color: 'white' }}
-                        onPress={() => {
-                            if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
-                            Linking.openURL('mailto:andor.davoti@gmail.com')
-                        }}>
-                        Contact us
-                    </Button>
-                </View>
-                <Text style={styles.textVersion}>Version: {Constants.manifest.version}</Text>
+                <Text style={{ ...styles.text, marginBottom: 20, margin: 5 }}>&#38; </Text>
+
+                <TouchableOpacity onPress={() => openLink(links.sanna)}>
+                    <Text style={styles.textAuthor}>Sanna Jammeh</Text>
+                </TouchableOpacity>
             </View>
-        </View >
-    }
+
+
+            <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => openLink(links.project)}>
+                <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
+                <Text style={styles.text}>Project on GitHub</Text>
+                <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
+            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }}>
+                <Button
+                    type="contained"
+                    style={styles.button}
+                    labelStyle={{ color: 'white' }}
+                    onPress={() => {
+                        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
+                        StoreReview.requestReview()
+                    }}>
+                    Rate App
+                        </Button>
+                <Button
+                    type="contained"
+                    style={styles.button}
+                    labelStyle={{ color: 'white' }}
+                    onPress={() => {
+                        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
+                        Linking.openURL('mailto:andor.davoti@gmail.com')
+                    }}>
+                    Contact us
+                    </Button>
+            </View>
+            <Text style={styles.textVersion}>Version: {Constants.manifest.version}</Text>
+        </View>
+    </View >
 }
 
 const mapStateToProps = createStructuredSelector({
