@@ -68,9 +68,9 @@ const PlayerMenu = ({
             name='clipboard-text-outline'
             size={30} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={clearInput}>
+        <TouchableOpacity onPress={clearInput} disabled={!Boolean(textInput.value.length)}>
           <MaterialCommunityIcons
-            color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+            color={!Boolean(textInput.value.length) ? 'grey' : theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
             name='backspace-outline'
             size={30} />
         </TouchableOpacity>
