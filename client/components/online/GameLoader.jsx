@@ -18,7 +18,7 @@ import { selectGame } from '../../redux/game/game.selectors';
 import OnlineGameCanvas from './OnlineGameCanvas';
 import { showToast } from '../../lib/toast';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
-import { colorsWithTheme } from '../../lib/Settings';
+import { colors } from '../../lib/Settings';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -99,7 +99,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>
             <MaterialCommunityIcons
-              color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+              color={theme === 'dark' ? colors.dark.text : colors.light.text}
               name='clipboard-text-outline'
               style={{ marginLeft: 10, marginTop: 15 }}
               size={30} />

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import { colorsWithTheme } from '../lib/Settings'
+import { colors } from '../lib/Settings'
 import GameCanvas from '../components/GameCanvas'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
@@ -15,7 +15,7 @@ const Multiplayer = ({ theme }) => {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.bg : colorsWithTheme.light.bg
+        backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
       }
     })
   }

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Platform } from "react-native";
 import { Button } from "react-native-paper";
 import * as Haptics from 'expo-haptics'
 
-import { colorsWithTheme } from "../lib/Settings";
+import { colors } from "../lib/Settings";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectHaptics, selectTheme } from "../redux/settings/settings.selectors";
@@ -16,7 +16,7 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.bg : colorsWithTheme.light.bg
+        backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
       },
       buttonContainer: {
         width: 250,
@@ -25,10 +25,10 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
       },
       button: {
         margin: 10,
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main
+        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main
       },
       text: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         margin: 20,
         fontSize: 20,
         textAlign: "center",

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
-import { colorsWithTheme } from '../../lib/Settings';
+import { colors } from '../../lib/Settings';
 import Column from '../Column';
 import { firestore } from '../../lib/firebaseUtils';
 import { createStructuredSelector } from 'reselect';
@@ -103,21 +103,21 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
         justifyContent: 'center',
       },
       gameOverText: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         margin: 20,
         fontSize: 30,
         textAlign: 'center',
         fontWeight: '500',
       },
       winnerText: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         margin: 20,
         fontSize: 20,
         textAlign: 'center',
         fontWeight: 'bold',
       },
       text: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         marginTop: 20,
         fontSize: 20,
         textAlign: 'center',
@@ -126,7 +126,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
       },
       button: {
         marginBottom: 40,
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
     })
   }

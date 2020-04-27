@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colorsWithTheme } from '../lib/Settings';
+import { colors } from '../lib/Settings';
 import { ActivityIndicator } from "react-native-paper";
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -10,10 +10,11 @@ export const withSpinner = WrappedComponent => ({ loading = true, msg, ...props 
   loading ? <Spinner msg={msg} /> : <WrappedComponent {...props} />;
 
 const Spinner = ({ theme, msg, size = 'large' }) => {
+
   const getStyleSheet = () => {
     return StyleSheet.create({
       text: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         fontWeight: 'bold',
         fontSize: 15,
         margin: 20,
@@ -22,17 +23,15 @@ const Spinner = ({ theme, msg, size = 'large' }) => {
     })
   }
 
+  //TODO: why the fuck is theme returning undefined?
+  console.log('theme in spinner: ', theme)
   const styles = getStyleSheet()
-
-  //TODO: why is msg not showing up?
-  console.log('msg: ', msg)
 
   return <View>
     <ActivityIndicator
-      color={theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main}
+      color={theme === 'dark' ? colors.dark.main : colors.light.main}
       style={{ marginTop: 20 }}
-      size={size}
-    />
+      size={size} />
     <Text style={styles.text}>{msg}</Text>
   </View>
 }
@@ -41,4 +40,4 @@ const mapStateToProps = createStructuredSelector({
   theme: selectTheme
 })
 
-export default connect(mapStateToProps)(Spinner);
+export default connect(mapStateToProps)(Spinner)

@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import * as Haptics from 'expo-haptics'
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colorsWithTheme, urls } from '../lib/Settings';
+import { colors, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import { withSpinner } from '../components/Spinner';
@@ -39,10 +39,10 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.bg : colorsWithTheme.light.bg
+        backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
       },
       text: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         marginTop: 20,
         fontSize: 20,
         textAlign: 'center',
@@ -50,14 +50,14 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
         lineHeight: 26
       },
       lobbyId: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         marginTop: 22,
         fontSize: 20,
         textAlign: 'center',
         fontWeight: 'bold',
       },
       infoText: {
-        color: theme === 'dark' ? colorsWithTheme.dark.warning : colorsWithTheme.light.warning,
+        color: theme === 'dark' ? colors.dark.warning : colors.light.warning,
         margin: 5,
         fontSize: 15,
         textAlign: 'center',
@@ -66,12 +66,12 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
       button: {
         width: 200,
         margin: 10,
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
       quitButton: {
         margin: 20,
         marginBottom: 40,
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
       image: {
         flex: 1,
@@ -80,14 +80,14 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
         margin: 10,
       },
       input: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         textAlign: 'center',
         backgroundColor: 'grey',
         height: 40,
         width: 200,
         margin: 10,
         borderRadius: 5,
-        borderColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        borderColor: theme === 'dark' ? colors.dark.main : colors.light.main,
         fontSize: 20,
       },
     });

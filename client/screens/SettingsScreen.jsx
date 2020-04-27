@@ -10,7 +10,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { themeDropdownItems } from '../lib/dropdownItems'
-import { colorsWithTheme } from '../lib/Settings'
+import { colors } from '../lib/Settings'
 import Dropdown from '../components/Dropdown'
 
 import { connect } from 'react-redux'
@@ -39,7 +39,7 @@ class SettingsScreen extends React.Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: theme === 'dark' ? colorsWithTheme.dark.bg : colorsWithTheme.light.bg
+                backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
             },
             row: {
                 flexDirection: 'row',
@@ -49,14 +49,14 @@ class SettingsScreen extends React.Component {
             text: {
                 textAlign: 'center',
                 fontSize: 20,
-                color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+                color: theme === 'dark' ? colors.dark.text : colors.light.text,
                 margin: 10,
                 fontWeight: 'bold'
             },
             textAuthor: {
                 textAlign: 'center',
                 fontSize: 20,
-                color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+                color: theme === 'dark' ? colors.dark.text : colors.light.text,
                 margin: 5,
                 marginBottom: 20,
                 fontStyle: 'italic',
@@ -64,14 +64,14 @@ class SettingsScreen extends React.Component {
             textVersion: {
                 textAlign: 'center',
                 fontSize: 20,
-                color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+                color: theme === 'dark' ? colors.dark.text : colors.light.text,
                 margin: 20,
                 fontWeight: 'bold'
             },
             header: {
                 textAlign: 'center',
                 fontSize: 25,
-                color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+                color: theme === 'dark' ? colors.dark.text : colors.light.text,
                 fontWeight: '600',
                 margin: 20,
                 marginTop: 50,
@@ -79,7 +79,7 @@ class SettingsScreen extends React.Component {
             },
             button: {
                 margin: 10,
-                backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+                backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
             },
             rowData: {
                 minHeight: 30,
@@ -138,7 +138,7 @@ class SettingsScreen extends React.Component {
                     <View style={styles.row}>
                         <Text style={styles.text}>Haptics:</Text>
                         <Switch
-                            color={theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main}
+                            color={theme === 'dark' ? colors.dark.main : colors.light.main}
                             value={hapticsEnabled}
                             onValueChange={() => useHaptics(!hapticsEnabled)} />
                     </View>
@@ -161,9 +161,9 @@ class SettingsScreen extends React.Component {
 
 
                 <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => this.openLink(link.project)}>
-                    <MaterialCommunityIcons color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text} name='github-circle' size={25} />
+                    <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
                     <Text style={styles.text}>Project on GitHub</Text>
-                    <MaterialCommunityIcons color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text} name='github-circle' size={25} />
+                    <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
                 </TouchableOpacity>
                 <View style={{ flexDirection: 'row' }}>
                     {

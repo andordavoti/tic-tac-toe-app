@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
-import { colorsWithTheme } from '../lib/Settings';
+import { colors } from '../lib/Settings';
 import Column from './Column';
 import { connect } from 'react-redux';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
@@ -43,14 +43,14 @@ class GameCanvas extends React.Component {
         justifyContent: 'center',
       },
       gameOverText: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         margin: 20,
         fontSize: 30,
         textAlign: 'center',
         fontWeight: '500',
       },
       winnerText: {
-        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
         margin: 20,
         fontSize: 20,
         textAlign: 'center',
@@ -59,7 +59,7 @@ class GameCanvas extends React.Component {
       button: {
         margin: 20,
         marginBottom: 40,
-        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
     })
   }

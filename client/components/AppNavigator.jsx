@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance'
 
-import { colorsWithTheme } from '../lib/Settings';
+import { colors } from '../lib/Settings';
 import SelectMode from '../screens/SelectMode';
 import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
@@ -34,7 +34,7 @@ const GameStackScreen = () => {
       options={{
         title: 'Tic Tac Toe',
         headerStyle: {
-          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colors.dark.main : colors.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -51,7 +51,7 @@ const GameStackScreen = () => {
       options={{
         headerBackTitle: 'Back',
         headerStyle: {
-          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colors.dark.main : colors.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -67,7 +67,7 @@ const GameStackScreen = () => {
       options={{
         headerBackTitle: 'Back',
         headerStyle: {
-          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colors.dark.main : colors.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -89,7 +89,7 @@ const SettingsStackScreen = () => {
       options={{
         title: 'Settings',
         headerStyle: {
-          backgroundColor: appTheme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+          backgroundColor: appTheme === 'dark' ? colors.dark.main : colors.light.main,
           shadowColor: 'transparent',
           borderBottomWidth: 0,
         },
@@ -127,7 +127,7 @@ const AppNavigator = ({ theme, systemTheme, setCurrentTheme }) => {
             showLabel: false,
             showIcon: true,
             style: {
-              backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+              backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
               shadowColor: 'transparent',
               borderTopWidth: 0,
             },

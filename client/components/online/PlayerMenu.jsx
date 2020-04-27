@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Clipboard, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Clipboard, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper';
-import { colors, colorsWithTheme } from '../../lib/Settings';
+import { colors } from '../../lib/Settings';
 import { showToast } from '../../lib/toast';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -53,8 +53,8 @@ const PlayerMenu = ({
         value={textInput.value} // state {...state} {random: '', textInputValue: ''}
         onChangeText={handleInputChange}
         keyboardAppearance="dark"
-        selectionColor={colors.main}
-        underlineColorAndroid={colors.main}
+        selectionColor={theme === 'dark' ? colors.dark.main : colors.light.main}
+        underlineColorAndroid={theme === 'dark' ? colors.dark.main : colors.light.main}
         placeholder="Enter lobby id"
         placeholderTextColor="lightgrey"
         autoCapitalize="none"
@@ -64,13 +64,13 @@ const PlayerMenu = ({
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
         <TouchableOpacity onPress={insertFromClipboard}>
           <MaterialCommunityIcons
-            color={theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+            color={theme === 'dark' ? colors.dark.text : colors.light.text}
             name='clipboard-text-outline'
             size={30} />
         </TouchableOpacity>
         <TouchableOpacity onPress={clearInput} disabled={!Boolean(textInput.value.length)}>
           <MaterialCommunityIcons
-            color={!Boolean(textInput.value.length) ? 'grey' : theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text}
+            color={!Boolean(textInput.value.length) ? 'grey' : theme === 'dark' ? colors.dark.text : colors.light.text}
             name='backspace-outline'
             size={30} />
         </TouchableOpacity>
