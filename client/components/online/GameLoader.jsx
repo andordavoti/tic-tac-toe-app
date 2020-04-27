@@ -62,8 +62,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
     let initial = true;
     const channel = docRef.onSnapshot(
       (snapshot) => {
-        console.log('called');
-        // This code will change.
+        //TODO: This code will change.
         if (initial) {
           setGameLoaded({ lobbyId, ...snapshot.data() });
           initial = false;

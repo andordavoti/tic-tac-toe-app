@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
-import { colors } from '../../lib/Settings';
+import { colorsWithTheme } from '../../lib/Settings';
 import Column from '../Column';
 import { firestore } from '../../lib/firebaseUtils';
 import { createStructuredSelector } from 'reselect';
@@ -13,7 +13,7 @@ import {
   selectPlayerId,
   selectGame,
 } from '../../redux/game/game.selectors';
-import { selectHaptics } from '../../redux/settings/settings.selectors';
+import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import { connect, useDispatch } from 'react-redux';
 import { getFieldType, checkGame, getPlayerName } from '../../lib/gameCanvasUtils';
 import { quitGame } from '../../redux/game/game.actions';
@@ -24,7 +24,7 @@ const initialState = {
   winnerColumns: [],
 };
 
-const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
+const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) => {
   const dispatch = useDispatch();
   const [timers, setTimers] = useState([]);
   const [winnerDetails, setWinnerDetails] = useState(initialState);
@@ -94,7 +94,45 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled }) => {
       });
     };
   }, [fieldTypes]);
-  console.log('Tied -> ', tied);
+
+  const getStyleSheet = () => {
+    return StyleSheet.create({
+      container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      gameOverText: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        margin: 20,
+        fontSize: 30,
+        textAlign: 'center',
+        fontWeight: '500',
+      },
+      winnerText: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        margin: 20,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+      },
+      text: {
+        color: theme === 'dark' ? colorsWithTheme.dark.text : colorsWithTheme.light.text,
+        marginTop: 20,
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: '500',
+        marginBottom: 20,
+      },
+      button: {
+        marginBottom: 40,
+        backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
+      },
+    })
+  }
+
+  const styles = getStyleSheet()
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}> Turn: Player {getPlayerName(xIsNext)}</Text>
@@ -157,45 +195,12 @@ const RenderGrid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvas
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  gameOverText: {
-    color: 'white',
-    margin: 20,
-    fontSize: 30,
-    textAlign: 'center',
-    fontWeight: '500',
-  },
-  winnerText: {
-    color: 'white',
-    margin: 20,
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  text: {
-    color: 'white',
-    marginTop: 20,
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: '500',
-    marginBottom: 20,
-  },
-  button: {
-    marginBottom: 40,
-    backgroundColor: colors.main,
-  },
-});
-
 const mapStateToProps = createStructuredSelector({
   lobbyId: selectLobbyId,
   playerId: selectPlayerId,
   fieldTypes: selectFieldTypes,
   gameState: selectGame,
+  theme: selectTheme,
   hapticsEnabled: selectHaptics,
 });
 

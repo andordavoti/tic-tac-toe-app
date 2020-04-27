@@ -60,7 +60,6 @@ class GameCanvas extends React.Component {
         margin: 20,
         marginBottom: 40,
         backgroundColor: theme === 'dark' ? colorsWithTheme.dark.main : colorsWithTheme.light.main,
-        color: 'white'
       },
     })
   }
