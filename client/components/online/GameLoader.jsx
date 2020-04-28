@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { firestore, modifyPlayer, getConnectedPlayers } from '../../lib/firebaseUtils';
-import { getPlayerName } from '../../lib/gameCanvasUtils'
-import withSpinner from '../withSpinner'
+import { getPlayerName } from '../../lib/gameCanvasUtils';
+import withSpinner from '../withSpinner';
 import {
   setGameStateChange,
   setGameLoaded,
@@ -22,7 +22,15 @@ import { colors } from '../../lib/Settings';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
-const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame, theme, hapticsEnabled }) => {
+const GameLoader = ({
+  styles,
+  game,
+  setGameLoaded,
+  setGameStateChange,
+  quitGame,
+  theme,
+  hapticsEnabled,
+}) => {
   const { playerId, lobbyId } = game;
 
   const disconnectPlayer = async () => {
@@ -66,11 +74,13 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
         if (initial) {
           setGameLoaded({ lobbyId, ...snapshot.data() });
           initial = false;
-        } else {
-          setGameStateChange({ lobbyId, ...snapshot.data() });
+          return;
         }
+        setGameStateChange({ lobbyId, ...snapshot.data() });
       },
-      (err) => console.error(err)
+      (err) => {
+        showToast('Could not connect to game server');
+      }
     );
 
     return () => {
@@ -86,10 +96,10 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
   }, [game.players]);
 
   const copyLobbyId = () => {
-    showToast('Copied Lobby ID to Clipboard')
-    Clipboard.setString(lobbyId)
+    showToast('Copied Lobby ID to Clipboard');
+    Clipboard.setString(lobbyId);
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
-  }
+  };
 
   return (
     <View>
@@ -100,9 +110,10 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
             <Text style={styles.lobbyId}> {lobbyId}</Text>
             <MaterialCommunityIcons
               color={theme === 'dark' ? colors.dark.text : colors.light.text}
-              name='clipboard-text-outline'
+              name="clipboard-text-outline"
               style={{ marginLeft: 10, marginTop: 15 }}
-              size={30} />
+              size={30}
+            />
           </View>
         </TouchableOpacity>
       </View>
@@ -110,7 +121,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
       <Text style={styles.text}>You are player: {getPlayerName(playerId)}</Text>
 
       <GameCanvasWithSpinner
-        msg='Waiting for other player...'
+        msg="Waiting for other player..."
         loading={connectedPlayers.length < 2}
         size={3}
       />
@@ -122,7 +133,10 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
         onPress={() => {
           if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
           disconnectPlayer();
-        }}>Quit Game</Button>
+        }}
+      >
+        Quit Game
+      </Button>
     </View>
   );
 };
@@ -130,7 +144,7 @@ const GameLoader = ({ styles, game, setGameLoaded, setGameStateChange, quitGame,
 const mapStateToProps = createStructuredSelector({
   game: selectGame,
   theme: selectTheme,
-  hapticsEnabled: selectHaptics
+  hapticsEnabled: selectHaptics,
 });
 
 const actions = {
@@ -138,6 +152,6 @@ const actions = {
   setGameLoaded,
   setLobbyId,
   quitGame,
-}
+};
 
 export default connect(mapStateToProps, actions)(GameLoader);
