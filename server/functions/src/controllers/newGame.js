@@ -5,7 +5,7 @@ const NewGame = (firestore) => async (req, res) => {
   const newLobby = await firestore.collection('lobbies').doc(shortid.generate());
 
   const writeResult = await newLobby.set({
-    gameSize: gameSize,
+    gameSize,
     fieldTypes: Array(9).fill(null),
     xIsNext: 0,
     players: [
