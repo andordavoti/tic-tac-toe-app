@@ -24,19 +24,6 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   const [gameState, setGameState] = useState(initialState)
 
-  useEffect(() => {
-    console.log(gameState)
-
-    const fieldTypesLength = gameState.fieldTypes.join(',').replace(/,/g, '').length
-
-    if (fieldTypesLength > 0 && fieldTypesLength < 9) {
-      setGameState({
-        ...gameState,
-        gameStart: true
-      })
-    }
-  }, [gameState.fieldTypes])
-
   const getStyleSheet = () => {
     return StyleSheet.create({
       container: {
@@ -99,6 +86,13 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
         tied: result.tied,
         winnerColumns: result.winnerColumns,
         disableFields: true
+      })
+    }
+
+    if (!gameState.gameStart) {
+      setGameState({
+        ...gameState,
+        gameStart: true
       })
     }
   }
