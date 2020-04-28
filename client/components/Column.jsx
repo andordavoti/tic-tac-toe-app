@@ -46,7 +46,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }
     <TouchableOpacity
       disabled={disableFields || Boolean(currentFieldTypes)}
       style={styles.column}
-      onPress={() => { if (!currentFieldTypes) action(num) }}>
+      onPress={() => { if (!currentFieldTypes) action(num) /* TODO: Add an else with error haptics here */ }}>
       {currentFieldTypes !== '' ?
         <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
           <MaterialCommunityIcons
