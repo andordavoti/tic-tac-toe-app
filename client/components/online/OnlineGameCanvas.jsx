@@ -4,7 +4,6 @@ import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
 import { colors } from '../../lib/Settings';
-import Column from '../Column';
 import { firestore } from '../../lib/firebaseUtils';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -18,6 +17,7 @@ import { connect, useDispatch } from 'react-redux';
 import { getFieldType, checkGame, getPlayerName } from '../../lib/gameCanvasUtils';
 import { quitGame } from '../../redux/game/game.actions';
 import { showToast } from '../../lib/toast';
+import Grid from '../Grid';
 const initialState = {
   winner: null,
   tied: false,
@@ -154,43 +154,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
           </Button>
         </View>
       ) : null}
-      <RenderGrid
-        {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winnerColumns, canvasFrozen }}
-      />
-    </View>
-  );
-};
-
-const RenderGrid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen }) => {
-  const sizeArray = [...Array(size).keys()];
-
-  let num = 0;
-  let initial = true;
-  const getNum = () => {
-    if (initial) {
-      initial = false;
-      return num;
-    }
-    num++;
-    return num;
-  };
-
-  return (
-    <View>
-      {sizeArray.map((x) => (
-        <View style={{ flexDirection: 'row' }} key={x}>
-          {sizeArray.map((y) => (
-            <Column
-              key={y}
-              action={handlePress}
-              num={getNum()}
-              fieldType={fieldTypes}
-              winnerColumns={winnerColumns}
-              disableFields={canvasFrozen || Boolean(winnerColumns.length) || tied}
-            />
-          ))}
-        </View>
-      ))}
+      <Grid {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winnerColumns, canvasFrozen }} />
     </View>
   );
 };

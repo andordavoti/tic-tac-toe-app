@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
 import { checkGame } from '../lib/gameCanvasUtils';
 import { colors } from '../lib/Settings';
-import Column from './Column';
 import { connect } from 'react-redux';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 import { createStructuredSelector } from 'reselect';
+import Grid from './Grid';
 
 const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   const initialState = {
     fieldTypes: [null, null, null, null, null, null, null, null, null],
     turn: 'o',
-    disableFields: false,
+    canvasFrozen: false,
     winnerColumns: [],
     gameStart: false,
     winner: null,
@@ -57,24 +57,14 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     let fieldTypesCopy = gameState.fieldTypes
 
     if (fieldTypesCopy[num] === null) {
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
+      fieldTypesCopy[num] = gameState.turn
 
-      if (gameState.turn === 'o') {
-        fieldTypesCopy[num] = 'o'
-        setGameState({
-          ...gameState,
-          fieldTypes: fieldTypesCopy,
-          turn: 'x'
-        })
-      }
-      else if (gameState.turn === 'x') {
-        fieldTypesCopy[num] = 'x'
-        setGameState({
-          ...gameState,
-          fieldTypes: fieldTypesCopy,
-          turn: 'o'
-        })
-      }
+      setGameState({
+        ...gameState,
+        fieldTypes: fieldTypesCopy,
+        turn: gameState.turn === 'o' ? 'x' : 'o'
+      })
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
     }
 
     const result = checkGame(gameState.fieldTypes)
@@ -85,7 +75,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
         winner: result.winner,
         tied: result.tied,
         winnerColumns: result.winnerColumns,
-        disableFields: true
+        canvasFrozen: true
       })
     }
 
@@ -97,40 +87,6 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     }
   }
 
-  const getNum = (y, x) => {
-    //TODO: adopt same getNum as in onlineMultiplayer component
-    if (x === 1) {
-      return x + y - 2;
-    }
-    if (x === 2) {
-      return x + y;
-    }
-    if (x === 3) {
-      return x + y + 2;
-    }
-  }
-
-  const renderGrid = () => {
-    const sizeArray = [...Array(size + 1).keys()].slice(1);
-
-    return <View>
-      {sizeArray.map(x => (
-        <View style={{ flexDirection: 'row' }} key={x}>
-          {sizeArray.map(y => (
-            <Column
-              key={y}
-              action={pressed}
-              num={getNum(x, y)}
-              fieldTypes={gameState.fieldTypes}
-              winnerColumns={gameState.winnerColumns}
-              disableFields={gameState.disableFields}
-            />
-          ))}
-        </View>
-      ))}
-    </View>
-  }
-
   const renderInfo = () => {
     const styles = getStyleSheet()
     let winnerOutput = null
@@ -138,7 +94,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     if (gameState.tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
     else winnerOutput = <Text style={styles.winnerText}>The winner is {gameState.winner && gameState.winner.toUpperCase()}</Text>
 
-    if (gameState.disableFields && (gameState.winner || gameState.tied)) {
+    if (gameState.canvasFrozen && (gameState.winner || gameState.tied)) {
       return <View>
         <Text style={styles.gameOverText}>Game Over</Text>
         {winnerOutput}
@@ -162,7 +118,13 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   return <View style={styles.container}>
     <View>{renderInfo()}</View>
-    {renderGrid()}
+    <Grid
+      fieldTypes={gameState.fieldTypes}
+      handlePress={pressed}
+      tied={gameState.tied}
+      winnerColumns={gameState.winnerColumns}
+      canvasFrozen={gameState.canvasFrozen}
+      size={size} />
   </View>
 }
 
