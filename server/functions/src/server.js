@@ -16,7 +16,7 @@ const firestore = admin.firestore();
 const app = express();
 
 app.use(cors({ origin: '*' }));
-
+app.use(express.json());
 /**
  * @route /new
  * @description creates a new game in the database and returns the game id as response.

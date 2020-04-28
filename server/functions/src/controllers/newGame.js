@@ -1,9 +1,11 @@
 const shortid = require('shortid');
 
 const NewGame = (firestore) => async (req, res) => {
+  const gameSize = req.body.gameSize || 3;
   const newLobby = await firestore.collection('lobbies').doc(shortid.generate());
 
   const writeResult = await newLobby.set({
+    gameSize: gameSize,
     fieldTypes: Array(9).fill(null),
     xIsNext: 0,
     players: [
