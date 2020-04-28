@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
@@ -11,7 +11,6 @@ import { createStructuredSelector } from 'reselect';
 import Grid from './Grid';
 
 const GameCanvas = ({ size, theme, hapticsEnabled }) => {
-
   const initialState = {
     fieldTypes: [null, null, null, null, null, null, null, null, null],
     turn: 'o',
@@ -19,10 +18,10 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     winnerColumns: [],
     gameStart: false,
     winner: null,
-    tied: false
-  }
+    tied: false,
+  };
 
-  const [gameState, setGameState] = useState(initialState)
+  const [gameState, setGameState] = useState(initialState);
 
   const getStyleSheet = () => {
     return StyleSheet.create({
@@ -43,94 +42,106 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
         margin: 20,
         fontSize: 20,
         textAlign: 'center',
-        fontWeight: '400'
+        fontWeight: '400',
       },
       button: {
         margin: 20,
         marginBottom: 40,
         backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
-    })
-  }
+    });
+  };
 
-  const pressed = num => {
-    let fieldTypesCopy = gameState.fieldTypes
-
-    if (fieldTypesCopy[num] === null) {
-      fieldTypesCopy[num] = gameState.turn
-
+  const pressed = (num) => {
+    if (!gameState.gameStart) {
       setGameState({
         ...gameState,
-        fieldTypes: fieldTypesCopy,
-        turn: gameState.turn === 'o' ? 'x' : 'o'
-      })
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync()
+        gameStart: true,
+      });
     }
 
-    const result = checkGame(gameState.fieldTypes)
+    setGameState((prevState) => {
+      const fieldTypesCopy = [...prevState.fieldTypes];
+      fieldTypesCopy[num] = prevState.turn;
 
-    if (result.winner || result.tied) {
+      return {
+        ...prevState,
+        fieldTypes: fieldTypesCopy,
+        turn: prevState.turn === 'o' ? 'x' : 'o',
+      };
+    });
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+  };
+
+  useEffect(() => {
+    const result = checkGame(gameState.fieldTypes);
+
+    if ((result.winner || result.tied) && !gameState.winner && !gameState.tied) {
       setGameState({
         ...gameState,
         winner: result.winner,
         tied: result.tied,
         winnerColumns: result.winnerColumns,
-        canvasFrozen: true
-      })
+        canvasFrozen: true,
+      });
     }
-
-    if (!gameState.gameStart) {
-      setGameState({
-        ...gameState,
-        gameStart: true
-      })
-    }
-  }
+  }, [gameState]);
 
   const renderInfo = () => {
-    const styles = getStyleSheet()
-    let winnerOutput = null
+    const styles = getStyleSheet();
+    let winnerOutput = null;
 
-    if (gameState.tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>
-    else winnerOutput = <Text style={styles.winnerText}>The winner is {gameState.winner && gameState.winner.toUpperCase()}</Text>
+    if (gameState.tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
+    else
+      winnerOutput = (
+        <Text style={styles.winnerText}>
+          The winner is {gameState.winner && gameState.winner.toUpperCase()}
+        </Text>
+      );
 
     if (gameState.canvasFrozen && (gameState.winner || gameState.tied)) {
-      return <View>
-        <Text style={styles.gameOverText}>Game Over</Text>
-        {winnerOutput}
-        <Button
-          type="contained"
-          style={styles.button}
-          labelStyle={{ color: 'white' }}
-          onPress={() => {
-            if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-            setGameState(initialState)
-          }}>New Game</Button>
-      </View>
-    }
-    else if (!gameState.gameStart) {
-      return <Text style={styles.winnerText}>Press a column to start the game</Text>
-    }
-    else return null
-  }
+      return (
+        <View>
+          <Text style={styles.gameOverText}>Game Over</Text>
+          {winnerOutput}
+          <Button
+            type="contained"
+            style={styles.button}
+            labelStyle={{ color: 'white' }}
+            onPress={() => {
+              if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+              setGameState(initialState);
+            }}
+          >
+            New Game
+          </Button>
+        </View>
+      );
+    } else if (!gameState.gameStart) {
+      return <Text style={styles.winnerText}>Press a column to start the game</Text>;
+    } else return null;
+  };
 
-  const styles = getStyleSheet()
+  const styles = getStyleSheet();
 
-  return <View style={styles.container}>
-    <View>{renderInfo()}</View>
-    <Grid
-      fieldTypes={gameState.fieldTypes}
-      handlePress={pressed}
-      tied={gameState.tied}
-      winnerColumns={gameState.winnerColumns}
-      canvasFrozen={gameState.canvasFrozen}
-      size={size} />
-  </View>
-}
+  return (
+    <View style={styles.container}>
+      <View>{renderInfo()}</View>
+      <Grid
+        fieldTypes={gameState.fieldTypes}
+        handlePress={pressed}
+        tied={gameState.tied}
+        winnerColumns={gameState.winnerColumns}
+        canvasFrozen={gameState.canvasFrozen}
+        size={size}
+      />
+    </View>
+  );
+};
 
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
-  hapticsEnabled: selectHaptics
-})
+  hapticsEnabled: selectHaptics,
+});
 
-export default connect(mapStateToProps)(GameCanvas)
+export default connect(mapStateToProps)(GameCanvas);
