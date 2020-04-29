@@ -5,9 +5,9 @@ export const setCurrentTheme = theme => ({
     payload: theme
 })
 
-export const useSystemTheme = systemTheme => ({
+export const useSystemTheme = systemThemeEnabled => ({
     type: USE_SYSTEM_THEME,
-    payload: systemTheme
+    payload: systemThemeEnabled
 })
 
 export const useHaptics = hapticsEnabled => ({

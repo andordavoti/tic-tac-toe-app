@@ -18,12 +18,12 @@ import { setCurrentTheme, useSystemTheme, useHaptics } from '../redux/settings/s
 import { createStructuredSelector } from 'reselect';
 import { selectTheme, selectSystemTheme, selectHaptics } from '../redux/settings/settings.selectors';
 
-const SettingsScreen = ({ theme, systemTheme, setCurrentTheme, useSystemTheme, useHaptics, hapticsEnabled }) => {
+const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemTheme, useHaptics, hapticsEnabled }) => {
 
     const [selectedTheme, setSelectedTheme] = useState('system')
 
     useEffect(() => {
-        if (systemTheme) setSelectedTheme('system')
+        if (systemThemeEnabled) setSelectedTheme('system')
         else setSelectedTheme(theme)
     }, [])
 
@@ -179,7 +179,7 @@ const SettingsScreen = ({ theme, systemTheme, setCurrentTheme, useSystemTheme, u
 
 const mapStateToProps = createStructuredSelector({
     theme: selectTheme,
-    systemTheme: selectSystemTheme,
+    systemThemeEnabled: selectSystemTheme,
     hapticsEnabled: selectHaptics
 })
 

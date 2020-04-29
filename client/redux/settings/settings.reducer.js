@@ -2,7 +2,7 @@ import { SET_THEME, USE_SYSTEM_THEME, USE_HAPTICS } from './settings.types'
 
 const INITIAL_STATE = {
     theme: 'light',
-    systemTheme: true,
+    systemThemeEnabled: true,
     hapticsEnabled: true,
 }
 
@@ -17,7 +17,7 @@ const settingsReducer = (state = INITIAL_STATE, action) => {
         case USE_SYSTEM_THEME:
             return {
                 ...state,
-                systemTheme: action.payload
+                systemThemeEnabled: action.payload
             }
         case USE_HAPTICS:
             return {
