@@ -123,7 +123,6 @@ const GameLoader = ({
       <GameCanvasWithSpinner
         msg="Waiting for other player..."
         loading={connectedPlayers.length < 2}
-        size={3}
       />
 
       <Button

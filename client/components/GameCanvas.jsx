@@ -9,8 +9,9 @@ import { connect } from 'react-redux';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 import { createStructuredSelector } from 'reselect';
 import Grid from './Grid';
+import { selectGridSize } from '../redux/game/game.selectors';
 
-const GameCanvas = ({ size, theme, hapticsEnabled }) => {
+const GameCanvas = ({ gridSize, theme, hapticsEnabled }) => {
   const initialState = {
     fieldTypes: [],
     turn: 'o',
@@ -77,7 +78,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   useEffect(() => {
     if (!gameStart) {
-      const fieldTypesArray = new Array(size * size)
+      const fieldTypesArray = new Array(gridSize * gridSize)
       fieldTypesArray.fill(null)
 
       console.log(fieldTypesArray)
@@ -91,7 +92,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   useEffect(() => {
     if (fieldTypes.length > 0) {
-      const result = checkGame(fieldTypes, size);
+      const result = checkGame(fieldTypes, gridSize);
 
       if ((result.winner || result.tied) && !winner && !tied) {
         setGameState({
@@ -147,7 +148,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
       <View>{renderInfo()}</View>
       <Grid
         handlePress={pressed}
-        {...{ fieldTypes, tied, winner, winnerColumns, canvasFrozen, size }}
+        {...{ fieldTypes, tied, winner, winnerColumns, canvasFrozen, gridSize }}
       />
     </View>
   );
@@ -156,6 +157,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
+  gridSize: selectGridSize
 });
 
 export default connect(mapStateToProps)(GameCanvas);

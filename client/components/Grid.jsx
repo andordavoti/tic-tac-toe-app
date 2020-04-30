@@ -2,9 +2,9 @@ import React from 'react'
 import { View } from 'react-native'
 import Column from './Column';
 
-const Grid = ({ fieldTypes, size, handlePress, tied, winner, winnerColumns, canvasFrozen }) => {
+const Grid = ({ fieldTypes, gridSize, handlePress, tied, winner, winnerColumns, canvasFrozen }) => {
 
-    const sizeArray = [...Array(size).keys()]
+    const sizeArray = [...Array(gridSize).keys()]
 
     let num = 0
     let initial = true

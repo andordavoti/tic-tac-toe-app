@@ -23,7 +23,7 @@ const Multiplayer = ({ theme }) => {
   const styles = getStyleSheet()
 
   return <View style={styles.container}>
-    <GameCanvas size={4} />
+    <GameCanvas />
   </View>
 }
 

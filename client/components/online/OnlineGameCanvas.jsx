@@ -11,6 +11,7 @@ import {
   selectFieldTypes,
   selectPlayerId,
   selectGame,
+  selectGridSize,
 } from '../../redux/game/game.selectors';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import { connect, useDispatch } from 'react-redux';
@@ -24,7 +25,7 @@ const initialState = {
   winnerColumns: [],
 };
 
-const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) => {
+const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme }) => {
   const dispatch = useDispatch();
   const [timers, setTimers] = useState([]);
   const [winnerDetails, setWinnerDetails] = useState(initialState);
@@ -52,7 +53,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
   const resetLobby = async () => {
     const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-    await docRef.set({ fieldTypes: Array(size * size).fill(null), xIsNext: 0 }, { merge: true });
+    await docRef.set({ fieldTypes: Array(gridSize * gridSize).fill(null), xIsNext: 0 }, { merge: true });
   };
 
   const handleNewGame = () => {
@@ -61,7 +62,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
   };
 
   useEffect(() => {
-    const result = checkGame(fieldTypes, size);
+    const result = checkGame(fieldTypes, gridSize);
     if (result.winner && result.winnerColumns.length) {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
@@ -154,7 +155,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
           </Button>
         </View>
       ) : null}
-      <Grid {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
+      <Grid {...{ fieldTypes, gridSize, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
     </View>
   );
 };
@@ -166,6 +167,7 @@ const mapStateToProps = createStructuredSelector({
   gameState: selectGame,
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
+  gridSize: selectGridSize
 });
 
 export default connect(mapStateToProps)(OnlineGameCanvas);
