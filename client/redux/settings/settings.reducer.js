@@ -9,7 +9,6 @@ const INITIAL_STATE = {
 const settingsReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case SET_THEME:
-            console.log('setting theme to: ', action.payload)
             return {
                 ...state,
                 theme: action.payload

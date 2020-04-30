@@ -90,8 +90,6 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
       const fieldTypesArray = new Array(gridSize * gridSize)
       fieldTypesArray.fill(null)
 
-      console.log(fieldTypesArray)
-
       setGameState({
         ...gameState,
         fieldTypes: fieldTypesArray
