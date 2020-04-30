@@ -54,6 +54,13 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
         marginBottom: 40,
         backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
+      text: {
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
+        margin: 20,
+        fontSize: 20,
+        textAlign: "center",
+        fontWeight: "500"
+      },
     });
   };
 
@@ -140,7 +147,7 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
             labelStyle={{ color: 'white' }}
             onPress={() => {
               if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-              setGameState(initialState);
+              setGameState({ ...initialState, gridSize });
             }}
           >
             New Game
@@ -150,14 +157,16 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
     } else if (!gameStart) {
       return (
         <>
-          <Dropdown
-            label='Grid Size:'
-            styles={styles}
-            value={gridSize}
-            onValueChange={onValueChange}
-            type='setGridSize'
-            placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
-            items={gridSizeDropdownItems} />
+          <View style={{ width: 130, alignSelf: 'center' }}>
+            <Dropdown
+              label='Grid Size:'
+              styles={styles}
+              value={gridSize}
+              onValueChange={onValueChange}
+              type='setGridSize'
+              placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
+              items={gridSizeDropdownItems} />
+          </View>
           <Text style={styles.winnerText}>Press a column to start the game</Text>
         </>
       )
