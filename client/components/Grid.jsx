@@ -17,7 +17,7 @@ const Grid = ({ fieldTypes, size, handlePress, tied, winner, winnerColumns, canv
         return num
     }
 
-    return <View>
+    return <View style={{ alignItems: 'center', justifyContent: 'center' }} >
         {sizeArray.map(x => (
             <View style={{ flexDirection: 'row' }} key={x}>
                 {sizeArray.map(y => (
