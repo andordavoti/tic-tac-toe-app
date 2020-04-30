@@ -6,7 +6,7 @@ const NewGame = (firestore) => async (req, res) => {
 
   const writeResult = await newLobby.set({
     gameSize,
-    fieldTypes: Array(9).fill(null),
+    fieldTypes: Array(gameSize * gameSize).fill(null),
     xIsNext: 0,
     players: [
       {
