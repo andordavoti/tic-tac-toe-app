@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native'
 import Column from './Column';
 
-const Grid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen }) => {
+const Grid = ({ fieldTypes, size, handlePress, tied, winner, winnerColumns, canvasFrozen }) => {
 
     const sizeArray = [...Array(size).keys()]
 
@@ -25,8 +25,7 @@ const Grid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen
                         key={y}
                         action={handlePress}
                         num={getNum()}
-                        fieldTypes={fieldTypes}
-                        winnerColumns={winnerColumns}
+                        {...{ tied, winner, fieldTypes, winnerColumns }}
                         disableFields={canvasFrozen || Boolean(winnerColumns.length) || tied}
                     />
                 ))}

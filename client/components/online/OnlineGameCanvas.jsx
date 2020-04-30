@@ -154,7 +154,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
           </Button>
         </View>
       ) : null}
-      <Grid {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winnerColumns, canvasFrozen }} />
+      <Grid {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
     </View>
   );
 };

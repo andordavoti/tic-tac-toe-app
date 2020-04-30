@@ -131,12 +131,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
       <View>{renderInfo()}</View>
       <Grid
         handlePress={pressed}
-        fieldTypes={fieldTypes}
-        tied={tied}
-        winner={winner}
-        winnerColumns={winnerColumns}
-        canvasFrozen={canvasFrozen}
-        size={size}
+        {...{ fieldTypes, tied, winner, winnerColumns, canvasFrozen, size }}
       />
     </View>
   );

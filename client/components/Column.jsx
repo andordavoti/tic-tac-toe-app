@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
-const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }) => {
+const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner }) => {
   const [isWinnerColumn, setIsWinnerColumn] = useState(false)
 
   useEffect(() => {
@@ -42,6 +42,8 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }
   if (currentFieldTypes === 'o') icon = 'circle-outline'
   else if (currentFieldTypes === 'x') icon = 'close'
 
+  console.log(winner)
+
   return (
     <TouchableOpacity
       disabled={disableFields || Boolean(currentFieldTypes)}
@@ -51,7 +53,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }
         <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
           <MaterialCommunityIcons
             style={{ textAlign: 'center', marginTop: 5 }}
-            color={!isWinnerColumn ? (disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
+            color={!isWinnerColumn ? ((winner || tied) && disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
             name={icon}
             size={70} />
         </View>
