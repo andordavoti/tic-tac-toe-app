@@ -23,7 +23,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   const [gameState, setGameState] = useState(initialState);
 
-  const { fieldTypes, turn, canvasFrozen, winnerColumns, gameStart, winner, tied } = gameState
+  const { fieldTypes, canvasFrozen, winnerColumns, gameStart, winner, tied } = gameState
 
   const getStyleSheet = () => {
     return StyleSheet.create({

@@ -42,8 +42,6 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
   if (currentFieldTypes === 'o') icon = 'circle-outline'
   else if (currentFieldTypes === 'x') icon = 'close'
 
-  console.log(winner)
-
   return (
     <TouchableOpacity
       disabled={disableFields || Boolean(currentFieldTypes)}
