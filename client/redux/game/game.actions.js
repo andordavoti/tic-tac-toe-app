@@ -4,6 +4,7 @@ import {
   SET_PLAYER_ID,
   SET_LOBBY_ID,
   QUIT_GAME,
+  SET_GRID_SIZE,
 } from './game.types';
 
 export const setGameStateChange = (gameState) => ({
@@ -29,3 +30,8 @@ export const setPlayerId = (playerId) => ({
 export const quitGame = () => ({
   type: QUIT_GAME,
 });
+
+export const setGridSize = gridSize => ({
+  type: SET_GRID_SIZE,
+  payload: gridSize
+})

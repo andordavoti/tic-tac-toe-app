@@ -4,6 +4,7 @@ import {
   SET_LOBBY_ID,
   SET_PLAYER_ID,
   QUIT_GAME,
+  SET_GRID_SIZE,
 } from './game.types';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   fieldTypes: [],
   players: [],
   gameLoaded: false,
+  gridSize: 3
 };
 
 const gameReducer = (state = initialState, action) => {
@@ -43,6 +45,12 @@ const gameReducer = (state = initialState, action) => {
       return {
         ...state,
         lobbyId: action.payload,
+      };
+
+    case SET_GRID_SIZE:
+      return {
+        ...state,
+        gridSize: action.payload,
       };
 
     default:
