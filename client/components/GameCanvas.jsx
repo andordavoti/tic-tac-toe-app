@@ -148,8 +148,7 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
             onPress={() => {
               if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
               setGameState({ ...initialState, gridSize });
-            }}
-          >
+            }}>
             New Game
           </Button>
         </View>

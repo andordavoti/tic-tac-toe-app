@@ -105,11 +105,7 @@ const SettingsStackScreen = () => {
 const AppNavigator = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
   const deviceTheme = useColorScheme();
 
-  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled) {
-    setCurrentTheme(deviceTheme);
-    theme = deviceTheme;
-    //console.log('setting theme to: ', deviceTheme)
-  }
+  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled) setCurrentTheme(deviceTheme)
 
   return (
     <AppearanceProvider>

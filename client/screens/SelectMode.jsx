@@ -48,7 +48,6 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.text}>Select Mode:</Text>
       <View>
         <Button

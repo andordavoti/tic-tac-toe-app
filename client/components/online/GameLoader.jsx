@@ -104,7 +104,7 @@ const GameLoader = ({
   return (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={styles.text}>Lobby ID:</Text>
+        <Text style={styles.joinText}>Lobby ID:</Text>
         <TouchableOpacity onPress={copyLobbyId}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>

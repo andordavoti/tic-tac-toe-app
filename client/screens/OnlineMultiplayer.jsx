@@ -23,9 +23,9 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
-  });
-
+  })
   const [connected, isConnected] = useState(true)
+  const [gridSize, setGridSize] = useState(3)
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => isConnected(state.isConnected))
@@ -41,13 +41,19 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
         justifyContent: 'center',
         backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
       },
-      text: {
+      joinText: {
         color: theme === 'dark' ? colors.dark.text : colors.light.text,
         marginTop: 20,
         fontSize: 20,
         textAlign: 'center',
         fontWeight: '500',
-        lineHeight: 26
+      },
+      text: {
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
+        margin: 20,
+        fontSize: 20,
+        textAlign: "center",
+        fontWeight: "500"
       },
       lobbyId: {
         color: theme === 'dark' ? colors.dark.text : colors.light.text,
@@ -99,7 +105,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
     try {
       const response = await Axios({
         method: 'POST',
-        url: `${urls.gameUrl}/new`,
+        url: `${urls.gameUrl}/new`
       });
 
       const { data } = response;
@@ -136,12 +142,12 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   };
 
-  const handleInputChange = (text) => {
-    setTextInput({ ...textInput, value: text });
-  };
+  const handleInputChange = (text) => setTextInput({ ...textInput, value: text })
 
+  const handleDropdownChange = (type, value) => setGridSize(value)
+
+  const styles = getStyleSheet()
   if (connected) {
-    const styles = getStyleSheet()
     return (
       <View style={styles.container}>
         {lobbyId ? (
@@ -151,7 +157,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
             <PlayerMenuWithSpinner
               msg="Connecting to game server"
               loading={loading}
-              {...{ setTextInput, styles, textInput, handleInputChange, handleNewGame, handleJoinGame }}
+              {...{ setTextInput, styles, textInput, gridSize, setGridSize, handleDropdownChange, handleInputChange, handleNewGame, handleJoinGame }}
             />
             //No nested if, loading state passed directly to component
           )}

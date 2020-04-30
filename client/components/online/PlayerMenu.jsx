@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Clipboard, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper';
@@ -9,13 +9,17 @@ import { createStructuredSelector } from 'reselect';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import * as Haptics from 'expo-haptics'
 import Toast from 'react-native-tiny-toast';
+import Dropdown from '../Dropdown';
+import { gridSizeDropdownItems } from '../../lib/dropdownItems';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu = ({
-  setTextInput,
   styles,
   textInput,
+  setTextInput,
   handleInputChange,
+  gridSize,
+  handleDropdownChange,
   handleNewGame,
   handleJoinGame,
   theme,
@@ -36,6 +40,16 @@ const PlayerMenu = ({
 
   return (
     <View>
+      <View style={{ width: 130, alignSelf: 'center' }}>
+        <Dropdown
+          label='Grid Size:'
+          styles={styles}
+          value={gridSize}
+          onValueChange={handleDropdownChange}
+          type='setGridSize'
+          placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
+          items={gridSizeDropdownItems} />
+      </View>
       <Button onPress={() => {
         handleNewGame()
         if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
@@ -46,11 +60,11 @@ const PlayerMenu = ({
         contentStyle={{ margin: 10 }}>
         New Game
       </Button>
-      <Text style={styles.text}>Join Game:</Text>
+      <Text style={styles.joinText}>Join Game:</Text>
 
       <TextInput
         style={styles.input}
-        value={textInput.value} // state {...state} {random: '', textInputValue: ''}
+        value={textInput.value}
         onChangeText={handleInputChange}
         keyboardAppearance="dark"
         selectionColor={theme === 'dark' ? colors.dark.main : colors.light.main}
