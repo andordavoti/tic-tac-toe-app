@@ -15,7 +15,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
   }, [winnerColumns])
 
   const checkIfWinnerColumn = () => {
-    if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num) && !isWinnerColumn) {
+    if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num || winnerColumns[3] === num) && !isWinnerColumn) {
       setIsWinnerColumn(true)
     }
     else if (winnerColumns) setIsWinnerColumn(false)

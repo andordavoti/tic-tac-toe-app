@@ -61,7 +61,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
   };
 
   useEffect(() => {
-    const result = checkGame(fieldTypes);
+    const result = checkGame(fieldTypes, size);
     if (result.winner && result.winnerColumns.length) {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');

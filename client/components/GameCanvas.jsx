@@ -12,7 +12,7 @@ import Grid from './Grid';
 
 const GameCanvas = ({ size, theme, hapticsEnabled }) => {
   const initialState = {
-    fieldTypes: [null, null, null, null, null, null, null, null, null],
+    fieldTypes: [],
     turn: 'o',
     canvasFrozen: false,
     winnerColumns: [],
@@ -76,16 +76,32 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
   };
 
   useEffect(() => {
-    const result = checkGame(fieldTypes);
+    if (!gameStart) {
+      const fieldTypesArray = new Array(size * size)
+      fieldTypesArray.fill(null)
 
-    if ((result.winner || result.tied) && !winner && !tied) {
+      console.log(fieldTypesArray)
+
       setGameState({
         ...gameState,
-        winner: result.winner,
-        tied: result.tied,
-        winnerColumns: result.winnerColumns,
-        canvasFrozen: true,
-      });
+        fieldTypes: fieldTypesArray
+      })
+    }
+  }, [gameStart])
+
+  useEffect(() => {
+    if (fieldTypes.length > 0) {
+      const result = checkGame(fieldTypes, size);
+
+      if ((result.winner || result.tied) && !winner && !tied) {
+        setGameState({
+          ...gameState,
+          winner: result.winner,
+          tied: result.tied,
+          winnerColumns: result.winnerColumns,
+          canvasFrozen: true,
+        });
+      }
     }
   }, [gameState]);
 
