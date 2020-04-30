@@ -23,6 +23,8 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
   const [gameState, setGameState] = useState(initialState);
 
+  const { fieldTypes, turn, canvasFrozen, winnerColumns, gameStart, winner, tied } = gameState
+
   const getStyleSheet = () => {
     return StyleSheet.create({
       container: {
@@ -53,7 +55,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
   };
 
   const pressed = (num) => {
-    if (!gameState.gameStart) {
+    if (!gameStart) {
       setGameState({
         ...gameState,
         gameStart: true,
@@ -74,9 +76,9 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
   };
 
   useEffect(() => {
-    const result = checkGame(gameState.fieldTypes);
+    const result = checkGame(fieldTypes);
 
-    if ((result.winner || result.tied) && !gameState.winner && !gameState.tied) {
+    if ((result.winner || result.tied) && !winner && !tied) {
       setGameState({
         ...gameState,
         winner: result.winner,
@@ -91,15 +93,15 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     const styles = getStyleSheet();
     let winnerOutput = null;
 
-    if (gameState.tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
+    if (tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
     else
       winnerOutput = (
         <Text style={styles.winnerText}>
-          The winner is {gameState.winner && gameState.winner.toUpperCase()}
+          The winner is {winner && winner.toUpperCase()}
         </Text>
       );
 
-    if (gameState.canvasFrozen && (gameState.winner || gameState.tied)) {
+    if (canvasFrozen && (winner || tied)) {
       return (
         <View>
           <Text style={styles.gameOverText}>Game Over</Text>
@@ -117,7 +119,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
           </Button>
         </View>
       );
-    } else if (!gameState.gameStart) {
+    } else if (!gameStart) {
       return <Text style={styles.winnerText}>Press a column to start the game</Text>;
     } else return null;
   };
@@ -128,11 +130,12 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     <View style={styles.container}>
       <View>{renderInfo()}</View>
       <Grid
-        fieldTypes={gameState.fieldTypes}
         handlePress={pressed}
-        tied={gameState.tied}
-        winnerColumns={gameState.winnerColumns}
-        canvasFrozen={gameState.canvasFrozen}
+        fieldTypes={fieldTypes}
+        tied={tied}
+        winner={winner}
+        winnerColumns={winnerColumns}
+        canvasFrozen={canvasFrozen}
         size={size}
       />
     </View>
