@@ -11,7 +11,6 @@ import {
   selectFieldTypes,
   selectPlayerId,
   selectGame,
-  selectGridSize,
 } from '../../redux/game/game.selectors';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import { connect, useDispatch } from 'react-redux';
@@ -167,7 +166,6 @@ const mapStateToProps = createStructuredSelector({
   gameState: selectGame,
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
-  gridSize: selectGridSize
 });
 
 export default connect(mapStateToProps)(OnlineGameCanvas);

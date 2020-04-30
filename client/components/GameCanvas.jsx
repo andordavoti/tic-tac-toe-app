@@ -8,10 +8,11 @@ import { colors } from '../lib/Settings';
 import { connect } from 'react-redux';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 import { createStructuredSelector } from 'reselect';
+import { gridSizeDropdownItems } from '../lib/dropdownItems'
 import Grid from './Grid';
-import { selectGridSize } from '../redux/game/game.selectors';
+import Dropdown from './Dropdown';
 
-const GameCanvas = ({ gridSize, theme, hapticsEnabled }) => {
+const GameCanvas = ({ theme, hapticsEnabled }) => {
   const initialState = {
     fieldTypes: [],
     turn: 'o',
@@ -20,11 +21,12 @@ const GameCanvas = ({ gridSize, theme, hapticsEnabled }) => {
     gameStart: false,
     winner: null,
     tied: false,
+    gridSize: 3
   };
 
   const [gameState, setGameState] = useState(initialState);
 
-  const { fieldTypes, canvasFrozen, winnerColumns, gameStart, winner, tied } = gameState
+  const { fieldTypes, canvasFrozen, winnerColumns, gameStart, winner, tied, gridSize } = gameState
 
   const getStyleSheet = () => {
     return StyleSheet.create({
@@ -106,6 +108,15 @@ const GameCanvas = ({ gridSize, theme, hapticsEnabled }) => {
     }
   }, [gameState]);
 
+  const onValueChange = (type, value) => {
+    if (type === 'setGridSize') {
+      setGameState({
+        ...gameState,
+        gridSize: value
+      })
+    }
+  }
+
   const renderInfo = () => {
     const styles = getStyleSheet();
     let winnerOutput = null;
@@ -137,7 +148,19 @@ const GameCanvas = ({ gridSize, theme, hapticsEnabled }) => {
         </View>
       );
     } else if (!gameStart) {
-      return <Text style={styles.winnerText}>Press a column to start the game</Text>;
+      return (
+        <>
+          <Dropdown
+            label='Grid Size:'
+            styles={styles}
+            value={gridSize}
+            onValueChange={onValueChange}
+            type='setGridSize'
+            placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
+            items={gridSizeDropdownItems} />
+          <Text style={styles.winnerText}>Press a column to start the game</Text>
+        </>
+      )
     } else return null;
   };
 
@@ -156,8 +179,7 @@ const GameCanvas = ({ gridSize, theme, hapticsEnabled }) => {
 
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
-  hapticsEnabled: selectHaptics,
-  gridSize: selectGridSize
+  hapticsEnabled: selectHaptics
 });
 
 export default connect(mapStateToProps)(GameCanvas);

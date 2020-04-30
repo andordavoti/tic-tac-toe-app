@@ -5,14 +5,11 @@ import * as Haptics from 'expo-haptics'
 
 import { colors } from "../lib/Settings";
 import { connect } from "react-redux";
-import { setGridSize } from '../redux/game/game.actions'
 import { createStructuredSelector } from "reselect";
 import { selectHaptics, selectTheme } from "../redux/settings/settings.selectors";
 import Dropdown from "../components/Dropdown";
-import { gridSizeDropdownItems } from "../lib/dropdownItems";
-import { selectGridSize } from "../redux/game/game.selectors";
 
-const SelectMode = ({ navigation, hapticsEnabled, theme, gridSize, setGridSize }) => {
+const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
 
   const getStyleSheet = () => {
     return StyleSheet.create({
@@ -47,22 +44,10 @@ const SelectMode = ({ navigation, hapticsEnabled, theme, gridSize, setGridSize }
     })
   }
 
-  const onValueChange = (type, value) => {
-    if (type === 'setGridSize') setGridSize(value)
-  }
-
   const styles = getStyleSheet()
 
   return (
     <View style={styles.container}>
-      <Dropdown
-        label='Grid Size:'
-        styles={styles}
-        value={gridSize}
-        onValueChange={onValueChange}
-        type='setGridSize'
-        placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
-        items={gridSizeDropdownItems} />
 
       <Text style={styles.text}>Select Mode:</Text>
       <View>
@@ -94,7 +79,6 @@ const SelectMode = ({ navigation, hapticsEnabled, theme, gridSize, setGridSize }
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
-  gridSize: selectGridSize
 })
 
-export default connect(mapStateToProps, { setGridSize })(SelectMode)
+export default connect(mapStateToProps)(SelectMode)

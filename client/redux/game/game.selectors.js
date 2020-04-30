@@ -10,5 +10,3 @@ export const selectPlayers = createSelector([selectGameState], game => game.play
 export const selectGameLoaded = createSelector([selectGameState], game => game.gameLoaded);
 export const selectPlayerId = createSelector([selectGameState], game => game.playerId);
 export const selectLobbyId = createSelector([selectGameState], game => game.lobbyId);
-
-export const selectGridSize = createSelector([selectGameState], game => game.gridSize);
