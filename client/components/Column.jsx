@@ -24,8 +24,8 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
   const getStyleSheet = () => {
     return StyleSheet.create({
       column: {
-        maxWidth: Dimensions.get('window').height * 0.1,
-        maxHeight: Dimensions.get('window').height * 0.1,
+        maxWidth: Dimensions.get('window').height * 0.08,
+        maxHeight: Dimensions.get('window').height * 0.08,
         width: Dimensions.get('window').width * 0.22,
         height: Dimensions.get('window').width * 0.22,
         backgroundColor: disableFields ? (theme === 'dark' ? colors.dark.disabledColumn : colors.light.disabledColumn) : (theme === 'dark' ? colors.dark.main : colors.light.main),
@@ -50,10 +50,10 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
       {currentFieldTypes !== '' ?
         <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
           <MaterialCommunityIcons
-            style={{ textAlign: 'center', marginTop: 5 }}
+            style={{ textAlign: 'center', marginTop: 6 }}
             color={!isWinnerColumn ? ((winner || tied) && disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
             name={icon}
-            size={70} />
+            size={60} />
         </View>
         : null}
     </TouchableOpacity>
