@@ -25,7 +25,7 @@ const Grid = ({ fieldTypes, gridSize, handlePress, tied, winner, winnerColumns, 
                         key={y}
                         action={handlePress}
                         num={getNum()}
-                        {...{ tied, winner, fieldTypes, winnerColumns }}
+                        {...{ tied, winner, fieldTypes, winnerColumns, gridSize }}
                         disableFields={canvasFrozen || Boolean(winnerColumns.length) || tied}
                     />
                 ))}

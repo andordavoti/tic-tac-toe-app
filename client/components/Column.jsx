@@ -7,8 +7,11 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
-const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner }) => {
+const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner, gridSize }) => {
   const [isWinnerColumn, setIsWinnerColumn] = useState(false)
+
+  const size3 = Dimensions.get('window').width * 0.22
+  const size4 = Dimensions.get('window').height * 0.08
 
   useEffect(() => {
     checkIfWinnerColumn()
@@ -24,10 +27,8 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
   const getStyleSheet = () => {
     return StyleSheet.create({
       column: {
-        maxWidth: Dimensions.get('window').height * 0.08,
-        maxHeight: Dimensions.get('window').height * 0.08,
-        width: Dimensions.get('window').width * 0.22,
-        height: Dimensions.get('window').width * 0.22,
+        width: gridSize === 4 ? size4 : size3,
+        height: gridSize === 4 ? size4 : size3,
         backgroundColor: disableFields ? (theme === 'dark' ? colors.dark.disabledColumn : colors.light.disabledColumn) : (theme === 'dark' ? colors.dark.main : colors.light.main),
         borderRadius: 10,
         margin: 10,
@@ -53,7 +54,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
             style={{ textAlign: 'center', marginTop: 6 }}
             color={!isWinnerColumn ? ((winner || tied) && disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
             name={icon}
-            size={60} />
+            size={gridSize === 4 ? 60 : 75} />
         </View>
         : null}
     </TouchableOpacity>
