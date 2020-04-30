@@ -29,7 +29,7 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
   const [timers, setTimers] = useState([]);
   const [winnerDetails, setWinnerDetails] = useState(initialState);
   const { winner, winnerColumns, tied } = winnerDetails;
-  const { fieldTypes, playerId, xIsNext, gameStarted } = gameState;
+  const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
 
   const canvasFrozen = playerId !== xIsNext;
 
@@ -61,7 +61,7 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
   };
 
   useEffect(() => {
-    const result = checkGame(fieldTypes, gridSize);
+    const result = checkGame(fieldTypes, gameSize);
     if (result.winner && result.winnerColumns.length) {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
@@ -154,7 +154,7 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
           </Button>
         </View>
       ) : null}
-      <Grid {...{ fieldTypes, gridSize, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
+      <Grid gridSize={gameSize} {...{ fieldTypes, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
     </View>
   );
 };

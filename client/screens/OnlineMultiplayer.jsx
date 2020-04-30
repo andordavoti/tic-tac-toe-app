@@ -105,7 +105,8 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
     try {
       const response = await Axios({
         method: 'POST',
-        url: `${urls.gameUrl}/new`
+        url: `${urls.gameUrl}/new`,
+        data: { gameSize: gridSize }
       });
 
       const { data } = response;

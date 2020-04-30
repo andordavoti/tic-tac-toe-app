@@ -3,8 +3,7 @@ import {
   GAME_STATE_CHANGE,
   SET_LOBBY_ID,
   SET_PLAYER_ID,
-  QUIT_GAME,
-  SET_GRID_SIZE,
+  QUIT_GAME
 } from './game.types';
 
 const initialState = {
