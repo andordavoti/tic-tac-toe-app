@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "Tic Tac Toe",
+    "description": "Online Tic Tac Toe game for iOS and android.",
     "slug": "tic-tac-toe",
     "privacy": "public",
     "userInterfaceStyle": "automatic",
