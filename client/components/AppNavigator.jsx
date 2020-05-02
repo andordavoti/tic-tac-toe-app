@@ -102,14 +102,10 @@ const SettingsStackScreen = () => {
   );
 };
 
-const AppNavigator = ({ theme, systemTheme, setCurrentTheme }) => {
+const AppNavigator = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
   const deviceTheme = useColorScheme();
 
-  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemTheme) {
-    setCurrentTheme(deviceTheme);
-    theme = deviceTheme;
-    //console.log('setting theme to: ', deviceTheme)
-  }
+  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled) setCurrentTheme(deviceTheme)
 
   return (
     <AppearanceProvider>
@@ -144,7 +140,7 @@ const AppNavigator = ({ theme, systemTheme, setCurrentTheme }) => {
 
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
-  systemTheme: selectSystemTheme,
+  systemThemeEnabled: selectSystemTheme,
 });
 
 export default connect(mapStateToProps, { setCurrentTheme })(AppNavigator);

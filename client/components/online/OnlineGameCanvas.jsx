@@ -24,12 +24,12 @@ const initialState = {
   winnerColumns: [],
 };
 
-const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) => {
+const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme }) => {
   const dispatch = useDispatch();
   const [timers, setTimers] = useState([]);
   const [winnerDetails, setWinnerDetails] = useState(initialState);
   const { winner, winnerColumns, tied } = winnerDetails;
-  const { fieldTypes, playerId, xIsNext, gameStarted } = gameState;
+  const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
 
   const canvasFrozen = playerId !== xIsNext;
 
@@ -52,7 +52,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
   const resetLobby = async () => {
     const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-    await docRef.set({ fieldTypes: Array(size * size).fill(null), xIsNext: 0 }, { merge: true });
+    await docRef.set({ fieldTypes: Array(gridSize * gridSize).fill(null), xIsNext: 0 }, { merge: true });
   };
 
   const handleNewGame = () => {
@@ -61,7 +61,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
   };
 
   useEffect(() => {
-    const result = checkGame(fieldTypes);
+    const result = checkGame(fieldTypes, gameSize);
     if (result.winner && result.winnerColumns.length) {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
@@ -154,7 +154,7 @@ const OnlineGameCanvas = ({ size, gameState, lobbyId, hapticsEnabled, theme }) =
           </Button>
         </View>
       ) : null}
-      <Grid {...{ fieldTypes, size, handlePress: handleFieldPress, tied, winnerColumns, canvasFrozen }} />
+      <Grid gridSize={gameSize} {...{ fieldTypes, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
     </View>
   );
 };

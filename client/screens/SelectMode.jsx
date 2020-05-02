@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, Platform } from "react-native";
 import { Button } from "react-native-paper";
 import * as Haptics from 'expo-haptics'
@@ -7,6 +7,7 @@ import { colors } from "../lib/Settings";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectHaptics, selectTheme } from "../redux/settings/settings.selectors";
+import Dropdown from "../components/Dropdown";
 
 const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
 
@@ -48,7 +49,7 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Select Mode:</Text>
-      <View style={Platform.OS === 'web' ? { flexDirection: 'row' } : { flexDirection: 'column' }}>
+      <View>
         <Button
           type="contained"
           style={styles.button}
@@ -76,7 +77,7 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
 
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
-  hapticsEnabled: selectHaptics
+  hapticsEnabled: selectHaptics,
 })
 
 export default connect(mapStateToProps)(SelectMode)

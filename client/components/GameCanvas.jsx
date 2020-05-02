@@ -8,20 +8,25 @@ import { colors } from '../lib/Settings';
 import { connect } from 'react-redux';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 import { createStructuredSelector } from 'reselect';
+import { gridSizeDropdownItems } from '../lib/dropdownItems'
 import Grid from './Grid';
+import Dropdown from './Dropdown';
 
-const GameCanvas = ({ size, theme, hapticsEnabled }) => {
+const GameCanvas = ({ theme, hapticsEnabled }) => {
   const initialState = {
-    fieldTypes: [null, null, null, null, null, null, null, null, null],
+    fieldTypes: [],
     turn: 'o',
     canvasFrozen: false,
     winnerColumns: [],
     gameStart: false,
     winner: null,
     tied: false,
+    gridSize: 3
   };
 
   const [gameState, setGameState] = useState(initialState);
+
+  const { fieldTypes, canvasFrozen, winnerColumns, gameStart, winner, tied, gridSize } = gameState
 
   const getStyleSheet = () => {
     return StyleSheet.create({
@@ -49,11 +54,18 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
         marginBottom: 40,
         backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
+      text: {
+        color: theme === 'dark' ? colors.dark.text : colors.light.text,
+        margin: 20,
+        fontSize: 20,
+        textAlign: "center",
+        fontWeight: "500"
+      },
     });
   };
 
   const pressed = (num) => {
-    if (!gameState.gameStart) {
+    if (!gameStart) {
       setGameState({
         ...gameState,
         gameStart: true,
@@ -74,32 +86,55 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
   };
 
   useEffect(() => {
-    const result = checkGame(gameState.fieldTypes);
+    if (!gameStart) {
+      const fieldTypesArray = new Array(gridSize * gridSize)
+      fieldTypesArray.fill(null)
 
-    if ((result.winner || result.tied) && !gameState.winner && !gameState.tied) {
       setGameState({
         ...gameState,
-        winner: result.winner,
-        tied: result.tied,
-        winnerColumns: result.winnerColumns,
-        canvasFrozen: true,
-      });
+        fieldTypes: fieldTypesArray
+      })
+    }
+  }, [gameStart])
+
+  useEffect(() => {
+    if (fieldTypes.length > 0) {
+      const result = checkGame(fieldTypes, gridSize);
+
+      if ((result.winner || result.tied) && !winner && !tied) {
+        setGameState({
+          ...gameState,
+          winner: result.winner,
+          tied: result.tied,
+          winnerColumns: result.winnerColumns,
+          canvasFrozen: true,
+        });
+      }
     }
   }, [gameState]);
+
+  const onValueChange = (type, value) => {
+    if (type === 'setGridSize') {
+      setGameState({
+        ...gameState,
+        gridSize: value
+      })
+    }
+  }
 
   const renderInfo = () => {
     const styles = getStyleSheet();
     let winnerOutput = null;
 
-    if (gameState.tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
+    if (tied) winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
     else
       winnerOutput = (
         <Text style={styles.winnerText}>
-          The winner is {gameState.winner && gameState.winner.toUpperCase()}
+          The winner is {winner && winner.toUpperCase()}
         </Text>
       );
 
-    if (gameState.canvasFrozen && (gameState.winner || gameState.tied)) {
+    if (canvasFrozen && (winner || tied)) {
       return (
         <View>
           <Text style={styles.gameOverText}>Game Over</Text>
@@ -110,15 +145,28 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
             labelStyle={{ color: 'white' }}
             onPress={() => {
               if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-              setGameState(initialState);
-            }}
-          >
+              setGameState({ ...initialState, gridSize });
+            }}>
             New Game
           </Button>
         </View>
       );
-    } else if (!gameState.gameStart) {
-      return <Text style={styles.winnerText}>Press a column to start the game</Text>;
+    } else if (!gameStart) {
+      return (
+        <>
+          <View style={{ width: 130, alignSelf: 'center' }}>
+            <Dropdown
+              label='Grid Size:'
+              styles={styles}
+              value={gridSize}
+              onValueChange={onValueChange}
+              type='setGridSize'
+              placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
+              items={gridSizeDropdownItems} />
+          </View>
+          <Text style={styles.winnerText}>Press a column to start the game</Text>
+        </>
+      )
     } else return null;
   };
 
@@ -128,12 +176,8 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
     <View style={styles.container}>
       <View>{renderInfo()}</View>
       <Grid
-        fieldTypes={gameState.fieldTypes}
         handlePress={pressed}
-        tied={gameState.tied}
-        winnerColumns={gameState.winnerColumns}
-        canvasFrozen={gameState.canvasFrozen}
-        size={size}
+        {...{ fieldTypes, tied, winner, winnerColumns, canvasFrozen, gridSize }}
       />
     </View>
   );
@@ -141,7 +185,7 @@ const GameCanvas = ({ size, theme, hapticsEnabled }) => {
 
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
-  hapticsEnabled: selectHaptics,
+  hapticsEnabled: selectHaptics
 });
 
 export default connect(mapStateToProps)(GameCanvas);

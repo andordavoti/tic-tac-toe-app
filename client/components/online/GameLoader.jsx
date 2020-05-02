@@ -104,7 +104,7 @@ const GameLoader = ({
   return (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-        <Text style={styles.text}>Lobby ID:</Text>
+        <Text style={styles.joinText}>Lobby ID:</Text>
         <TouchableOpacity onPress={copyLobbyId}>
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>
@@ -123,7 +123,6 @@ const GameLoader = ({
       <GameCanvasWithSpinner
         msg="Waiting for other player..."
         loading={connectedPlayers.length < 2}
-        size={3}
       />
 
       <Button

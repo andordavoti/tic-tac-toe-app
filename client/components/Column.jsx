@@ -7,15 +7,18 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
-const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }) => {
+const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner, gridSize }) => {
   const [isWinnerColumn, setIsWinnerColumn] = useState(false)
+
+  const size3 = Dimensions.get('window').width * 0.22
+  const size4 = Dimensions.get('window').height * 0.08
 
   useEffect(() => {
     checkIfWinnerColumn()
   }, [winnerColumns])
 
   const checkIfWinnerColumn = () => {
-    if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num) && !isWinnerColumn) {
+    if ((winnerColumns[0] === num || winnerColumns[1] === num || winnerColumns[2] === num || winnerColumns[3] === num) && !isWinnerColumn) {
       setIsWinnerColumn(true)
     }
     else if (winnerColumns) setIsWinnerColumn(false)
@@ -24,10 +27,8 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }
   const getStyleSheet = () => {
     return StyleSheet.create({
       column: {
-        maxWidth: Dimensions.get('window').height * 0.1,
-        maxHeight: Dimensions.get('window').height * 0.1,
-        width: Dimensions.get('window').width * 0.22,
-        height: Dimensions.get('window').width * 0.22,
+        width: gridSize === 4 ? size4 : size3,
+        height: gridSize === 4 ? size4 : size3,
         backgroundColor: disableFields ? (theme === 'dark' ? colors.dark.disabledColumn : colors.light.disabledColumn) : (theme === 'dark' ? colors.dark.main : colors.light.main),
         borderRadius: 10,
         margin: 10,
@@ -50,10 +51,10 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme }
       {currentFieldTypes !== '' ?
         <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
           <MaterialCommunityIcons
-            style={{ textAlign: 'center', marginTop: 5 }}
-            color={!isWinnerColumn ? (disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
+            style={{ textAlign: 'center', marginTop: 6 }}
+            color={!isWinnerColumn ? ((winner || tied) && disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
             name={icon}
-            size={70} />
+            size={gridSize === 4 ? 60 : 75} />
         </View>
         : null}
     </TouchableOpacity>

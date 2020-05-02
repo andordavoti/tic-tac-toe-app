@@ -2,9 +2,9 @@ import React from 'react'
 import { View } from 'react-native'
 import Column from './Column';
 
-const Grid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen }) => {
+const Grid = ({ fieldTypes, gridSize, handlePress, tied, winner, winnerColumns, canvasFrozen }) => {
 
-    const sizeArray = [...Array(size).keys()]
+    const sizeArray = [...Array(gridSize).keys()]
 
     let num = 0
     let initial = true
@@ -17,7 +17,7 @@ const Grid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen
         return num
     }
 
-    return <View>
+    return <View style={{ alignItems: 'center', justifyContent: 'center' }} >
         {sizeArray.map(x => (
             <View style={{ flexDirection: 'row' }} key={x}>
                 {sizeArray.map(y => (
@@ -25,8 +25,7 @@ const Grid = ({ fieldTypes, size, handlePress, tied, winnerColumns, canvasFrozen
                         key={y}
                         action={handlePress}
                         num={getNum()}
-                        fieldTypes={fieldTypes}
-                        winnerColumns={winnerColumns}
+                        {...{ tied, winner, fieldTypes, winnerColumns, gridSize }}
                         disableFields={canvasFrozen || Boolean(winnerColumns.length) || tied}
                     />
                 ))}
