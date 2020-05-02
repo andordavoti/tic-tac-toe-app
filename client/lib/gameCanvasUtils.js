@@ -8,7 +8,7 @@ export const checkGame = (fieldTypes, size) => {
   let winnerCombinations;
 
   if (size === 3) {
-    winnerCombinations = [
+    winnerCombinations3 = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -21,8 +21,7 @@ export const checkGame = (fieldTypes, size) => {
   }
 
   if (size === 4) {
-    //needs to be changed
-    winnerCombinations = [
+    winnerCombinations4 = [
       [0, 1, 2, 3],
       [4, 5, 6, 7],
       [8, 9, 10, 11],
@@ -36,36 +35,27 @@ export const checkGame = (fieldTypes, size) => {
     ];
   }
 
-  if (size === 3) {
-    for (const user of users) {
-      for (const combination of winnerCombinations) {
-        if (
-          fieldTypes[combination[0]] === user &&
-          fieldTypes[combination[1]] === user &&
-          fieldTypes[combination[2]] === user
-        ) {
-          winner = user;
-          winnerColumns = [combination[0], combination[1], combination[2]];
-          break;
-        }
-      }
-    }
-  }
-
-  if (size === 4) {
-
-    for (const user of users) {
-      for (const combination of winnerCombinations) {
-        if (
-          fieldTypes[combination[0]] === user &&
-          fieldTypes[combination[1]] === user &&
-          fieldTypes[combination[2]] === user &&
-          fieldTypes[combination[3]] === user
-        ) {
-          winner = user;
-          winnerColumns = [combination[0], combination[1], combination[2], combination[3]];
-          break;
-        }
+  for (const user of users) {
+    for (const combination of winnerCombinations) {
+      if (
+        size === 3 &&
+        fieldTypes[combination[0]] === user &&
+        fieldTypes[combination[1]] === user &&
+        fieldTypes[combination[2]] === user
+      ) {
+        winner = user;
+        winnerColumns = [combination[0], combination[1], combination[2]];
+        break;
+      } else if (
+        size === 4 &&
+        fieldTypes[combination[0]] === user &&
+        fieldTypes[combination[1]] === user &&
+        fieldTypes[combination[2]] === user &&
+        fieldTypes[combination[3]] === user
+      ) {
+        winner = user;
+        winnerColumns = [combination[0], combination[1], combination[2], combination[3]];
+        break;
       }
     }
   }
