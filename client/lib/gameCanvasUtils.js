@@ -1,6 +1,6 @@
 export const getFieldType = (playerId) => (playerId === 0 ? 'x' : 'o');
 
-export const checkGame = (fieldTypes, size) => {
+export const checkGame = (fieldTypes, size = 3) => {
   const users = ['x', 'o'];
   let tied = false;
   let winner = null;
@@ -8,7 +8,7 @@ export const checkGame = (fieldTypes, size) => {
   let winnerCombinations;
 
   if (size === 3) {
-    winnerCombinations3 = [
+    winnerCombinations = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -21,7 +21,7 @@ export const checkGame = (fieldTypes, size) => {
   }
 
   if (size === 4) {
-    winnerCombinations4 = [
+    winnerCombinations = [
       [0, 1, 2, 3],
       [4, 5, 6, 7],
       [8, 9, 10, 11],

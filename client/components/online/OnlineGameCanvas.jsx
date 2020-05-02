@@ -24,7 +24,7 @@ const initialState = {
   winnerColumns: [],
 };
 
-const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme }) => {
+const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
   const dispatch = useDispatch();
   const [timers, setTimers] = useState([]);
   const [winnerDetails, setWinnerDetails] = useState(initialState);
@@ -53,7 +53,7 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
     const docRef = firestore.collection('lobbies').doc(lobbyId);
 
     await docRef.set(
-      { fieldTypes: Array(gridSize * gridSize).fill(null), xIsNext: 0 },
+      { fieldTypes: Array(gameSize * gameSize).fill(null), xIsNext: 0 },
       { merge: true }
     );
   };

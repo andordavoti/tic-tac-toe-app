@@ -60,16 +60,21 @@ const GameLoader = ({
     }
   };
 
+  const showError = () => {
+    showToast('Could not connect to game server');
+    quitGame();
+  };
+
   useEffect(() => {
     game.gameLoaded && connectPlayer();
   }, [game.gameLoaded]);
 
   useEffect(() => {
     const docRef = firestore.collection('lobbies').doc(lobbyId);
-
     let initial = true;
     const channel = docRef.onSnapshot(
       (snapshot) => {
+        if (!snapshot.exists) return showError();
         //TODO: This code will change.
         if (initial) {
           setGameLoaded({ lobbyId, ...snapshot.data() });
@@ -79,7 +84,7 @@ const GameLoader = ({
         setGameStateChange({ lobbyId, ...snapshot.data() });
       },
       (err) => {
-        showToast('Could not connect to game server');
+        showError();
       }
     );
 
