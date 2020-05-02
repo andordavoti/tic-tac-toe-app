@@ -8,19 +8,7 @@ import { selectTheme } from '../redux/settings/settings.selectors';
 
 const Spinner = ({ theme, msg, size = 'large' }) => {
 
-  const getStyleSheet = () => {
-    return StyleSheet.create({
-      text: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        fontWeight: 'bold',
-        fontSize: 15,
-        margin: 20,
-        textAlign: 'center'
-      }
-    })
-  }
-
-  const styles = getStyleSheet()
+  const styles = getStyleSheet(theme)
 
   return <View>
     <ActivityIndicator
@@ -33,5 +21,17 @@ const Spinner = ({ theme, msg, size = 'large' }) => {
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
 })
+
+const getStyleSheet = (theme) => {
+  return StyleSheet.create({
+    text: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      fontWeight: 'bold',
+      fontSize: 15,
+      margin: 20,
+      textAlign: 'center'
+    }
+  })
+}
 
 export default connect(mapStateToProps)(Spinner)

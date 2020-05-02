@@ -31,6 +31,8 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
   const { winner, winnerColumns, tied } = winnerDetails;
   const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
 
+  const styles = getStyleSheet(theme);
+
   const canvasFrozen = playerId !== xIsNext;
 
   const handleFieldPress = async (num) => {
@@ -98,44 +100,6 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
     };
   }, [fieldTypes]);
 
-  const getStyleSheet = () => {
-    return StyleSheet.create({
-      container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-      },
-      gameOverText: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        margin: 20,
-        fontSize: 30,
-        textAlign: 'center',
-        fontWeight: '500',
-      },
-      winnerText: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        margin: 20,
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      text: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        marginTop: 20,
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: '500',
-        marginBottom: 20,
-      },
-      button: {
-        marginBottom: 40,
-        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
-      },
-    });
-  };
-
-  const styles = getStyleSheet();
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>
@@ -183,5 +147,41 @@ const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
 });
+
+const getStyleSheet = (theme) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    gameOverText: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      margin: 20,
+      fontSize: 30,
+      textAlign: 'center',
+      fontWeight: '500',
+    },
+    winnerText: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      margin: 20,
+      fontSize: 20,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    text: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      marginTop: 20,
+      fontSize: 20,
+      textAlign: 'center',
+      fontWeight: '500',
+      marginBottom: 20,
+    },
+    button: {
+      marginBottom: 40,
+      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+    },
+  });
+};
 
 export default connect(mapStateToProps)(OnlineGameCanvas);

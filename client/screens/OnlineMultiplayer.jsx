@@ -27,77 +27,13 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
   const [connected, isConnected] = useState(true)
   const [gridSize, setGridSize] = useState(3)
 
+  const styles = getStyleSheet(theme)
+
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => isConnected(state.isConnected))
 
     return () => unsubscribe()
   }, [])
-
-  const getStyleSheet = () => {
-    return StyleSheet.create({
-      container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
-      },
-      joinText: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        marginTop: 20,
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: '500',
-      },
-      text: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        margin: 20,
-        fontSize: 20,
-        textAlign: "center",
-        fontWeight: "500"
-      },
-      lobbyId: {
-        color: theme === 'dark' ? colors.dark.text : colors.light.text,
-        marginTop: 22,
-        fontSize: 20,
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      infoText: {
-        color: theme === 'dark' ? colors.dark.warning : colors.light.warning,
-        margin: 5,
-        fontSize: 15,
-        textAlign: 'center',
-        fontWeight: 'bold',
-      },
-      button: {
-        width: 200,
-        margin: 10,
-        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
-      },
-      quitButton: {
-        margin: 20,
-        marginBottom: 40,
-        backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
-      },
-      image: {
-        flex: 1,
-        height: 60,
-        width: 200,
-        margin: 10,
-      },
-      input: {
-        color: 'white',
-        textAlign: 'center',
-        backgroundColor: 'grey',
-        height: 40,
-        width: 200,
-        margin: 10,
-        borderRadius: 5,
-        borderColor: theme === 'dark' ? colors.dark.main : colors.light.main,
-        fontSize: 20,
-      },
-    });
-  }
 
   const [loading, setLoading] = useState(false);
   const handleNewGame = async () => {
@@ -147,7 +83,6 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
 
   const handleDropdownChange = (type, value) => setGridSize(value)
 
-  const styles = getStyleSheet()
   if (connected) {
     return (
       <View style={styles.container}>
@@ -182,4 +117,71 @@ const actions = {
   setLobbyId,
   setPlayerId,
 };
+
+const getStyleSheet = () => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+    },
+    joinText: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      marginTop: 20,
+      fontSize: 20,
+      textAlign: 'center',
+      fontWeight: '500',
+    },
+    text: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      margin: 20,
+      fontSize: 20,
+      textAlign: "center",
+      fontWeight: "500"
+    },
+    lobbyId: {
+      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      marginTop: 22,
+      fontSize: 20,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    infoText: {
+      color: theme === 'dark' ? colors.dark.warning : colors.light.warning,
+      margin: 5,
+      fontSize: 15,
+      textAlign: 'center',
+      fontWeight: 'bold',
+    },
+    button: {
+      width: 200,
+      margin: 10,
+      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+    },
+    quitButton: {
+      margin: 20,
+      marginBottom: 40,
+      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+    },
+    image: {
+      flex: 1,
+      height: 60,
+      width: 200,
+      margin: 10,
+    },
+    input: {
+      color: 'white',
+      textAlign: 'center',
+      backgroundColor: 'grey',
+      height: 40,
+      width: 200,
+      margin: 10,
+      borderRadius: 5,
+      borderColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+      fontSize: 20,
+    },
+  });
+}
+
 export default connect(mapStateToProps, actions)(OnlineMultiplayer);

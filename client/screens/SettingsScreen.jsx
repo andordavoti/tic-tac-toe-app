@@ -22,68 +22,12 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
 
     const [selectedTheme, setSelectedTheme] = useState('system')
 
+    const styles = getStyleSheet(theme)
+
     useEffect(() => {
         if (systemThemeEnabled) setSelectedTheme('system')
         else setSelectedTheme(theme)
     }, [])
-
-    const getStyleSheet = () => {
-        return StyleSheet.create({
-            container: {
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
-            },
-            row: {
-                flexDirection: 'row',
-                justifyContent: 'center',
-                alignItems: 'center'
-            },
-            text: {
-                textAlign: 'center',
-                fontSize: 20,
-                color: theme === 'dark' ? colors.dark.text : colors.light.text,
-                margin: 10,
-                fontWeight: 'bold'
-            },
-            textAuthor: {
-                textAlign: 'center',
-                fontSize: 20,
-                color: theme === 'dark' ? colors.dark.text : colors.light.text,
-                margin: 5,
-                marginBottom: 20,
-                fontStyle: 'italic',
-            },
-            textVersion: {
-                textAlign: 'center',
-                fontSize: 20,
-                color: theme === 'dark' ? colors.dark.text : colors.light.text,
-                margin: 20,
-                fontWeight: 'bold'
-            },
-            header: {
-                textAlign: 'center',
-                fontSize: 25,
-                color: theme === 'dark' ? colors.dark.text : colors.light.text,
-                fontWeight: '600',
-                margin: 20,
-                marginTop: 50,
-                textDecorationLine: 'underline'
-            },
-            button: {
-                margin: 10,
-                backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
-            },
-            rowData: {
-                minHeight: 30,
-                marginLeft: 25,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-            },
-        })
-    }
 
     const onValueChange = (type, value) => {
         if (type === 'theme') {
@@ -100,8 +44,6 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
     }
 
     const openLink = async link => await WebBrowser.openBrowserAsync(link)
-
-    const styles = getStyleSheet()
 
     const links = {
         andor: 'https://andordavoti.com',
@@ -182,5 +124,63 @@ const mapStateToProps = createStructuredSelector({
     systemThemeEnabled: selectSystemTheme,
     hapticsEnabled: selectHaptics
 })
+
+const getStyleSheet = (theme) => {
+    return StyleSheet.create({
+        container: {
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+        },
+        row: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        text: {
+            textAlign: 'center',
+            fontSize: 20,
+            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            margin: 10,
+            fontWeight: 'bold'
+        },
+        textAuthor: {
+            textAlign: 'center',
+            fontSize: 20,
+            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            margin: 5,
+            marginBottom: 20,
+            fontStyle: 'italic',
+        },
+        textVersion: {
+            textAlign: 'center',
+            fontSize: 20,
+            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            margin: 20,
+            fontWeight: 'bold'
+        },
+        header: {
+            textAlign: 'center',
+            fontSize: 25,
+            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            fontWeight: '600',
+            margin: 20,
+            marginTop: 50,
+            textDecorationLine: 'underline'
+        },
+        button: {
+            margin: 10,
+            backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+        },
+        rowData: {
+            minHeight: 30,
+            marginLeft: 25,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+        },
+    })
+}
 
 export default connect(mapStateToProps, { setCurrentTheme, useSystemTheme, useHaptics })(SettingsScreen)

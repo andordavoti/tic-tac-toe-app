@@ -8,19 +8,7 @@ import { createStructuredSelector } from 'reselect'
 import { selectTheme } from '../redux/settings/settings.selectors'
 
 const Multiplayer = ({ theme }) => {
-
-  const getStyleSheet = () => {
-    return StyleSheet.create({
-      container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
-      }
-    })
-  }
-
-  const styles = getStyleSheet()
+  const styles = getStyleSheet(theme)
 
   return <View style={styles.container}>
     <GameCanvas />
@@ -30,5 +18,16 @@ const Multiplayer = ({ theme }) => {
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme
 })
+
+const getStyleSheet = (theme) => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+    }
+  })
+}
 
 export default connect(mapStateToProps)(Multiplayer)
