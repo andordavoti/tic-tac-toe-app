@@ -25,7 +25,6 @@ const Spinner = ({ theme, msg, size = 'large' }) => {
   return <View>
     <ActivityIndicator
       color={theme === 'dark' ? colors.dark.main : colors.light.main}
-      style={{ marginTop: 20 }}
       size={size} />
     <Text style={styles.text}>{msg}</Text>
   </View>
