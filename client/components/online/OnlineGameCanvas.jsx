@@ -52,7 +52,10 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
   const resetLobby = async () => {
     const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-    await docRef.set({ fieldTypes: Array(gridSize * gridSize).fill(null), xIsNext: 0 }, { merge: true });
+    await docRef.set(
+      { fieldTypes: Array(gridSize * gridSize).fill(null), xIsNext: 0 },
+      { merge: true }
+    );
   };
 
   const handleNewGame = () => {
@@ -128,14 +131,16 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
         marginBottom: 40,
         backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
       },
-    })
-  }
+    });
+  };
 
-  const styles = getStyleSheet()
+  const styles = getStyleSheet();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}> Turn: Player {getPlayerName(xIsNext)}</Text>
+      <Text style={styles.text}>
+        {playerId === xIsNext ? 'Your turn' : `Player ${getPlayerName(xIsNext)} picking`}
+      </Text>
       {Boolean(winner) || tied ? (
         <View>
           <Text style={styles.gameOverText}>
@@ -149,12 +154,23 @@ const OnlineGameCanvas = ({ gridSize, gameState, lobbyId, hapticsEnabled, theme 
             type="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
-            onPress={handleNewGame}>
+            onPress={handleNewGame}
+          >
             New Game
           </Button>
         </View>
       ) : null}
-      <Grid gridSize={gameSize} {...{ fieldTypes, handlePress: handleFieldPress, tied, winner, winnerColumns, canvasFrozen }} />
+      <Grid
+        gridSize={gameSize}
+        {...{
+          fieldTypes,
+          handlePress: handleFieldPress,
+          tied,
+          winner,
+          winnerColumns,
+          canvasFrozen,
+        }}
+      />
     </View>
   );
 };
