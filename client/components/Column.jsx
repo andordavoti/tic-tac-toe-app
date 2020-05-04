@@ -8,10 +8,13 @@ import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
 const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner, gridSize }) => {
+
   const [isWinnerColumn, setIsWinnerColumn] = useState(false)
 
   const size3 = Dimensions.get('window').width * 0.22
   const size4 = Dimensions.get('window').height * 0.08
+
+  const styles = getStyleSheet(theme, gridSize, disableFields, size3, size4)
 
   useEffect(() => {
     checkIfWinnerColumn()
@@ -24,20 +27,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
     else if (winnerColumns) setIsWinnerColumn(false)
   }
 
-  const getStyleSheet = () => {
-    return StyleSheet.create({
-      column: {
-        width: gridSize === 4 ? size4 : size3,
-        height: gridSize === 4 ? size4 : size3,
-        backgroundColor: disableFields ? (theme === 'dark' ? colors.dark.disabledColumn : colors.light.disabledColumn) : (theme === 'dark' ? colors.dark.main : colors.light.main),
-        borderRadius: 10,
-        margin: 10,
-      }
-    })
-  }
-
   let icon
-  const styles = getStyleSheet()
   const currentFieldTypes = fieldTypes[num]
 
   if (currentFieldTypes === 'o') icon = 'circle-outline'
@@ -64,5 +54,17 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
 const mapStateToProps = createStructuredSelector({
   theme: selectTheme,
 })
+
+const getStyleSheet = (theme, gridSize, disableFields, size3, size4) => {
+  return StyleSheet.create({
+    column: {
+      width: gridSize === 4 ? size4 : size3,
+      height: gridSize === 4 ? size4 : size3,
+      backgroundColor: disableFields ? (theme === 'dark' ? colors.dark.disabledColumn : colors.light.disabledColumn) : (theme === 'dark' ? colors.dark.main : colors.light.main),
+      borderRadius: 10,
+      margin: 10,
+    }
+  })
+}
 
 export default connect(mapStateToProps)(Column)
