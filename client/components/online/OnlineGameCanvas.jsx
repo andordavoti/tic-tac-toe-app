@@ -18,6 +18,7 @@ import { getFieldType, checkGame, getPlayerName } from '../../lib/gameCanvasUtil
 import { quitGame } from '../../redux/game/game.actions';
 import { showToast } from '../../lib/toast';
 import Grid from '../Grid';
+import CountdownTimer from '../CountdownTimer';
 const initialState = {
   winner: null,
   tied: false,
@@ -30,7 +31,7 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
   const [winnerDetails, setWinnerDetails] = useState(initialState);
   const { winner, winnerColumns, tied } = winnerDetails;
   const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
-
+  const timeOutDuration = 60000;
   const styles = getStyleSheet(theme);
 
   const canvasFrozen = playerId !== xIsNext;
@@ -88,7 +89,7 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
         dispatch(quitGame());
         showToast('Lobby dispanded due to inactivity', 3500);
       }
-    }, 60000);
+    }, timeOutDuration);
 
     setTimers([...timers, playerOnlineTimer]);
 
@@ -102,6 +103,7 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
 
   return (
     <View style={styles.container}>
+      {timers.length ? <CountdownTimer size={48} duration={timeOutDuration} /> : null}
       <Text style={styles.text}>
         {playerId === xIsNext ? 'Your turn' : `Player ${getPlayerName(xIsNext)} picking`}
       </Text>

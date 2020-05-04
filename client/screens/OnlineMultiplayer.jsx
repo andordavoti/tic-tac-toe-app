@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet, Text } from 'react-native';
-import * as Haptics from 'expo-haptics'
+import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls } from '../lib/Settings';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
-import withSpinner from '../components/withSpinner'
+import withSpinner from '../components/withSpinner';
 import GameLoader from '../components/online/GameLoader';
 // Redux
 import { connect } from 'react-redux';
@@ -19,21 +19,28 @@ import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, hapticsEnabled }) => {
+const OnlineMultiplayer = ({
+  lobbyId,
+  playerId,
+  setLobbyId,
+  setPlayerId,
+  theme,
+  hapticsEnabled,
+}) => {
   const [textInput, setTextInput] = useState({
     value: '',
     err: false,
-  })
-  const [connected, isConnected] = useState(true)
-  const [gridSize, setGridSize] = useState(3)
+  });
+  const [connected, isConnected] = useState(true);
+  const [gridSize, setGridSize] = useState(3);
 
-  const styles = getStyleSheet(theme)
+  const styles = getStyleSheet(theme);
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => isConnected(state.isConnected))
+    const unsubscribe = NetInfo.addEventListener((state) => isConnected(state.isConnected));
 
-    return () => unsubscribe()
-  }, [])
+    return () => unsubscribe();
+  }, []);
 
   const [loading, setLoading] = useState(false);
   const handleNewGame = async () => {
@@ -42,7 +49,7 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
       const response = await Axios({
         method: 'POST',
         url: `${urls.gameUrl}/new`,
-        data: { gameSize: gridSize }
+        data: { gameSize: gridSize },
       });
 
       const { data } = response;
@@ -79,9 +86,9 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   };
 
-  const handleInputChange = (text) => setTextInput({ ...textInput, value: text })
+  const handleInputChange = (text) => setTextInput({ ...textInput, value: text });
 
-  const handleDropdownChange = (type, value) => setGridSize(value)
+  const handleDropdownChange = (type, value) => setGridSize(value);
 
   if (connected) {
     return (
@@ -89,21 +96,33 @@ const OnlineMultiplayer = ({ lobbyId, playerId, setLobbyId, setPlayerId, theme, 
         {lobbyId ? (
           <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
         ) : (
-            //No nested if, loading state passed directly to component
-            <PlayerMenuWithSpinner
-              msg="Connecting to game server"
-              loading={loading}
-              {...{ setTextInput, styles, textInput, gridSize, setGridSize, handleDropdownChange, handleInputChange, handleNewGame, handleJoinGame }}
-            />
-            //No nested if, loading state passed directly to component
-          )}
+          //No nested if, loading state passed directly to component
+          <PlayerMenuWithSpinner
+            msg="Connecting to game server"
+            loading={loading}
+            {...{
+              setTextInput,
+              styles,
+              textInput,
+              gridSize,
+              setGridSize,
+              handleDropdownChange,
+              handleInputChange,
+              handleNewGame,
+              handleJoinGame,
+            }}
+          />
+          //No nested if, loading state passed directly to component
+        )}
       </View>
     );
   } else {
-    return <View style={styles.container}>
-      <MaterialCommunityIcons color='white' name='wifi-strength-alert-outline' size={30} />
-      <Text style={styles.text}>Please check your{'\n'}network connection!</Text>
-    </View>
+    return (
+      <View style={styles.container}>
+        <MaterialCommunityIcons color="white" name="wifi-strength-alert-outline" size={30} />
+        <Text style={styles.text}>Please check your{'\n'}network connection!</Text>
+      </View>
+    );
   }
 };
 
@@ -111,20 +130,20 @@ const mapStateToProps = createStructuredSelector({
   playerId: selectPlayerId,
   lobbyId: selectLobbyId,
   theme: selectTheme,
-  hapticsEnabled: selectHaptics
+  hapticsEnabled: selectHaptics,
 });
 const actions = {
   setLobbyId,
   setPlayerId,
 };
 
-const getStyleSheet = () => {
+const getStyleSheet = (theme) => {
   return StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg,
     },
     joinText: {
       color: theme === 'dark' ? colors.dark.text : colors.light.text,
@@ -137,8 +156,8 @@ const getStyleSheet = () => {
       color: theme === 'dark' ? colors.dark.text : colors.light.text,
       margin: 20,
       fontSize: 20,
-      textAlign: "center",
-      fontWeight: "500"
+      textAlign: 'center',
+      fontWeight: '500',
     },
     lobbyId: {
       color: theme === 'dark' ? colors.dark.text : colors.light.text,
@@ -182,6 +201,6 @@ const getStyleSheet = () => {
       fontSize: 20,
     },
   });
-}
+};
 
 export default connect(mapStateToProps, actions)(OnlineMultiplayer);
