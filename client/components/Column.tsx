@@ -72,7 +72,7 @@ const getStyleSheet = (theme: 'light' | 'dark', gridSize: 3 | 4, disableFields: 
     container: {
       flex: 1,
       justifyContent: 'center',
-      alignItem: 'center'
+      alignItems: 'center'
     },
     column: {
       width: gridSize === 4 ? size4 : size3,

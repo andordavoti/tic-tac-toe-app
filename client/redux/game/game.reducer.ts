@@ -8,7 +8,7 @@ import {
 
 interface Action {
   type: string
-  payload: //TODO: what's the pay load type?
+  payload //TODO: what's the pay load type?
 }
 
 const initialState = {
