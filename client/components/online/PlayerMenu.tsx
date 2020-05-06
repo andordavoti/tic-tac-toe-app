@@ -12,8 +12,34 @@ import Toast from 'react-native-tiny-toast';
 import Dropdown from '../Dropdown';
 import { gridSizeDropdownItems } from '../../lib/dropdownItems';
 
+interface Styles {
+  text: object
+  button: object
+  joinText: object
+  input: object
+  infoText: object
+}
+
+interface TextInput {
+  value: string
+  err: string
+}
+
+interface Props {
+  styles: Styles
+  textInput: TextInput
+  setTextInput;
+  handleInputChange;
+  gridSize: 3 | 4
+  handleDropdownChange: () => void
+  handleNewGame;
+  handleJoinGame;
+  theme: 'light' | 'dark'
+  hapticsEnabled: boolean
+}
+
 // Menu that displays "new game" or "Join game" options
-const PlayerMenu = ({
+const PlayerMenu: React.FC<Props> = ({
   styles,
   textInput,
   setTextInput,
@@ -28,14 +54,14 @@ const PlayerMenu = ({
   const insertFromClipboard = async () => {
     const text = await Clipboard.getString();
     showToast('Inserted text from Clipboard')
-    setTextInput((prevState) => ({ ...prevState, value: text }));
-    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+    setTextInput((prevState: TextInput) => ({ ...prevState, value: text }));
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
   };
 
   const clearInput = () => {
-    setTextInput((prevState) => ({ ...prevState, value: '' }))
+    setTextInput((prevState: TextInput) => ({ ...prevState, value: '' }))
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-    Toast.hide()
+    Toast.hide
   }
 
   return (
@@ -43,7 +69,7 @@ const PlayerMenu = ({
       <View style={{ width: 130, alignSelf: 'center' }}>
         <Dropdown
           label='Grid Size:'
-          styles={styles}
+          textStyle={styles.text}
           value={gridSize}
           onValueChange={handleDropdownChange}
           type='setGridSize'
@@ -54,7 +80,7 @@ const PlayerMenu = ({
         handleNewGame()
         if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
       }}
-        type="contained"
+        mode="contained"
         style={styles.button}
         labelStyle={{ color: 'white' }}
         contentStyle={{ margin: 10 }}>
@@ -67,8 +93,7 @@ const PlayerMenu = ({
         value={textInput.value}
         onChangeText={handleInputChange}
         keyboardAppearance="dark"
-        selectionColor={theme === 'dark' ? colors.dark.main : colors.light.main}
-        underlineColorAndroid={theme === 'dark' ? colors.dark.main : colors.light.main}
+        selectionColor={colors[theme].main}
         placeholder="Enter lobby id"
         placeholderTextColor="lightgrey"
         autoCapitalize="none"
@@ -78,24 +103,24 @@ const PlayerMenu = ({
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
         <TouchableOpacity onPress={insertFromClipboard}>
           <MaterialCommunityIcons
-            color={theme === 'dark' ? colors.dark.text : colors.light.text}
+            color={colors[theme].text}
             name='clipboard-text-outline'
             size={30} />
         </TouchableOpacity>
         <TouchableOpacity onPress={clearInput} disabled={!Boolean(textInput.value.length)}>
           <MaterialCommunityIcons
-            color={!Boolean(textInput.value.length) ? 'grey' : theme === 'dark' ? colors.dark.text : colors.light.text}
+            color={!Boolean(textInput.value.length) ? 'grey' : colors[theme].text}
             name='backspace-outline'
             size={30} />
         </TouchableOpacity>
       </View>
 
-      {textInput.err && <Text style={styles.infoText}>{textInput.err}</Text>}
+      {Boolean(textInput.err.length) && <Text style={styles.infoText}>{textInput.err}</Text>}
 
       <Button
         disabled={!textInput.value.length}
         onPress={handleJoinGame}
-        type="contained"
+        mode="contained"
         style={textInput.value.length ? styles.button : { ...styles.button, backgroundColor: 'grey' }}
         labelStyle={{ color: 'white' }}
         contentStyle={{ margin: 10 }}>
@@ -105,7 +130,7 @@ const PlayerMenu = ({
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
   hapticsEnabled: selectHaptics
 })

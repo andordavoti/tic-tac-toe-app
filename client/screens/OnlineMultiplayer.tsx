@@ -77,7 +77,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
 
     // Checking if lobby exists
     if (!snapshot.exists) {
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error' as any);
       return setTextInput({ ...textInput, err: 'This lobby does not exist...' });
     }
 
@@ -86,13 +86,13 @@ const OnlineMultiplayer: React.FC<Props> = ({
     const playerId = players[0].connected ? 1 : players[1].connected ? 0 : 0;
 
     if (connected.length >= 2) {
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error' as any);
       return setTextInput({ ...textInput, err: 'Lobby is full...' });
     }
 
     setPlayerId(playerId);
     setLobbyId(textInput.value);
-    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
   };
 
   const handleInputChange = (text: string) => setTextInput({ ...textInput, value: text });
@@ -135,7 +135,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
   }
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   playerId: selectPlayerId,
   lobbyId: selectLobbyId,
   theme: selectTheme,
@@ -152,31 +152,31 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg,
+      backgroundColor: colors[theme].bg,
     },
     joinText: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       marginTop: 20,
       fontSize: 20,
       textAlign: 'center',
       fontWeight: '500',
     },
     text: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 20,
       textAlign: 'center',
       fontWeight: '500',
     },
     lobbyId: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       marginTop: 22,
       fontSize: 20,
       textAlign: 'center',
       fontWeight: 'bold',
     },
     infoText: {
-      color: theme === 'dark' ? colors.dark.warning : colors.light.warning,
+      color: colors[theme].warning,
       margin: 5,
       fontSize: 15,
       textAlign: 'center',
@@ -185,12 +185,12 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
     button: {
       width: 200,
       margin: 10,
-      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+      backgroundColor: colors[theme].main,
     },
     quitButton: {
       margin: 20,
       marginBottom: 40,
-      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+      backgroundColor: colors[theme].main,
     },
     image: {
       flex: 1,
@@ -206,7 +206,7 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
       width: 200,
       margin: 10,
       borderRadius: 5,
-      borderColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+      borderColor: colors[theme].main,
       fontSize: 20,
     },
   });

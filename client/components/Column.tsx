@@ -7,7 +7,19 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
-const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner, gridSize }) => {
+interface Props {
+  winnerColumns: [] | number[]
+  num: number
+  disableFields: boolean
+  fieldTypes: string[] | null[]
+  action: (e: number) => void
+  theme: 'light' | 'dark'
+  tied: boolean
+  winner: null | 'x' | 'o'
+  gridSize: 3 | 4
+}
+
+const Column: React.FC<Props> = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, tied, winner, gridSize }) => {
 
   const [isWinnerColumn, setIsWinnerColumn] = useState(false)
 
@@ -39,7 +51,7 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
       style={styles.column}
       onPress={() => { if (!currentFieldTypes) action(num) /* TODO: Add an else with error haptics here */ }}>
       {currentFieldTypes !== '' ?
-        <View style={{ flex: 1, justifyContent: 'center', alignItem: 'center' }}>
+        <View style={styles.container}>
           <MaterialCommunityIcons
             style={{ textAlign: 'center', marginTop: 6 }}
             color={!isWinnerColumn ? ((winner || tied) && disableFields ? 'red' : 'white') : (theme === 'dark' ? colors.dark.main : colors.dark.main)}
@@ -51,16 +63,21 @@ const Column = ({ winnerColumns, num, disableFields, fieldTypes, action, theme, 
   );
 }
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
 })
 
-const getStyleSheet = (theme, gridSize, disableFields, size3, size4) => {
+const getStyleSheet = (theme: 'light' | 'dark', gridSize: 3 | 4, disableFields: boolean, size3, size4) => {
   return StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItem: 'center'
+    },
     column: {
       width: gridSize === 4 ? size4 : size3,
       height: gridSize === 4 ? size4 : size3,
-      backgroundColor: disableFields ? (theme === 'dark' ? colors.dark.disabledColumn : colors.light.disabledColumn) : (theme === 'dark' ? colors.dark.main : colors.light.main),
+      backgroundColor: disableFields ? colors[theme].disabledColumn : colors[theme].main,
       borderRadius: 10,
       margin: 10,
     }

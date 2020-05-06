@@ -49,7 +49,7 @@ const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
 })

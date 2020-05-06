@@ -22,7 +22,43 @@ import { colors } from '../../lib/constants';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
-const GameLoader = ({
+interface Styles {
+  joinText: object
+  lobbyId: object
+  text: object
+  quitButton: object
+}
+
+interface Player {
+  connected: boolean
+  id: string
+}
+
+interface Game {
+  lobbyId: string
+  playerId: number
+  xIsNext: number
+  fieldTypes: null[] | string[]
+  players: Player[]
+  gameLoaded: boolean
+}
+
+interface SetGameArg {
+  lobbyId: string
+  //...snapshot.data() TODO: what's this type?
+}
+
+interface Props {
+  styles: Styles
+  game: Game
+  setGameLoaded: (e: SetGameArg) => void
+  setGameStateChange: (e: SetGameArg) => void
+  quitGame: () => void
+  theme: 'light' | 'dark'
+  hapticsEnabled: boolean
+}
+
+const GameLoader: React.FC<Props> = ({
   styles,
   game,
   setGameLoaded,
@@ -32,6 +68,9 @@ const GameLoader = ({
   hapticsEnabled,
 }) => {
   const { playerId, lobbyId } = game;
+
+  console.log('styles', styles)
+  console.log('game', game)
 
   const disconnectPlayer = async () => {
     try {
@@ -103,7 +142,7 @@ const GameLoader = ({
   const copyLobbyId = () => {
     showToast('Copied Lobby ID to Clipboard');
     Clipboard.setString(lobbyId);
-    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
   };
 
   return (
@@ -114,7 +153,7 @@ const GameLoader = ({
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>
             <MaterialCommunityIcons
-              color={theme === 'dark' ? colors.dark.text : colors.light.text}
+              color={colors[theme].text}
               name="clipboard-text-outline"
               style={{ marginLeft: 10, marginTop: 15 }}
               size={30}
@@ -131,7 +170,7 @@ const GameLoader = ({
       />
 
       <Button
-        type="contained"
+        mode="contained"
         style={styles.quitButton}
         labelStyle={{ color: 'white' }}
         onPress={() => {
@@ -145,7 +184,7 @@ const GameLoader = ({
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   game: selectGame,
   theme: selectTheme,
   hapticsEnabled: selectHaptics,

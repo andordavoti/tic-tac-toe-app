@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Props } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
@@ -19,16 +19,38 @@ import { quitGame } from '../../redux/game/game.actions';
 import { showToast } from '../../lib/toast';
 import Grid from '../Grid';
 import CountdownTimer from '../CountdownTimer';
+
+interface GameState {
+  fieldTypes: null[] | string[]
+  playerId: number
+  xIsNext: number
+  gameStarted: boolean
+  gameSize: 3 | 4
+}
+
+interface WinnerState {
+  winner: null | 'x' | 'o',
+  tied: boolean
+  winnerColumns: null[] | number[]
+}
+
+interface Props {
+  gameState: GameState
+  lobbyId: string
+  hapticsEnabled: boolean
+  theme: 'light' | 'dark'
+}
+
 const initialState = {
   winner: null,
   tied: false,
   winnerColumns: [],
 };
 
-const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
+const OnlineGameCanvas: React.FC<Props> = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
   const dispatch = useDispatch();
   const [timers, setTimers] = useState([]);
-  const [winnerDetails, setWinnerDetails] = useState(initialState);
+  const [winnerDetails, setWinnerDetails] = useState<WinnerState>(initialState);
   const { winner, winnerColumns, tied } = winnerDetails;
   const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
   const timeOutDuration = 60000;
@@ -36,7 +58,7 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
 
   const canvasFrozen = playerId !== xIsNext;
 
-  const handleFieldPress = async (num) => {
+  const handleFieldPress = async (num: number) => {
     if (canvasFrozen) return;
     const docRef = firestore.collection('lobbies').doc(lobbyId);
 
@@ -70,13 +92,13 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
     const result = checkGame(fieldTypes, gameSize);
     if (result.winner && result.winnerColumns.length) {
       setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
     } else if (winner) {
       setWinnerDetails(initialState);
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error' as any);
     } else if (result.tied) {
       setWinnerDetails({ ...initialState, tied: true });
-      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error');
+      if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('error' as any);
     }
 
     timers.forEach((timer) => {
@@ -117,7 +139,7 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
               : `It's a tie`}
           </Text>
           <Button
-            type="contained"
+            mode="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
             onPress={handleNewGame}
@@ -141,7 +163,7 @@ const OnlineGameCanvas = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   lobbyId: selectLobbyId,
   playerId: selectPlayerId,
   fieldTypes: selectFieldTypes,
@@ -150,7 +172,7 @@ const mapStateToProps = createStructuredSelector({
   hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: 'light' | 'dark') => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -158,21 +180,21 @@ const getStyleSheet = (theme) => {
       justifyContent: 'center',
     },
     gameOverText: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 30,
       textAlign: 'center',
       fontWeight: '500',
     },
     winnerText: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 20,
       textAlign: 'center',
       fontWeight: 'bold',
     },
     text: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       marginTop: 20,
       fontSize: 20,
       textAlign: 'center',
@@ -181,7 +203,7 @@ const getStyleSheet = (theme) => {
     },
     button: {
       marginBottom: 40,
-      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+      backgroundColor: colors[theme].main
     },
   });
 };

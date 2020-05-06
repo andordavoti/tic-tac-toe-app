@@ -6,26 +6,32 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
-const Spinner = ({ theme, msg, size = 'large' }) => {
+interface Props {
+  theme: 'light' | 'dark'
+  msg: string
+  size: 'small' | 'large' | number
+}
+
+const Spinner: React.FC<Props> = ({ theme, msg, size = 'large' }) => {
 
   const styles = getStyleSheet(theme)
 
   return <View>
     <ActivityIndicator
-      color={theme === 'dark' ? colors.dark.main : colors.light.main}
+      color={colors[theme].main}
       size={size} />
     <Text style={styles.text}>{msg}</Text>
   </View>
 }
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
 })
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: 'light' | 'dark') => {
   return StyleSheet.create({
     text: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       fontWeight: 'bold',
       fontSize: 15,
       margin: 20,

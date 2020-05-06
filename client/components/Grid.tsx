@@ -2,7 +2,17 @@ import React from 'react'
 import { View } from 'react-native'
 import Column from './Column';
 
-const Grid = ({ fieldTypes, gridSize, handlePress, tied, winner, winnerColumns, canvasFrozen }) => {
+interface Props {
+    fieldTypes: null[] | string[]
+    gridSize: 3 | 4
+    handlePress: Function
+    tied: boolean
+    winner: 'x' | 'o' | null
+    winnerColumns: null[] | number[]
+    canvasFrozen: boolean
+}
+
+const Grid: React.FC<Props> = ({ fieldTypes, gridSize, handlePress, tied, winner, winnerColumns, canvasFrozen }) => {
 
     const sizeArray = [...Array(gridSize).keys()]
 

@@ -6,10 +6,32 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { selectTheme } from '../redux/settings/settings.selectors'
 
-const Dropdown = ({ theme, items, placeholder, value, onValueChange, type, styles, label }) => {
+interface Placeholder {
+    label: string
+    value: null
+    color: string
+}
+
+interface Item {
+    label: string
+    value: string | number
+}
+
+interface Props {
+    theme: 'light' | 'dark'
+    items: Item[]
+    placeholder: Placeholder
+    value: number
+    onValueChange: (type: string, value: number) => void
+    type: string
+    textStyle: object
+    label: string
+}
+
+const Dropdown: React.FC<Props> = ({ theme, items, placeholder, value, onValueChange, type, textStyle, label }) => {
 
     return <View style={stylesDark.container}>
-        <Text style={styles.text}>{label}</Text>
+        <Text style={textStyle}>{label}</Text>
         <RNPickerSelect
             Icon={() => { return <MaterialCommunityIcons name='arrow-down' size={25} color={theme === 'dark' ? 'white' : 'black'} /> }}
             style={theme === 'dark' ? { ...stylesDark, iconContainer: { top: 10, right: 5 } } : { ...stylesLight, iconContainer: { top: 10, right: 5 } }}
@@ -82,7 +104,7 @@ const stylesLight = StyleSheet.create({
     },
 })
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
     theme: selectTheme
 })
 

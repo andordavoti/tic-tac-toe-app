@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Clock, Value, Easing } from 'react-native-reanimated';
+import { Clock, Easing } from 'react-native-reanimated';
 import { timing } from 'react-native-redash';
 import CircularProgress from './CircularProgress';
 

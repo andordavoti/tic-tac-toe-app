@@ -57,7 +57,7 @@ const SettingsScreen: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrent
     return <View style={styles.container}>
         <Dropdown
             label='Theme:'
-            styles={styles}
+            textStyle={styles.text}
             value={selectedTheme}
             onValueChange={onValueChange}
             type='theme'
@@ -68,7 +68,7 @@ const SettingsScreen: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrent
                 <View style={styles.row}>
                     <Text style={styles.text}>Haptics:</Text>
                     <Switch
-                        color={theme === 'dark' ? colors.dark.main : colors.light.main}
+                        color={colors[theme].main}
                         value={hapticsEnabled}
                         onValueChange={() => useHaptics(!hapticsEnabled)} />
                 </View>
@@ -91,9 +91,9 @@ const SettingsScreen: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrent
 
 
             <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => openLink(urls.projectGithub)}>
-                <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
+                <MaterialCommunityIcons color={colors[theme].text} name='github-circle' size={25} />
                 <Text style={styles.text}>Project on GitHub</Text>
-                <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
+                <MaterialCommunityIcons color={colors[theme].text} name='github-circle' size={25} />
             </TouchableOpacity>
             <View style={{ flexDirection: 'row' }}>
                 <Button
@@ -122,7 +122,7 @@ const SettingsScreen: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrent
     </View >
 }
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
     theme: selectTheme,
     systemThemeEnabled: selectSystemTheme,
     hapticsEnabled: selectHaptics
@@ -134,7 +134,7 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+            backgroundColor: colors[theme].bg
         },
         row: {
             flexDirection: 'row',
@@ -144,14 +144,14 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
         text: {
             textAlign: 'center',
             fontSize: 20,
-            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            color: colors[theme].text,
             margin: 10,
             fontWeight: 'bold'
         },
         textAuthor: {
             textAlign: 'center',
             fontSize: 20,
-            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            color: colors[theme].text,
             margin: 5,
             marginBottom: 20,
             fontStyle: 'italic',
@@ -159,14 +159,14 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
         textVersion: {
             textAlign: 'center',
             fontSize: 20,
-            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            color: colors[theme].text,
             margin: 20,
             fontWeight: 'bold'
         },
         header: {
             textAlign: 'center',
             fontSize: 25,
-            color: theme === 'dark' ? colors.dark.text : colors.light.text,
+            color: colors[theme].text,
             fontWeight: '600',
             margin: 20,
             marginTop: 50,
@@ -174,7 +174,7 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
         },
         button: {
             margin: 10,
-            backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+            backgroundColor: colors[theme].main,
         },
         rowData: {
             minHeight: 30,

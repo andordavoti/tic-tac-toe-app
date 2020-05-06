@@ -1,10 +1,10 @@
-export const getFieldType = (playerId) => (playerId === 0 ? 'x' : 'o');
+export const getFieldType = (playerId: number) => (playerId === 0 ? 'x' : 'o');
 
-export const checkGame = (fieldTypes, size = 3) => {
+export const checkGame = (fieldTypes: null[] | string[], size = 3) => {
   const users = ['x', 'o'];
   let tied = false;
   let winner = null;
-  let winnerColumns = [];
+  let winnerColumns: number[] = [];
   let winnerCombinations;
 
   if (size === 3) {
@@ -61,7 +61,7 @@ export const checkGame = (fieldTypes, size = 3) => {
   }
 
   let stringValues = 0;
-  fieldTypes.forEach((fieldType) => {
+  fieldTypes.forEach((fieldType: null | string) => {
     if (typeof fieldType === 'string') stringValues++;
   });
 
@@ -69,7 +69,7 @@ export const checkGame = (fieldTypes, size = 3) => {
   return { winner, winnerColumns, tied };
 };
 
-export const getPlayerName = (playerId) => {
+export const getPlayerName = (playerId: number) => {
   if (playerId === 0) return 'X';
   else if (playerId === 1) return 'O';
 };

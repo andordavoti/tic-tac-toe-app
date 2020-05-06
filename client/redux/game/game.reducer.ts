@@ -6,6 +6,11 @@ import {
   QUIT_GAME
 } from './game.types';
 
+interface Action {
+  type: string
+  payload: //TODO: what's the pay load type?
+}
+
 const initialState = {
   lobbyId: undefined,
   playerId: undefined,
@@ -15,7 +20,7 @@ const initialState = {
   gameLoaded: false,
 };
 
-const gameReducer = (state = initialState, action) => {
+const gameReducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case GAME_LOADED:
       return {

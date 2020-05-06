@@ -1,6 +1,14 @@
 import { createSelector } from 'reselect';
 
-const selectSettingsState = state => state.settings;
+interface State {
+    settings: {
+        hapticsEnabled: boolean
+        theme: 'light' | 'dark'
+        systemThemeEnabled: boolean
+    }
+}
+
+const selectSettingsState = (state: State) => state.settings;
 
 export const selectSettings = createSelector([selectSettingsState], settings => settings);
 
