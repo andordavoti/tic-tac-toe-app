@@ -10,7 +10,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { themeDropdownItems } from '../lib/dropdownItems'
-import { colors } from '../lib/constants'
+import { colors, urls } from '../lib/constants'
 import Dropdown from '../components/Dropdown'
 
 import { connect } from 'react-redux'
@@ -45,12 +45,6 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
 
     const openLink = async link => await WebBrowser.openBrowserAsync(link)
 
-    const links = {
-        andor: 'https://github.com/andordavoti',
-        sanna: 'https://github.com/sannajammeh',
-        project: 'https://github.com/andordavoti/tic-tac-toe-app'
-    }
-
     return <View style={styles.container}>
         <Dropdown
             label='Theme:'
@@ -76,18 +70,18 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
             <Text style={styles.header}>About the App:</Text>
             <Text style={{ ...styles.text, marginBottom: 20 }}>Developed by:</Text>
             <View style={styles.row}>
-                <TouchableOpacity onPress={() => openLink(links.andor)}>
+                <TouchableOpacity onPress={() => openLink(urls.andorGithub)}>
                     <Text style={styles.textAuthor}>Andor Davoti</Text>
                 </TouchableOpacity>
                 <Text style={{ ...styles.text, marginBottom: 20, margin: 5 }}>&#38; </Text>
 
-                <TouchableOpacity onPress={() => openLink(links.sanna)}>
+                <TouchableOpacity onPress={() => openLink(urls.sannaGithub)}>
                     <Text style={styles.textAuthor}>Sanna Jammeh</Text>
                 </TouchableOpacity>
             </View>
 
 
-            <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => openLink(links.project)}>
+            <TouchableOpacity style={{ ...styles.row, marginBottom: 20 }} onPress={() => openLink(urls.projectGithub)}>
                 <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />
                 <Text style={styles.text}>Project on GitHub</Text>
                 <MaterialCommunityIcons color={theme === 'dark' ? colors.dark.text : colors.light.text} name='github-circle' size={25} />

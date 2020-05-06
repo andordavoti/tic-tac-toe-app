@@ -16,5 +16,8 @@ export const colors = {
 };
 
 export const urls = {
+  andorGithub: 'https://github.com/andordavoti',
+  sannaGithub: 'https://github.com/sannajammeh',
+  projectGithub: 'https://github.com/andordavoti/tic-tac-toe-app',
   gameUrl: 'https://us-central1-ticktacktoe-7aa6d.cloudfunctions.net/game',
 }
