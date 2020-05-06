@@ -8,7 +8,15 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { selectHaptics, selectTheme } from "../redux/settings/settings.selectors";
 
-const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
+interface Props {
+  theme: 'light' | 'dark'
+  hapticsEnabled: boolean
+  navigation: {
+    navigate: (e: string) => void
+  }
+}
+
+const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
 
   const styles = getStyleSheet(theme)
 
@@ -17,7 +25,7 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
       <Text style={styles.text}>Select Mode:</Text>
       <View>
         <Button
-          type="contained"
+          mode="contained"
           style={styles.button}
           labelStyle={{ color: 'white' }}
           onPress={() => {
@@ -27,7 +35,7 @@ const SelectMode = ({ navigation, hapticsEnabled, theme }) => {
           contentStyle={{ margin: 10 }}
         >Multiplayer</Button>
         <Button
-          type="contained"
+          mode="contained"
           style={styles.button}
           labelStyle={{ color: 'white' }}
           onPress={() => {
@@ -46,13 +54,13 @@ const mapStateToProps = createStructuredSelector({
   hapticsEnabled: selectHaptics,
 })
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: 'light' | 'dark') => {
   return StyleSheet.create({
     container: {
       flex: 1,
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+      backgroundColor: colors[theme].bg
     },
     buttonContainer: {
       width: 250,
@@ -61,10 +69,10 @@ const getStyleSheet = (theme) => {
     },
     button: {
       margin: 10,
-      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main
+      backgroundColor: colors[theme].main
     },
     text: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 20,
       textAlign: "center",

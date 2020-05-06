@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -19,7 +19,16 @@ import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-const OnlineMultiplayer = ({
+interface Props {
+  lobbyId: string
+  playerId: number
+  setLobbyId: (e: string) => void
+  setPlayerId: (e: number) => void
+  theme: 'light' | 'dark'
+  hapticsEnabled: boolean
+}
+
+const OnlineMultiplayer: React.FC<Props> = ({
   lobbyId,
   playerId,
   setLobbyId,
@@ -86,9 +95,9 @@ const OnlineMultiplayer = ({
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
   };
 
-  const handleInputChange = (text) => setTextInput({ ...textInput, value: text });
+  const handleInputChange = (text: string) => setTextInput({ ...textInput, value: text });
 
-  const handleDropdownChange = (type, value) => setGridSize(value);
+  const handleDropdownChange = (type: string, value: number) => setGridSize(value);
 
   if (connected) {
     return (
@@ -137,7 +146,7 @@ const actions = {
   setPlayerId,
 };
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: 'light' | 'dark') => {
   return StyleSheet.create({
     container: {
       flex: 1,

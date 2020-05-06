@@ -7,7 +7,11 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { selectTheme } from '../redux/settings/settings.selectors'
 
-const Multiplayer = ({ theme }) => {
+interface Props {
+  theme: 'light' | 'dark'
+}
+
+const Multiplayer: React.FC<Props> = ({ theme }) => {
   const styles = getStyleSheet(theme)
 
   return <View style={styles.container}>
@@ -19,13 +23,13 @@ const mapStateToProps = createStructuredSelector({
   theme: selectTheme
 })
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: 'light' | 'dark') => {
   return StyleSheet.create({
     container: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: theme === 'dark' ? colors.dark.bg : colors.light.bg
+      backgroundColor: colors[theme].bg
     }
   })
 }

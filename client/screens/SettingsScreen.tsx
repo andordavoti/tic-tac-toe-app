@@ -18,7 +18,16 @@ import { setCurrentTheme, useSystemTheme, useHaptics } from '../redux/settings/s
 import { createStructuredSelector } from 'reselect';
 import { selectTheme, selectSystemTheme, selectHaptics } from '../redux/settings/settings.selectors';
 
-const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemTheme, useHaptics, hapticsEnabled }) => {
+interface Props {
+    theme: 'light' | 'dark'
+    systemThemeEnabled: boolean
+    setCurrentTheme: (e: 'light' | 'dark') => void
+    useSystemTheme: (e: boolean) => void
+    useHaptics: (e: boolean) => void
+    hapticsEnabled: boolean
+}
+
+const SettingsScreen: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemTheme, useHaptics, hapticsEnabled }) => {
 
     const [selectedTheme, setSelectedTheme] = useState('system')
 
@@ -29,7 +38,7 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
         else setSelectedTheme(theme)
     }, [])
 
-    const onValueChange = (type, value) => {
+    const onValueChange = (type: 'theme', value: 'system' | 'light' | 'dark') => {
         if (type === 'theme') {
             if (value === 'system') {
                 useSystemTheme(true)
@@ -43,7 +52,7 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
         }
     }
 
-    const openLink = async link => await WebBrowser.openBrowserAsync(link)
+    const openLink = async (link: string) => await WebBrowser.openBrowserAsync(link)
 
     return <View style={styles.container}>
         <Dropdown
@@ -66,7 +75,7 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
                 : null
         }
 
-        <View styles={{ marginBottom: getBottomSpace() }}>
+        <View style={{ marginBottom: getBottomSpace() }}>
             <Text style={styles.header}>About the App:</Text>
             <Text style={{ ...styles.text, marginBottom: 20 }}>Developed by:</Text>
             <View style={styles.row}>
@@ -88,7 +97,7 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
             </TouchableOpacity>
             <View style={{ flexDirection: 'row' }}>
                 <Button
-                    type="contained"
+                    mode="contained"
                     style={styles.button}
                     labelStyle={{ color: 'white' }}
                     onPress={() => {
@@ -98,7 +107,7 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
                     Rate App
                         </Button>
                 <Button
-                    type="contained"
+                    mode="contained"
                     style={styles.button}
                     labelStyle={{ color: 'white' }}
                     onPress={() => {
@@ -119,7 +128,7 @@ const mapStateToProps = createStructuredSelector({
     hapticsEnabled: selectHaptics
 })
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: 'light' | 'dark') => {
     return StyleSheet.create({
         container: {
             flex: 1,

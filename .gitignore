@@ -13,7 +13,7 @@ client/web-report/
 # macOS
 client/.DS_Store
 
-client/lib/apiKeys.js
+client/lib/apiKeys.ts
 
 #global
 
