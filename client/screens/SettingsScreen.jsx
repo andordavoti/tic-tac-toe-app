@@ -46,7 +46,7 @@ const SettingsScreen = ({ theme, systemThemeEnabled, setCurrentTheme, useSystemT
     const openLink = async link => await WebBrowser.openBrowserAsync(link)
 
     const links = {
-        andor: 'https://andordavoti.com',
+        andor: 'https://github.com/andordavoti',
         sanna: 'https://github.com/sannajammeh',
         project: 'https://github.com/andordavoti/tic-tac-toe-app'
     }

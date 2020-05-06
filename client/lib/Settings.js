@@ -5,7 +5,6 @@ export const colors = {
     bg: '#E6EAEB',
     warning: '#d63c09',
     disabledColumn: '#2A2D34'
-
   },
   dark: {
     main: '#497453',
