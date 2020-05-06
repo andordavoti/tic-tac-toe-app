@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { View, StatusBar } from 'react-native';
 import { decode, encode } from 'base-64';
 import AppNavigator from './components/AppNavigator';
@@ -9,7 +9,7 @@ import store from './redux/store';
 if (!global.btoa) global.btoa = encode;
 if (!global.atob) global.atob = decode;
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <Provider store={store}>
       <View style={{ flex: 1 }}>
