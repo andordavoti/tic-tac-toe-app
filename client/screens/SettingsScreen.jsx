@@ -10,7 +10,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { themeDropdownItems } from '../lib/dropdownItems'
-import { colors } from '../lib/Settings'
+import { colors } from '../lib/constants'
 import Dropdown from '../components/Dropdown'
 
 import { connect } from 'react-redux'

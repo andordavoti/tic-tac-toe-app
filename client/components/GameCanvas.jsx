@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
 import { checkGame } from '../lib/gameCanvasUtils';
-import { colors } from '../lib/Settings';
+import { colors } from '../lib/constants';
 import { connect } from 'react-redux';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
 import { createStructuredSelector } from 'reselect';

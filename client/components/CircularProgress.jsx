@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { Circle } from 'react-native-svg';
 import Animated, { interpolate, multiply } from 'react-native-reanimated';
-import { colors } from '../lib/Settings';
+import { colors } from '../lib/constants';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);

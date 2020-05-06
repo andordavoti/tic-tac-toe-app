@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, Clipboard, Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper';
-import { colors } from '../../lib/Settings';
+import { colors } from '../../lib/constants';
 import { showToast } from '../../lib/toast';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';

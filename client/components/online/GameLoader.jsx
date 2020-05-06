@@ -18,7 +18,7 @@ import { selectGame } from '../../redux/game/game.selectors';
 import OnlineGameCanvas from './OnlineGameCanvas';
 import { showToast } from '../../lib/toast';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
-import { colors } from '../../lib/Settings';
+import { colors } from '../../lib/constants';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 

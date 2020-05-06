@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, urls } from '../lib/Settings';
+import { colors, urls } from '../lib/constants';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
@@ -96,24 +96,24 @@ const OnlineMultiplayer = ({
         {lobbyId ? (
           <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
         ) : (
-          //No nested if, loading state passed directly to component
-          <PlayerMenuWithSpinner
-            msg="Connecting to game server"
-            loading={loading}
-            {...{
-              setTextInput,
-              styles,
-              textInput,
-              gridSize,
-              setGridSize,
-              handleDropdownChange,
-              handleInputChange,
-              handleNewGame,
-              handleJoinGame,
-            }}
-          />
-          //No nested if, loading state passed directly to component
-        )}
+            //No nested if, loading state passed directly to component
+            <PlayerMenuWithSpinner
+              msg="Connecting to game server"
+              loading={loading}
+              {...{
+                setTextInput,
+                styles,
+                textInput,
+                gridSize,
+                setGridSize,
+                handleDropdownChange,
+                handleInputChange,
+                handleNewGame,
+                handleJoinGame,
+              }}
+            />
+            //No nested if, loading state passed directly to component
+          )}
       </View>
     );
   } else {

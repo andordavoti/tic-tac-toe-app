@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../lib/Settings';
+import { colors } from '../lib/constants';
 import { ActivityIndicator } from "react-native-paper";
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';

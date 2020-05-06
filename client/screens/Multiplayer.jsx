@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { View, StyleSheet } from 'react-native'
 
-import { colors } from '../lib/Settings'
+import { colors } from '../lib/constants'
 import GameCanvas from '../components/GameCanvas'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { colors } from '../lib/Settings';
+import { colors } from '../lib/constants';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectTheme } from '../redux/settings/settings.selectors';
