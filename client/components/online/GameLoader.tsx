@@ -19,43 +19,45 @@ import OnlineGameCanvas from './OnlineGameCanvas';
 import { showToast } from '../../lib/toast';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import { colors } from '../../lib/constants';
+import { ThemeMode } from '../../types/Theme';
+import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
 interface Styles {
-  joinText: object
-  lobbyId: object
-  text: object
-  quitButton: object
+  joinText: object;
+  lobbyId: object;
+  text: object;
+  quitButton: object;
 }
 
 interface Player {
-  connected: boolean
-  id: string
+  connected: boolean;
+  id: string;
 }
 
 interface Game {
-  lobbyId: string
-  playerId: number
-  xIsNext: number
-  fieldTypes: null[] | string[]
-  players: Player[]
-  gameLoaded: boolean
+  lobbyId: LobbyId;
+  playerId: PlayerId;
+  xIsNext: number;
+  fieldTypes: FieldTypes;
+  players: Player[];
+  gameLoaded: boolean;
 }
 
 interface SetGameArg {
-  lobbyId: string
+  lobbyId: string;
   //...snapshot.data() TODO: what's this type?
 }
 
 interface Props {
-  styles: Styles
-  game: Game
-  setGameLoaded: (e: SetGameArg) => void
-  setGameStateChange: (e: SetGameArg) => void
-  quitGame: () => void
-  theme: 'light' | 'dark'
-  hapticsEnabled: boolean
+  styles: Styles;
+  game: Game;
+  setGameLoaded: (e: SetGameArg) => void;
+  setGameStateChange: (e: SetGameArg) => void;
+  quitGame: () => void;
+  theme: ThemeMode;
+  hapticsEnabled: boolean;
 }
 
 const GameLoader: React.FC<Props> = ({
@@ -69,21 +71,20 @@ const GameLoader: React.FC<Props> = ({
 }) => {
   const { playerId, lobbyId } = game;
 
-  console.log('styles', styles)
-  console.log('game', game)
-
   const disconnectPlayer = async () => {
     try {
       const docRef = firestore.collection('lobbies').doc(lobbyId);
       const getGameState = await docRef.get();
-      const gamePlayers = getGameState.data().players;
+      const gamePlayers = getGameState.data()?.players as Player[] | undefined;
+      if (!gamePlayers) return;
 
       const players = modifyPlayer(gamePlayers, playerId, { connected: false });
 
       await docRef.set({ players }, { merge: true });
       quitGame();
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // TODO: Add sentry here.
+      showError();
     }
   };
 
@@ -95,7 +96,8 @@ const GameLoader: React.FC<Props> = ({
 
       await docRef.set({ players }, { merge: true });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // TODO: Add sentry here.
+      showError();
     }
   };
 
@@ -134,7 +136,7 @@ const GameLoader: React.FC<Props> = ({
   }, [lobbyId]);
 
   const connectedPlayers = useMemo(() => {
-    const result = game.players ? getConnectedPlayers(game.players) : 0;
+    const result = game.players ? getConnectedPlayers(game.players) : [];
 
     return result;
   }, [game.players]);

@@ -7,36 +7,11 @@ import { showToast } from '../../lib/toast';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
-import * as Haptics from 'expo-haptics'
+import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
 import Dropdown from '../Dropdown';
 import { gridSizeDropdownItems } from '../../lib/dropdownItems';
-
-interface Styles {
-  text: object
-  button: object
-  joinText: object
-  input: object
-  infoText: object
-}
-
-interface TextInput {
-  value: string
-  err: string
-}
-
-interface Props {
-  styles: Styles
-  textInput: TextInput
-  setTextInput;
-  handleInputChange;
-  gridSize: 3 | 4
-  handleDropdownChange: () => void
-  handleNewGame;
-  handleJoinGame;
-  theme: 'light' | 'dark'
-  hapticsEnabled: boolean
-}
+import { ThemeMode } from '../../types/Theme';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu: React.FC<Props> = ({
@@ -49,41 +24,44 @@ const PlayerMenu: React.FC<Props> = ({
   handleNewGame,
   handleJoinGame,
   theme,
-  hapticsEnabled
+  hapticsEnabled,
 }) => {
   const insertFromClipboard = async () => {
     const text = await Clipboard.getString();
-    showToast('Inserted text from Clipboard')
-    setTextInput((prevState: TextInput) => ({ ...prevState, value: text }));
+    showToast('Inserted text from Clipboard');
+    setTextInput((prevState: TextInputValues) => ({ ...prevState, value: text }));
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
   };
 
   const clearInput = () => {
-    setTextInput((prevState: TextInput) => ({ ...prevState, value: '' }))
+    setTextInput((prevState: TextInputValues) => ({ ...prevState, value: '' }));
     if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-    Toast.hide
-  }
+    Toast.hide;
+  };
 
   return (
     <View>
       <View style={{ width: 130, alignSelf: 'center' }}>
         <Dropdown
-          label='Grid Size:'
+          label="Grid Size:"
           textStyle={styles.text}
           value={gridSize}
           onValueChange={handleDropdownChange}
-          type='setGridSize'
+          type="setGridSize"
           placeholder={{ label: 'Select Grid Size', value: null, color: '#9EA0A4' }}
-          items={gridSizeDropdownItems} />
+          items={gridSizeDropdownItems}
+        />
       </View>
-      <Button onPress={() => {
-        handleNewGame()
-        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-      }}
+      <Button
+        onPress={() => {
+          handleNewGame();
+          if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+        }}
         mode="contained"
         style={styles.button}
         labelStyle={{ color: 'white' }}
-        contentStyle={{ margin: 10 }}>
+        contentStyle={{ margin: 10 }}
+      >
         New Game
       </Button>
       <Text style={styles.joinText}>Join Game:</Text>
@@ -97,21 +75,23 @@ const PlayerMenu: React.FC<Props> = ({
         placeholder="Enter lobby id"
         placeholderTextColor="lightgrey"
         autoCapitalize="none"
-        underlineColorAndroid='transparent'
+        underlineColorAndroid="transparent"
       />
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
         <TouchableOpacity onPress={insertFromClipboard}>
           <MaterialCommunityIcons
             color={colors[theme].text}
-            name='clipboard-text-outline'
-            size={30} />
+            name="clipboard-text-outline"
+            size={30}
+          />
         </TouchableOpacity>
         <TouchableOpacity onPress={clearInput} disabled={!Boolean(textInput.value.length)}>
           <MaterialCommunityIcons
             color={!Boolean(textInput.value.length) ? 'grey' : colors[theme].text}
-            name='backspace-outline'
-            size={30} />
+            name="backspace-outline"
+            size={30}
+          />
         </TouchableOpacity>
       </View>
 
@@ -121,9 +101,12 @@ const PlayerMenu: React.FC<Props> = ({
         disabled={!textInput.value.length}
         onPress={handleJoinGame}
         mode="contained"
-        style={textInput.value.length ? styles.button : { ...styles.button, backgroundColor: 'grey' }}
+        style={
+          textInput.value.length ? styles.button : { ...styles.button, backgroundColor: 'grey' }
+        }
         labelStyle={{ color: 'white' }}
-        contentStyle={{ margin: 10 }}>
+        contentStyle={{ margin: 10 }}
+      >
         Join
       </Button>
     </View>
@@ -132,7 +115,33 @@ const PlayerMenu: React.FC<Props> = ({
 
 const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
-  hapticsEnabled: selectHaptics
-})
+  hapticsEnabled: selectHaptics,
+});
 
-export default connect(mapStateToProps)(PlayerMenu)
+export default connect(mapStateToProps)(PlayerMenu);
+
+interface Styles {
+  text: object;
+  button: object;
+  joinText: object;
+  input: object;
+  infoText: object;
+}
+
+interface TextInputValues {
+  value: string;
+  err: string;
+}
+
+interface Props {
+  styles: Styles;
+  textInput: TextInputValues;
+  setTextInput: any;
+  handleInputChange: any;
+  gridSize: 3 | 4;
+  handleDropdownChange: () => void;
+  handleNewGame: any;
+  handleJoinGame: any;
+  theme: ThemeMode;
+  hapticsEnabled: boolean;
+}

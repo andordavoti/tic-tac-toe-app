@@ -15,6 +15,7 @@ import { createStructuredSelector } from 'reselect';
 import { connect, useSelector } from 'react-redux';
 import { setCurrentTheme } from '../redux/settings/settings.action';
 import { selectSystemTheme, selectTheme } from '../redux/settings/settings.selectors';
+import { ThemeMode } from '../types/Theme';
 
 const Tab = createBottomTabNavigator();
 
@@ -103,15 +104,16 @@ const SettingsStackScreen: React.FC = () => {
 };
 
 interface Props {
-  theme: 'light' | 'dark'
-  systemThemeEnabled: boolean
-  setCurrentTheme: (e: 'light' | 'dark') => void
+  theme: ThemeMode;
+  systemThemeEnabled: boolean;
+  setCurrentTheme: (param: ThemeMode) => void;
 }
 
 const AppNavigator: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
   const deviceTheme = useColorScheme();
 
-  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled) setCurrentTheme(deviceTheme)
+  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled)
+    setCurrentTheme(deviceTheme);
 
   return (
     <AppearanceProvider>

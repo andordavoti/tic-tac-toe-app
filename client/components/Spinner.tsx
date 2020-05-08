@@ -1,43 +1,38 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors } from '../lib/constants';
-import { ActivityIndicator } from "react-native-paper";
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { ActivityIndicator } from 'react-native-paper';
+import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
+import { ThemeMode } from '../types/Theme';
 
 interface Props {
-  theme: 'light' | 'dark'
-  msg: string
-  size: 'small' | 'large' | number
+  msg: string;
+  size: 'small' | 'large' | number;
 }
 
-const Spinner: React.FC<Props> = ({ theme, msg, size = 'large' }) => {
+const Spinner: React.FC<Props> = ({ msg, size = 'large' }) => {
+  const theme = useSelector(selectTheme);
+  const styles = getStyleSheet(theme);
 
-  const styles = getStyleSheet(theme)
+  return (
+    <View>
+      <ActivityIndicator color={colors[theme].main} size={size} />
+      <Text style={styles.text}>{msg}</Text>
+    </View>
+  );
+};
 
-  return <View>
-    <ActivityIndicator
-      color={colors[theme].main}
-      size={size} />
-    <Text style={styles.text}>{msg}</Text>
-  </View>
-}
-
-const mapStateToProps = createStructuredSelector<any, any>({
-  theme: selectTheme,
-})
-
-const getStyleSheet = (theme: 'light' | 'dark') => {
+const getStyleSheet = (theme: ThemeMode) => {
   return StyleSheet.create({
     text: {
       color: colors[theme].text,
       fontWeight: 'bold',
       fontSize: 15,
       margin: 20,
-      textAlign: 'center'
-    }
-  })
-}
+      textAlign: 'center',
+    },
+  });
+};
 
-export default connect(mapStateToProps)(Spinner)
+export default Spinner;

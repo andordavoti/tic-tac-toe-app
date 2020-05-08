@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Props } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
@@ -19,26 +19,28 @@ import { quitGame } from '../../redux/game/game.actions';
 import { showToast } from '../../lib/toast';
 import Grid from '../Grid';
 import CountdownTimer from '../CountdownTimer';
+import { ThemeMode } from '../../types/Theme';
+import { FieldTypes, PlayerId, GridNumber, Winner, WinnerColumns, LobbyId } from '../../types/Game';
 
 interface GameState {
-  fieldTypes: null[] | string[]
-  playerId: number
-  xIsNext: number
-  gameStarted: boolean
-  gameSize: 3 | 4
+  fieldTypes: FieldTypes;
+  playerId: PlayerId;
+  xIsNext: number;
+  gameStarted: boolean;
+  gameSize: GridNumber;
 }
 
 interface WinnerState {
-  winner: null | 'x' | 'o',
-  tied: boolean
-  winnerColumns: null[] | number[]
+  winner: Winner;
+  tied: boolean;
+  winnerColumns: WinnerColumns;
 }
 
 interface Props {
-  gameState: GameState
-  lobbyId: string
-  hapticsEnabled: boolean
-  theme: 'light' | 'dark'
+  gameState: GameState;
+  lobbyId: LobbyId;
+  hapticsEnabled: boolean;
+  theme: ThemeMode;
 }
 
 const initialState = {
@@ -49,7 +51,7 @@ const initialState = {
 
 const OnlineGameCanvas: React.FC<Props> = ({ gameState, lobbyId, hapticsEnabled, theme }) => {
   const dispatch = useDispatch();
-  const [timers, setTimers] = useState([]);
+  const [timers, setTimers] = useState<number[] | []>([]);
   const [winnerDetails, setWinnerDetails] = useState<WinnerState>(initialState);
   const { winner, winnerColumns, tied } = winnerDetails;
   const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
@@ -91,7 +93,11 @@ const OnlineGameCanvas: React.FC<Props> = ({ gameState, lobbyId, hapticsEnabled,
   useEffect(() => {
     const result = checkGame(fieldTypes, gameSize);
     if (result.winner && result.winnerColumns.length) {
-      setWinnerDetails({ winner: result.winner, winnerColumns: result.winnerColumns });
+      setWinnerDetails({
+        ...winnerDetails,
+        winner: result.winner,
+        winnerColumns: result.winnerColumns,
+      });
       if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
     } else if (winner) {
       setWinnerDetails(initialState);
@@ -172,7 +178,7 @@ const mapStateToProps = createStructuredSelector<any, any>({
   hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme: 'light' | 'dark') => {
+const getStyleSheet = (theme: ThemeMode) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -203,7 +209,7 @@ const getStyleSheet = (theme: 'light' | 'dark') => {
     },
     button: {
       marginBottom: 40,
-      backgroundColor: colors[theme].main
+      backgroundColor: colors[theme].main,
     },
   });
 };

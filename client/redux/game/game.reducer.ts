@@ -3,13 +3,8 @@ import {
   GAME_STATE_CHANGE,
   SET_LOBBY_ID,
   SET_PLAYER_ID,
-  QUIT_GAME
+  QUIT_GAME,
 } from './game.types';
-
-interface Action {
-  type: string
-  payload //TODO: what's the pay load type?
-}
 
 const initialState = {
   lobbyId: undefined,
@@ -20,7 +15,16 @@ const initialState = {
   gameLoaded: false,
 };
 
-const gameReducer = (state = initialState, action: Action) => {
+export interface GameState {
+  lobbyId: undefined | string;
+  playerId: undefined | number;
+  xIsNext: number;
+  fieldTypes: any[];
+  players: any[];
+  gameLoaded: boolean;
+}
+
+const gameReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GAME_LOADED:
       return {
@@ -55,4 +59,4 @@ const gameReducer = (state = initialState, action: Action) => {
   }
 };
 
-export default gameReducer
+export default gameReducer;

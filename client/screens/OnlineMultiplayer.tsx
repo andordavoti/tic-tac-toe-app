@@ -15,17 +15,18 @@ import { createStructuredSelector } from 'reselect';
 import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
 import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
 import { selectHaptics, selectTheme } from '../redux/settings/settings.selectors';
+import { ThemeMode } from '../types/Theme';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
 interface Props {
-  lobbyId: string
-  playerId: number
-  setLobbyId: (e: string) => void
-  setPlayerId: (e: number) => void
-  theme: 'light' | 'dark'
-  hapticsEnabled: boolean
+  lobbyId: string;
+  playerId: number;
+  setLobbyId: (e: string) => void;
+  setPlayerId: (e: number) => void;
+  theme: ThemeMode;
+  hapticsEnabled: boolean;
 }
 
 const OnlineMultiplayer: React.FC<Props> = ({
@@ -105,24 +106,24 @@ const OnlineMultiplayer: React.FC<Props> = ({
         {lobbyId ? (
           <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
         ) : (
-            //No nested if, loading state passed directly to component
-            <PlayerMenuWithSpinner
-              msg="Connecting to game server"
-              loading={loading}
-              {...{
-                setTextInput,
-                styles,
-                textInput,
-                gridSize,
-                setGridSize,
-                handleDropdownChange,
-                handleInputChange,
-                handleNewGame,
-                handleJoinGame,
-              }}
-            />
-            //No nested if, loading state passed directly to component
-          )}
+          //No nested if, loading state passed directly to component
+          <PlayerMenuWithSpinner
+            msg="Connecting to game server"
+            loading={loading}
+            {...{
+              setTextInput,
+              styles,
+              textInput,
+              gridSize,
+              setGridSize,
+              handleDropdownChange,
+              handleInputChange,
+              handleNewGame,
+              handleJoinGame,
+            }}
+          />
+          //No nested if, loading state passed directly to component
+        )}
       </View>
     );
   } else {
@@ -146,7 +147,7 @@ const actions = {
   setPlayerId,
 };
 
-const getStyleSheet = (theme: 'light' | 'dark') => {
+const getStyleSheet = (theme: ThemeMode) => {
   return StyleSheet.create({
     container: {
       flex: 1,

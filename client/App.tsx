@@ -5,6 +5,7 @@ import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
+declare const global: { HermesInternal: null | {}; btoa: typeof encode; atob: typeof decode };
 // Polyfill for Firebase missing base-64 decoder/encoder
 if (!global.btoa) global.btoa = encode;
 if (!global.atob) global.atob = decode;

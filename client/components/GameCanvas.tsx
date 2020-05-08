@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
+import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-
 import { checkGame } from '../lib/gameCanvasUtils';
 import { colors } from '../lib/constants';
 import { connect } from 'react-redux';
@@ -11,25 +11,25 @@ import { createStructuredSelector } from 'reselect';
 import { gridSizeDropdownItems } from '../lib/dropdownItems';
 import Grid from './Grid';
 import Dropdown from './Dropdown';
+import { ThemeMode } from '../types/Theme';
 
 interface Props {
-  theme: 'light' | 'dark'
-  hapticsEnabled: boolean
+  theme: ThemeMode;
+  hapticsEnabled: boolean;
 }
 
-interface GameState {
-  fieldTypes: [] | string[]
-  turn: string
-  canvasFrozen: boolean
-  winnerColumns: [] | number[]
-  gameStart: boolean
-  winner: null | 'x' | 'o'
-  tied: boolean
-  gridSize: number
+interface GameCanvasState {
+  fieldTypes: FieldTypes;
+  turn: string;
+  canvasFrozen: boolean;
+  winnerColumns: WinnerColumns;
+  gameStart: boolean;
+  winner: Winner;
+  tied: boolean;
+  gridSize: GridNumber;
 }
 
 const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
-
   const styles = getStyleSheet(theme);
 
   const initialState = {
@@ -40,10 +40,10 @@ const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
     gameStart: false,
     winner: null,
     tied: false,
-    gridSize: 3,
+    gridSize: 3 as GridNumber,
   };
 
-  const [gameState, setGameState] = useState<GameState>(initialState);
+  const [gameState, setGameState] = useState<GameCanvasState>(initialState);
 
   const { fieldTypes, canvasFrozen, winnerColumns, gameStart, winner, tied, gridSize } = gameState;
 
@@ -55,8 +55,8 @@ const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
       });
     }
 
-    setGameState((prevState: GameState) => {
-      const fieldTypesCopy = [...prevState.fieldTypes];
+    setGameState((prevState: GameCanvasState) => {
+      const fieldTypesCopy = [...prevState.fieldTypes] as FieldTypes;
       fieldTypesCopy[num] = prevState.turn;
 
       return {
@@ -96,7 +96,7 @@ const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
     }
   }, [gameState]);
 
-  const onValueChange = (type: 'setGridSize', value: 3 | 4) => {
+  const onValueChange = (type: 'setGridSize', value: GridNumber) => {
     if (type === 'setGridSize') {
       setGameState({
         ...gameState,
@@ -168,7 +168,7 @@ const mapStateToProps = createStructuredSelector<any, any>({
   hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme: 'light' | 'dark') => {
+const getStyleSheet = (theme: ThemeMode) => {
   return StyleSheet.create({
     container: {
       flex: 1,
