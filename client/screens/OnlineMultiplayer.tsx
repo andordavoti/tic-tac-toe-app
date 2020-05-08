@@ -106,24 +106,24 @@ const OnlineMultiplayer: React.FC<Props> = ({
         {lobbyId ? (
           <GameLoader styles={styles} playerId={playerId} lobbyId={lobbyId} />
         ) : (
-          //No nested if, loading state passed directly to component
-          <PlayerMenuWithSpinner
-            msg="Connecting to game server"
-            loading={loading}
-            {...{
-              setTextInput,
-              styles,
-              textInput,
-              gridSize,
-              setGridSize,
-              handleDropdownChange,
-              handleInputChange,
-              handleNewGame,
-              handleJoinGame,
-            }}
-          />
-          //No nested if, loading state passed directly to component
-        )}
+            //No nested if, loading state passed directly to component
+            <PlayerMenuWithSpinner
+              msg="Connecting to game server"
+              loading={loading}
+              {...{
+                setTextInput,
+                styles,
+                textInput,
+                gridSize,
+                setGridSize,
+                handleDropdownChange,
+                handleInputChange,
+                handleNewGame,
+                handleJoinGame,
+              }}
+            />
+            //No nested if, loading state passed directly to component
+          )}
       </View>
     );
   } else {
@@ -142,6 +142,7 @@ const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
 });
+
 const actions = {
   setLobbyId,
   setPlayerId,

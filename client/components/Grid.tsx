@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import Column from './Column';
 import { FieldTypes, GridNumber, Winner, WinnerColumns } from '../types/Game';
+
 interface Props {
   fieldTypes: FieldTypes;
   gridSize: GridNumber;

@@ -3,16 +3,12 @@ import { View, StyleSheet } from 'react-native';
 
 import { colors } from '../lib/constants';
 import GameCanvas from '../components/GameCanvas';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 
-interface Props {
-  theme: ThemeMode;
-}
-
-const Multiplayer: React.FC<Props> = ({ theme }) => {
+const Multiplayer: React.FC = () => {
+  const theme = useSelector(selectTheme)
   const styles = getStyleSheet(theme);
 
   return (
@@ -21,10 +17,6 @@ const Multiplayer: React.FC<Props> = ({ theme }) => {
     </View>
   );
 };
-
-const mapStateToProps = createStructuredSelector<any, any>({
-  theme: selectTheme,
-});
 
 const getStyleSheet = (theme: ThemeMode) => {
   return StyleSheet.create({
@@ -37,4 +29,4 @@ const getStyleSheet = (theme: ThemeMode) => {
   });
 };
 
-export default connect(mapStateToProps)(Multiplayer);
+export default Multiplayer;

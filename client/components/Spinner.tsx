@@ -8,7 +8,7 @@ import { ThemeMode } from '../types/Theme';
 
 interface Props {
   msg: string;
-  size: 'small' | 'large' | number;
+  size?: 'small' | 'large' | number;
 }
 
 const Spinner: React.FC<Props> = ({ msg, size = 'large' }) => {

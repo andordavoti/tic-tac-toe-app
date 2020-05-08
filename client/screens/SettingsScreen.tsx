@@ -207,6 +207,4 @@ const getStyleSheet = (theme: ThemeMode) => {
   });
 };
 
-export default connect(mapStateToProps, { setCurrentTheme, enableSystemTheme, enableHaptics })(
-  SettingsScreen
-);
+export default connect(mapStateToProps, { setCurrentTheme, enableSystemTheme, enableHaptics })(SettingsScreen);

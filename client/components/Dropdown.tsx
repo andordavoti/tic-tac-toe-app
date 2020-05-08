@@ -2,10 +2,8 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
-import { ThemeMode } from '../types/Theme';
 
 interface Placeholder {
   label: string;
@@ -19,10 +17,9 @@ interface Item {
 }
 
 interface Props {
-  theme: ThemeMode;
   items: Item[];
   placeholder: Placeholder;
-  value: number;
+  value: number | string;
   onValueChange: (type: string, value: number) => void;
   type: string;
   textStyle: object;
@@ -30,7 +27,6 @@ interface Props {
 }
 
 const Dropdown: React.FC<Props> = ({
-  theme,
   items,
   placeholder,
   value,
@@ -39,6 +35,9 @@ const Dropdown: React.FC<Props> = ({
   textStyle,
   label,
 }) => {
+
+  const theme = useSelector(selectTheme)
+
   return (
     <View style={stylesDark.container}>
       <Text style={textStyle}>{label}</Text>
@@ -127,8 +126,4 @@ const stylesLight = StyleSheet.create({
   },
 });
 
-const mapStateToProps = createStructuredSelector<any, any>({
-  theme: selectTheme,
-});
-
-export default connect(mapStateToProps)(Dropdown);
+export default Dropdown;
