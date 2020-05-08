@@ -1,9 +1,10 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../redux/settings/settings.selectors';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+import RNPickerSelect from "react-native-picker-select";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import { selectTheme } from "../redux/settings/settings.selectors";
+import { colors } from "../lib/constants";
 
 interface Placeholder {
   label: string;
@@ -35,8 +36,7 @@ const Dropdown: React.FC<Props> = ({
   textStyle,
   label,
 }) => {
-
-  const theme = useSelector(selectTheme)
+  const theme = useSelector(selectTheme);
 
   return (
     <View style={stylesDark.container}>
@@ -47,12 +47,12 @@ const Dropdown: React.FC<Props> = ({
             <MaterialCommunityIcons
               name="arrow-down"
               size={25}
-              color={theme === 'dark' ? 'white' : 'black'}
+              color={colors[theme].text}
             />
           );
         }}
         style={
-          theme === 'dark'
+          theme === "dark"
             ? { ...stylesDark, iconContainer: { top: 10, right: 5 } }
             : { ...stylesLight, iconContainer: { top: 10, right: 5 } }
         }
@@ -71,29 +71,29 @@ const Dropdown: React.FC<Props> = ({
 const stylesDark = StyleSheet.create({
   container: {
     paddingBottom: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputIOS: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderWidth: 1.5,
-    borderColor: 'white',
+    borderColor: "white",
     borderRadius: 10,
-    color: 'white',
+    color: "white",
     paddingRight: 30,
   },
   inputAndroid: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 1.5,
-    borderColor: 'white',
+    borderColor: "white",
     borderRadius: 10,
-    color: 'white',
+    color: "white",
     paddingRight: 30,
   },
 });
@@ -103,25 +103,25 @@ const stylesLight = StyleSheet.create({
     paddingBottom: 20,
   },
   inputIOS: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1.5,
-    borderColor: 'black',
+    borderColor: "black",
     borderRadius: 10,
-    color: 'black',
+    color: "black",
     paddingRight: 30,
   },
   inputAndroid: {
-    textAlign: 'center',
+    textAlign: "center",
     fontSize: 16,
     paddingHorizontal: 10,
     paddingVertical: 8,
     borderWidth: 1.5,
-    borderColor: 'black',
+    borderColor: "black",
     borderRadius: 10,
-    color: 'black',
+    color: "black",
     paddingRight: 30,
   },
 });
