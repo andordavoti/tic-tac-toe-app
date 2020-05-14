@@ -19,10 +19,48 @@ import OnlineGameCanvas from './OnlineGameCanvas';
 import { showToast } from '../../lib/toast';
 import { selectHaptics, selectTheme } from '../../redux/settings/settings.selectors';
 import { colors } from '../../lib/constants';
+import { ThemeMode } from '../../types/Theme';
+import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
-const GameLoader = ({
+interface Styles {
+  joinText: object;
+  lobbyId: object;
+  text: object;
+  quitButton: object;
+}
+
+interface Player {
+  connected: boolean;
+  id: string;
+}
+
+interface Game {
+  lobbyId: LobbyId;
+  playerId: PlayerId;
+  xIsNext: number;
+  fieldTypes: FieldTypes;
+  players: Player[];
+  gameLoaded: boolean;
+}
+
+interface SetGameArg {
+  lobbyId: string;
+  //...snapshot.data() TODO: what's this type?
+}
+
+interface Props {
+  styles: Styles;
+  game: Game;
+  setGameLoaded: (e: SetGameArg) => void;
+  setGameStateChange: (e: SetGameArg) => void;
+  quitGame: () => void;
+  theme: ThemeMode;
+  hapticsEnabled: boolean;
+}
+
+const GameLoader: React.FC<Props> = ({
   styles,
   game,
   setGameLoaded,
@@ -37,14 +75,16 @@ const GameLoader = ({
     try {
       const docRef = firestore.collection('lobbies').doc(lobbyId);
       const getGameState = await docRef.get();
-      const gamePlayers = getGameState.data().players;
+      const gamePlayers = getGameState.data()?.players as Player[] | undefined;
+      if (!gamePlayers) return;
 
       const players = modifyPlayer(gamePlayers, playerId, { connected: false });
 
       await docRef.set({ players }, { merge: true });
       quitGame();
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // TODO: Add sentry here.
+      showError();
     }
   };
 
@@ -56,7 +96,8 @@ const GameLoader = ({
 
       await docRef.set({ players }, { merge: true });
     } catch (err) {
-      console.log(err.message);
+      console.log(err.message); // TODO: Add sentry here.
+      showError();
     }
   };
 
@@ -95,7 +136,7 @@ const GameLoader = ({
   }, [lobbyId]);
 
   const connectedPlayers = useMemo(() => {
-    const result = game.players ? getConnectedPlayers(game.players) : 0;
+    const result = game.players ? getConnectedPlayers(game.players) : [];
 
     return result;
   }, [game.players]);
@@ -103,7 +144,7 @@ const GameLoader = ({
   const copyLobbyId = () => {
     showToast('Copied Lobby ID to Clipboard');
     Clipboard.setString(lobbyId);
-    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success');
+    if (Platform.OS === 'ios' && hapticsEnabled) Haptics.notificationAsync('success' as any);
   };
 
   return (
@@ -114,7 +155,7 @@ const GameLoader = ({
           <View style={{ flexDirection: 'row' }}>
             <Text style={styles.lobbyId}> {lobbyId}</Text>
             <MaterialCommunityIcons
-              color={theme === 'dark' ? colors.dark.text : colors.light.text}
+              color={colors[theme].text}
               name="clipboard-text-outline"
               style={{ marginLeft: 10, marginTop: 15 }}
               size={30}
@@ -131,7 +172,7 @@ const GameLoader = ({
       />
 
       <Button
-        type="contained"
+        mode="contained"
         style={styles.quitButton}
         labelStyle={{ color: 'white' }}
         onPress={() => {
@@ -145,7 +186,7 @@ const GameLoader = ({
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   game: selectGame,
   theme: selectTheme,
   hapticsEnabled: selectHaptics,

@@ -3,7 +3,7 @@ import {
   GAME_STATE_CHANGE,
   SET_LOBBY_ID,
   SET_PLAYER_ID,
-  QUIT_GAME
+  QUIT_GAME,
 } from './game.types';
 
 const initialState = {
@@ -15,7 +15,16 @@ const initialState = {
   gameLoaded: false,
 };
 
-const gameReducer = (state = initialState, action) => {
+export interface GameState {
+  lobbyId: undefined | string;
+  playerId: undefined | number;
+  xIsNext: number;
+  fieldTypes: any[];
+  players: any[];
+  gameLoaded: boolean;
+}
+
+const gameReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case GAME_LOADED:
       return {
@@ -50,4 +59,4 @@ const gameReducer = (state = initialState, action) => {
   }
 };
 
-export default gameReducer
+export default gameReducer;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
+import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-
 import { checkGame } from '../lib/gameCanvasUtils';
 import { colors } from '../lib/constants';
 import { connect } from 'react-redux';
@@ -11,9 +11,27 @@ import { createStructuredSelector } from 'reselect';
 import { gridSizeDropdownItems } from '../lib/dropdownItems';
 import Grid from './Grid';
 import Dropdown from './Dropdown';
+import { ThemeMode } from '../types/Theme';
 
-const GameCanvas = ({ theme, hapticsEnabled }) => {
+interface Props {
+  theme: ThemeMode;
+  hapticsEnabled: boolean;
+}
+
+interface GameCanvasState {
+  fieldTypes: FieldTypes;
+  turn: string;
+  canvasFrozen: boolean;
+  winnerColumns: WinnerColumns;
+  gameStart: boolean;
+  winner: Winner;
+  tied: boolean;
+  gridSize: GridNumber;
+}
+
+const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
   const styles = getStyleSheet(theme);
+
   const initialState = {
     fieldTypes: [],
     turn: 'o',
@@ -22,14 +40,14 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
     gameStart: false,
     winner: null,
     tied: false,
-    gridSize: 3,
+    gridSize: 3 as GridNumber,
   };
 
-  const [gameState, setGameState] = useState(initialState);
+  const [gameState, setGameState] = useState<GameCanvasState>(initialState);
 
   const { fieldTypes, canvasFrozen, winnerColumns, gameStart, winner, tied, gridSize } = gameState;
 
-  const pressed = (num) => {
+  const pressed = (num: number) => {
     if (!gameStart) {
       setGameState({
         ...gameState,
@@ -37,8 +55,8 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
       });
     }
 
-    setGameState((prevState) => {
-      const fieldTypesCopy = [...prevState.fieldTypes];
+    setGameState((prevState: GameCanvasState) => {
+      const fieldTypesCopy = [...prevState.fieldTypes] as FieldTypes;
       fieldTypesCopy[num] = prevState.turn;
 
       return {
@@ -78,7 +96,7 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
     }
   }, [gameState]);
 
-  const onValueChange = (type, value) => {
+  const onValueChange = (type: 'setGridSize', value: GridNumber) => {
     if (type === 'setGridSize') {
       setGameState({
         ...gameState,
@@ -102,7 +120,7 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
           <Text style={styles.gameOverText}>Game Over</Text>
           {winnerOutput}
           <Button
-            type="contained"
+            mode="contained"
             style={styles.button}
             labelStyle={{ color: 'white' }}
             onPress={() => {
@@ -120,7 +138,7 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
           <View style={{ width: 130, alignSelf: 'center' }}>
             <Dropdown
               label="Grid Size:"
-              styles={styles}
+              textStyle={styles.text}
               value={gridSize}
               onValueChange={onValueChange}
               type="setGridSize"
@@ -145,12 +163,12 @@ const GameCanvas = ({ theme, hapticsEnabled }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
   hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme) => {
+const getStyleSheet = (theme: ThemeMode) => {
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -158,14 +176,14 @@ const getStyleSheet = (theme) => {
       justifyContent: 'center',
     },
     gameOverText: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 30,
       textAlign: 'center',
       fontWeight: '500',
     },
     winnerText: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 20,
       textAlign: 'center',
@@ -174,10 +192,10 @@ const getStyleSheet = (theme) => {
     button: {
       margin: 20,
       marginBottom: 40,
-      backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+      backgroundColor: colors[theme].main,
     },
     text: {
-      color: theme === 'dark' ? colors.dark.text : colors.light.text,
+      color: colors[theme].text,
       margin: 20,
       fontSize: 20,
       textAlign: 'center',

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
-const CircularProgress = ({ progress, size = 64 }) => {
+const CircularProgress: React.FC<PropTypes> = ({ progress, size = 64 }) => {
   const strokeWidth = size * (1 / 8);
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
@@ -33,5 +33,10 @@ const CircularProgress = ({ progress, size = 64 }) => {
     </Svg>
   );
 };
+
+interface PropTypes {
+  progress: Animated.Adaptable<number>;
+  size?: number;
+}
 
 export default CircularProgress;

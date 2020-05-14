@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,13 +15,14 @@ import { createStructuredSelector } from 'reselect';
 import { connect, useSelector } from 'react-redux';
 import { setCurrentTheme } from '../redux/settings/settings.action';
 import { selectSystemTheme, selectTheme } from '../redux/settings/settings.selectors';
+import { ThemeMode } from '../types/Theme';
 
 const Tab = createBottomTabNavigator();
 
 const GameStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
-const GameStackScreen = () => {
+const GameStackScreen: React.FC = () => {
   const theme = useSelector(selectTheme);
   return (
     <GameStack.Navigator>
@@ -31,7 +32,7 @@ const GameStackScreen = () => {
         options={{
           title: 'Tic Tac Toe',
           headerStyle: {
-            backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+            backgroundColor: colors[theme].main,
             shadowColor: 'transparent',
             borderBottomWidth: 0,
           },
@@ -48,7 +49,7 @@ const GameStackScreen = () => {
         options={{
           headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+            backgroundColor: colors[theme].main,
             shadowColor: 'transparent',
             borderBottomWidth: 0,
           },
@@ -64,7 +65,7 @@ const GameStackScreen = () => {
         options={{
           headerBackTitle: 'Back',
           headerStyle: {
-            backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+            backgroundColor: colors[theme].main,
             shadowColor: 'transparent',
             borderBottomWidth: 0,
           },
@@ -78,7 +79,7 @@ const GameStackScreen = () => {
   );
 };
 
-const SettingsStackScreen = () => {
+const SettingsStackScreen: React.FC = () => {
   const theme = useSelector(selectTheme);
   return (
     <SettingsStack.Navigator>
@@ -88,7 +89,7 @@ const SettingsStackScreen = () => {
         options={{
           title: 'Settings',
           headerStyle: {
-            backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+            backgroundColor: colors[theme].main,
             shadowColor: 'transparent',
             borderBottomWidth: 0,
           },
@@ -102,10 +103,17 @@ const SettingsStackScreen = () => {
   );
 };
 
-const AppNavigator = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
+interface Props {
+  theme: ThemeMode;
+  systemThemeEnabled: boolean;
+  setCurrentTheme: (param: ThemeMode) => void;
+}
+
+const AppNavigator: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
   const deviceTheme = useColorScheme();
 
-  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled) setCurrentTheme(deviceTheme)
+  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled)
+    setCurrentTheme(deviceTheme);
 
   return (
     <AppearanceProvider>
@@ -124,7 +132,7 @@ const AppNavigator = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
             showLabel: false,
             showIcon: true,
             style: {
-              backgroundColor: theme === 'dark' ? colors.dark.main : colors.light.main,
+              backgroundColor: colors[theme].main,
               shadowColor: 'transparent',
               borderTopWidth: 0,
             },
@@ -138,7 +146,7 @@ const AppNavigator = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
+const mapStateToProps = createStructuredSelector<any, any>({
   theme: selectTheme,
   systemThemeEnabled: selectSystemTheme,
 });

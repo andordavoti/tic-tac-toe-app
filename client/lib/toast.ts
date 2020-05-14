@@ -1,6 +1,6 @@
 import Toast from 'react-native-tiny-toast';
 
-export const showToast = (text, duration = Toast.duration.SHORT) => {
+export const showToast = (text: string, duration = Toast.duration.SHORT) => {
   Toast.show(text, {
     position: -100,
     containerStyle: {

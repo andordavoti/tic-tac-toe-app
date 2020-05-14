@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, Text } from 'react-native';
-import { Clock, Value, Easing } from 'react-native-reanimated';
+import { Clock, Easing } from 'react-native-reanimated';
 import { timing } from 'react-native-redash';
 import CircularProgress from './CircularProgress';
 
-const CountdownTimer = ({ duration, ...rest }) => {
+const CountdownTimer: React.FC<PropTypes> = ({ size, duration }) => {
   const clock = new Clock();
 
   const progress = timing({ clock, duration, from: 0, to: 1, easing: Easing.linear });
 
-  return <CircularProgress progress={progress} {...rest} />;
+  return <CircularProgress size={size} progress={progress} />;
 };
+
+interface PropTypes {
+  size: number;
+  duration: number;
+}
 
 export default CountdownTimer;
