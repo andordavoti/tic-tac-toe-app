@@ -40,6 +40,7 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
+    "redux-sentry-middleware": "^0.1.8",
     "reselect": "^4.0.0",
     "sentry-expo": "^2.0.4"
   },
@@ -51,6 +52,7 @@
     "@types/react-native": "^0.62.7",
     "@types/react-redux": "^7.1.8",
     "@types/redux-logger": "^3.0.7",
+    "@types/redux-sentry-middleware": "^0.1.1",
     "@types/reselect": "^2.2.0",
     "babel-preset-expo": "^8.1.0",
     "typescript": "^3.8.3"
