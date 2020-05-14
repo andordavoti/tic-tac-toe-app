@@ -3,10 +3,11 @@ import { View, StatusBar } from 'react-native';
 import { decode, encode } from 'base-64';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import stores from './redux/store';
 import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
 import Constants from 'expo-constants';
+import { PersistGate } from 'redux-persist/integration/react';
 
 declare const global: {
     HermesInternal: null | {};
@@ -27,12 +28,15 @@ const App: React.FC = () => {
     if (Constants.manifest.revisionId)
         Sentry.setRelease(Constants.manifest.revisionId);
 
+    const { store, persistor } = stores();
     return (
         <Provider store={store}>
-            <View style={{ flex: 1 }}>
-                <StatusBar barStyle="light-content" />
-                <AppNavigator />
-            </View>
+            <PersistGate loading={null} persistor={persistor}>
+                <View style={{ flex: 1 }}>
+                    <StatusBar barStyle="light-content" />
+                    <AppNavigator />
+                </View>
+            </PersistGate>
         </Provider>
     );
 };
