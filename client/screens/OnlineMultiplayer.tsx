@@ -19,6 +19,8 @@ import {
     selectTheme,
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
+import * as Sentry from 'sentry-expo';
+import { Exception } from 'sentry-expo';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -74,8 +76,9 @@ const OnlineMultiplayer: React.FC<Props> = ({
 
             setPlayerId(0);
             setLobbyId(data.lobbyId);
-        } catch (error) {
-            console.error(error.message);
+        } catch (err) {
+            Sentry.captureException(err);
+            console.error(err.message);
         }
         setLoading(false);
     };
@@ -85,7 +88,8 @@ const OnlineMultiplayer: React.FC<Props> = ({
         const snapshot = await firestore
             .collection('lobbies')
             .doc(textInput.value)
-            .get();
+            .get()
+            .catch((err: Exception) => Sentry.captureException(err));
 
         // Checking if lobby exists
         if (!snapshot.exists) {
