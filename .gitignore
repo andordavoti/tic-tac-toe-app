@@ -9,6 +9,8 @@ client/*.mobileprovision
 client/*.orig.*
 client/web-build/
 client/web-report/
+client/app.config.js
+client/lib/apiKeys.js
 
 # macOS
 client/.DS_Store
@@ -20,3 +22,4 @@ client/lib/apiKeys.ts
 #server
 server/node_modules/**/*
 server/functions/firebaseKey.json
+node_modules
