@@ -22,7 +22,7 @@ interface Props {
     items: Item[];
     placeholder: Placeholder;
     value: number | string;
-    onValueChange: (type: string, value: GridNumber) => void;
+    onValueChange: (type: string, value: any) => void;
     type: string;
     textStyle: object;
     label: string;
