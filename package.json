@@ -19,8 +19,5 @@
     "bugs": {
         "url": "https://github.com/andordavoti/tic-tac-toe-app/issues"
     },
-    "homepage": "https://github.com/andordavoti/tic-tac-toe-app#readme",
-    "devDependencies": {
-        "@types/node": "^14.0.1"
-    }
+    "homepage": "https://github.com/andordavoti/tic-tac-toe-app#readme"
 }
