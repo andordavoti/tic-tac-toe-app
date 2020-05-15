@@ -4,9 +4,10 @@
     "description": "Tri-platform (iOS, android and web) online multiplayer Tic Tac Toe game, built using React Native, Expo and Firebase.",
     "main": "index.js",
     "scripts": {
-        "start": "cd client && expo start -c",
-        "deploy": "cd server && npm run deploy",
-        "start-web": "cd web && npm run dev"
+        "start": "cd client && expo start",
+        "start-c": "cd client && expo start -c",
+        "start-web": "cd web && npm run dev",
+        "deploy": "cd server && npm run deploy"
     },
     "repository": {
         "type": "git",
