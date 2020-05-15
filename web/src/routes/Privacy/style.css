@@ -1,0 +1,5 @@
+.privacy {
+    padding: calc(var(--header-height) + 1rem) 20px;
+    min-height: 100%;
+    width: 100%;
+}

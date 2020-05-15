@@ -1,24 +1,25 @@
 {
-  "name": "tic-tac-toe-app",
-  "version": "1.0.0",
-  "description": "Tri-platform (iOS, android and web) online multiplayer Tic Tac Toe game, built using React Native, Expo and Firebase.",
-  "main": "index.js",
-  "scripts": {
-    "start": "cd client && expo start -c",
-    "deploy": "cd server && npm run deploy"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/andordavoti/tic-tac-toe-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/andordavoti/tic-tac-toe-app/issues"
-  },
-  "homepage": "https://github.com/andordavoti/tic-tac-toe-app#readme",
-  "devDependencies": {
-    "@types/node": "^14.0.1"
-  }
+    "name": "tic-tac-toe-app",
+    "version": "1.0.0",
+    "description": "Tri-platform (iOS, android and web) online multiplayer Tic Tac Toe game, built using React Native, Expo and Firebase.",
+    "main": "index.js",
+    "scripts": {
+        "start": "cd client && expo start -c",
+        "deploy": "cd server && npm run deploy",
+        "start-web": "cd web && npm run dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/andordavoti/tic-tac-toe-app.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/andordavoti/tic-tac-toe-app/issues"
+    },
+    "homepage": "https://github.com/andordavoti/tic-tac-toe-app#readme",
+    "devDependencies": {
+        "@types/node": "^14.0.1"
+    }
 }

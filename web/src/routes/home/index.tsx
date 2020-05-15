@@ -1,11 +1,17 @@
-import { FunctionalComponent, h } from "preact";
-import * as style from "./style.css";
+import { FunctionalComponent as FC, h } from 'preact';
+import * as style from './style.css';
 
-const Home: FunctionalComponent = () => {
+const Home: FC = () => {
     return (
         <div class={style.home}>
-            <h1>Home</h1>
-            <p>This is the Home component.</p>
+            <div class={style.phoneContainer}>
+                <img src="../../assets/Mockup_iphone.png" />
+                <h5>DOWNLOAD IN IOS</h5>
+            </div>
+            <div class={style.phoneContainer}>
+                <img src="../../assets/Mockup_iphone.png" />
+                <h5>DOWNLOAD ON PLAY STORE</h5>
+            </div>
         </div>
     );
 };

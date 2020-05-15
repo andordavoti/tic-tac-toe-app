@@ -1,5 +1,15 @@
 .home {
-	padding: 56px 20px;
-	min-height: 100%;
-	width: 100%;
+    padding: 56px 20px;
+    min-height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.phoneContainer {
+    margin: 0 1rem;
+    margin-top: 4rem;
+}
+.phoneContainer img {
+    height: 400px;
 }
