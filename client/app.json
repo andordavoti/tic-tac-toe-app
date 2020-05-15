@@ -1,43 +1,37 @@
 {
-  "expo": {
-    "name": "Tic Tac Toe",
-    "description": "Online Tic Tac Toe game for iOS and android.",
-    "slug": "tic-tac-toe",
-    "privacy": "public",
-    "userInterfaceStyle": "automatic",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
-    "version": "0.1.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0,
-      "enabled": false
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "bundleIdentifier": "com.andordavoti.tictactoe.game",
-      "buildNumber": "20200309",
-      "supportsTablet": false,
-      "isTabletOnly": false,
-      "config": {
-        "usesNonExemptEncryption": false
-      }
-    },
-    "android": {
-      "package": "com.andordavoti.tictactoe.game",
-      "versionCode": 20200309,
-      "permissions": []
+    "expo": {
+        "name": "Tic Tac Online",
+        "description": "Online Tic Tac Toe game for iOS and android.",
+        "slug": "tic-tac-toe",
+        "privacy": "public",
+        "userInterfaceStyle": "automatic",
+        "platforms": ["ios", "android", "web"],
+        "version": "0.1.0",
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "splash": {
+            "image": "./assets/splash.png",
+            "resizeMode": "cover",
+            "backgroundColor": "#ffffff"
+        },
+        "updates": {
+            "fallbackToCacheTimeout": 0,
+            "enabled": false
+        },
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "bundleIdentifier": "com.andordavoti.tictactoe.game",
+            "buildNumber": "20200309",
+            "supportsTablet": false,
+            "isTabletOnly": false,
+            "config": {
+                "usesNonExemptEncryption": false
+            }
+        },
+        "android": {
+            "package": "com.andordavoti.tictactoe.game",
+            "versionCode": 20200309,
+            "permissions": []
+        }
     }
-  }
 }
