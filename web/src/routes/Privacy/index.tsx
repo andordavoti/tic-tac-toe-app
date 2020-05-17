@@ -6,7 +6,8 @@ const Privacy: FunctionalComponent = () => {
     return (
         <div class={style.privacy}>
             We only collect anonymous user data (IP adress, software and
-            hardware info) when the app crashes to make your experience better.
+            hardware info) when the app crashes to make the user experience
+            better.
         </div>
     );
 };
