@@ -7,9 +7,6 @@ const admin = firebaseAdmin.initializeApp();
 
 const firestore = admin.firestore();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
 exports.game = functions.https.onRequest(app(firestore));
 
 exports.garbageCollector = functions.pubsub
