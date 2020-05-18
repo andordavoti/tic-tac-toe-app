@@ -1,8 +1,8 @@
-import { firestore } from 'firebase-admin';
+import { firestore as FirebaseFirestore } from 'firebase-admin';
 import { generate } from 'shortid';
 import { Request, Response } from 'express';
 
-const NewGame = (firestore: firestore.Firestore) => async (
+const NewGame = (firestore: FirebaseFirestore.Firestore) => async (
     req: Request,
     res: Response
 ) => {

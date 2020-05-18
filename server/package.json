@@ -1,0 +1,11 @@
+{
+    "name": "server",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "deploy": "cd functions && npm run deploy"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC"
+}

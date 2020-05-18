@@ -1,12 +1,12 @@
 import express from 'express';
-import { firestore } from 'firebase-admin';
+import { firestore as FirebaseFirestore } from 'firebase-admin';
 import cors from 'cors';
 
 //Controllers
 import NewGame from './controllers/newGame';
 
 //Services
-function server(firestore: firestore.Firestore) {
+function server(firestore: FirebaseFirestore.Firestore) {
     const app = express();
 
     app.use(cors({ origin: '*' }));

@@ -14,8 +14,6 @@
     },
     "main": "lib/index.js",
     "dependencies": {
-        "@types/cors": "^2.8.6",
-        "@types/shortid": "0.0.29",
         "cors": "^2.8.5",
         "esm": "^3.2.25",
         "express": "^4.17.1",
@@ -24,6 +22,8 @@
         "shortid": "^2.2.15"
     },
     "devDependencies": {
+        "@types/cors": "^2.8.6",
+        "@types/shortid": "0.0.29",
         "tslint": "^5.12.0",
         "typescript": "^3.2.2",
         "firebase-functions-test": "^0.2.0"
