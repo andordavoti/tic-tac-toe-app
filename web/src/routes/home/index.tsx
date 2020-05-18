@@ -4,13 +4,25 @@ import * as style from './style.css';
 const Home: FC = () => {
     return (
         <div class={style.home}>
-            <div class={style.phoneContainer}>
-                <img src="../../assets/Mockup_iphone.png" />
-                <h5>Download on the Apple App Store</h5>
-            </div>
-            <div class={style.phoneContainer}>
-                <img src="../../assets/Mockup_iphone.png" />
-                <h5>Download on the Google Play Store</h5>
+            <div class={style.phoneSection}>
+                <div class={`${style.phoneContainer}`}>
+                    <img
+                        class={style.phone}
+                        src="../../assets/Mockup_iphone.png"
+                    />
+                    <div disabled class={style.downloadBage}>
+                        <img src="../../assets/appstore.svg" />
+                    </div>
+                </div>
+                <div class={style.phoneContainer}>
+                    <img
+                        class={style.phone}
+                        src="../../assets/Mockup_android.png"
+                    />
+                    <div disabled class={style.downloadBage}>
+                        <img src="../../assets/google-play-badge.png" />
+                    </div>
+                </div>
             </div>
         </div>
     );
