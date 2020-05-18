@@ -15,6 +15,7 @@ function server(firestore) {
      * @description creates a new game in the database and returns the game id as response.
      */
     app.post('/new', NewGame(firestore));
+    return app;
 }
 
 module.exports = server;

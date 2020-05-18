@@ -14,8 +14,8 @@ exports.game = functions.https.onRequest(app(firestore));
 
 exports.garbageCollector = functions.pubsub
     .schedule('every 48 hours')
-    .onRun(async (context) => {
-        const today = new Date().now();
+    .onRun(async context => {
+        const today = Date().now();
         const fourtyEightHoursAgo = new Date(today - 86400000);
         const garbageCollections = firestore
             .collection('lobbies')
@@ -25,7 +25,7 @@ exports.garbageCollector = functions.pubsub
         if (querySnapshot.empty) return;
 
         const batch = firestore.batch();
-        querySnapshot.docs.forEach((doc) => batch.delete(doc.ref));
+        querySnapshot.docs.forEach(doc => batch.delete(doc.ref));
 
         await batch.commit();
     });
