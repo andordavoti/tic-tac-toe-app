@@ -7,7 +7,8 @@
         "start": "cd client && expo start",
         "start-c": "cd client && expo start -c",
         "start-web": "cd web && npm run dev",
-        "deploy": "cd server && npm run deploy"
+        "deploy-server": "cd server && npm run deploy",
+        "deploy-web": "cd web && npm run build && firebase deploy --only hosting"
     },
     "repository": {
         "type": "git",
