@@ -129,6 +129,7 @@ const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
             );
 
         if (canvasFrozen && (winner || tied)) {
+            Haptics.notificationAsync('success' as any);
             return (
                 <View>
                     <Text style={styles.gameOverText}>Game Over</Text>
