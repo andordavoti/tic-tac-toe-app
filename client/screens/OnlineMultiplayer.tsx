@@ -55,7 +55,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
     const styles = getStyleSheet(theme);
 
     useEffect(() => {
-        const unsubscribe = NetInfo.addEventListener((state) =>
+        const unsubscribe = NetInfo.addEventListener(state =>
             isConnected(state.isConnected)
         );
 
@@ -240,7 +240,7 @@ const getStyleSheet = (theme: ThemeMode) => {
         input: {
             color: 'white',
             textAlign: 'center',
-            backgroundColor: 'grey',
+            backgroundColor: colors[theme].disabledButton,
             height: 40,
             width: 200,
             margin: 10,

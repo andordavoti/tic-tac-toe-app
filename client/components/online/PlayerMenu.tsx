@@ -11,7 +11,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from 'react-native-paper';
 import { colors } from '../../lib/constants';
 import { showToast } from '../../lib/toast';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
     selectHaptics,
@@ -21,7 +21,6 @@ import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
 import Dropdown from '../Dropdown';
 import { gridSizeDropdownItems } from '../../lib/dropdownItems';
-import { ThemeMode } from '../../types/Theme';
 import { Exception } from 'sentry-expo';
 import * as Sentry from 'sentry-expo';
 
@@ -35,9 +34,10 @@ const PlayerMenu: React.FC<Props> = ({
     handleDropdownChange,
     handleNewGame,
     handleJoinGame,
-    theme,
-    hapticsEnabled,
 }) => {
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+
     const insertFromClipboard = async () => {
         const text = await Clipboard.getString().catch((err: Exception) =>
             Sentry.captureException(err)
@@ -96,10 +96,10 @@ const PlayerMenu: React.FC<Props> = ({
                 style={styles.input}
                 value={textInput.value}
                 onChangeText={handleInputChange}
-                keyboardAppearance="dark"
+                keyboardAppearance={theme}
                 selectionColor={colors[theme].main}
                 placeholder="Enter lobby id"
-                placeholderTextColor="lightgrey"
+                placeholderTextColor="white"
                 autoCapitalize="none"
                 underlineColorAndroid="transparent"
             />
@@ -145,7 +145,10 @@ const PlayerMenu: React.FC<Props> = ({
                 style={
                     textInput.value.length
                         ? styles.button
-                        : { ...styles.button, backgroundColor: 'grey' }
+                        : {
+                              ...styles.button,
+                              backgroundColor: colors[theme].disabledButton,
+                          }
                 }
                 labelStyle={{ color: 'white' }}
                 contentStyle={{ margin: 10 }}
@@ -156,12 +159,7 @@ const PlayerMenu: React.FC<Props> = ({
     );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    theme: selectTheme,
-    hapticsEnabled: selectHaptics,
-});
-
-export default connect(mapStateToProps)(PlayerMenu);
+export default PlayerMenu;
 
 interface Styles {
     text: object;
@@ -185,6 +183,4 @@ interface Props {
     handleDropdownChange: () => void;
     handleNewGame: any;
     handleJoinGame: any;
-    theme: ThemeMode;
-    hapticsEnabled: boolean;
 }
