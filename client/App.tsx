@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StatusBar } from 'react-native';
 import { decode, encode } from 'base-64';
 import AppNavigator from './components/AppNavigator';
@@ -7,6 +7,7 @@ import stores from './redux/store';
 import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
 import Constants from 'expo-constants';
+import { SplashScreen } from 'expo';
 import { PersistGate } from 'redux-persist/integration/react';
 
 declare const global: {
@@ -19,6 +20,10 @@ if (!global.btoa) global.btoa = encode;
 if (!global.atob) global.atob = decode;
 
 const App: React.FC = () => {
+    useEffect(() => {
+        SplashScreen.preventAutoHide();
+    }, []);
+
     Sentry.init({
         dsn: SENTRY_DSN,
         enableInExpoDevelopment: false,

@@ -4,6 +4,7 @@ import Animated, { interpolate, multiply } from 'react-native-reanimated';
 import { colors } from '../lib/constants';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
+
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
 const CircularProgress: React.FC<PropTypes> = ({ progress, size = 64 }) => {
