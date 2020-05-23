@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
 } from 'react-native';
 import { Switch, Button } from 'react-native-paper';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
 import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
 import * as StoreReview from 'expo-store-review';
@@ -106,7 +105,7 @@ const SettingsScreen: React.FC<Props> = ({
                 </View>
             ) : null}
 
-            <View style={{ marginBottom: getBottomSpace() }}>
+            <View>
                 <Text style={styles.header}>About the App:</Text>
                 <Text style={{ ...styles.text, marginBottom: 20 }}>
                     Developed by:
