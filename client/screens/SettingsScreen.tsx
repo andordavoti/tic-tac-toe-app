@@ -60,7 +60,8 @@ const SettingsScreen: React.FC<Props> = ({
 
     const onValueChange = (value: 'system' | ThemeMode) => {
         if (value) {
-            Haptics.selectionAsync();
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.selectionAsync();
             if (value === 'system') {
                 enableSystemTheme(true);
                 setSelectedTheme('system');

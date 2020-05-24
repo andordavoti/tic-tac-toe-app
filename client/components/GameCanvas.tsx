@@ -110,7 +110,8 @@ const GameCanvas: React.FC = () => {
 
     const onValueChange = (value: GridString) => {
         if (value) {
-            Haptics.selectionAsync();
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.selectionAsync();
             setGameState({
                 ...gameState,
                 gridSize: Number(value),
@@ -131,7 +132,8 @@ const GameCanvas: React.FC = () => {
             );
 
         if (canvasFrozen && (winner || tied)) {
-            Haptics.notificationAsync('success' as any);
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.notificationAsync('success' as any);
             return (
                 <View>
                     <Text style={styles.gameOverText}>Game Over</Text>
