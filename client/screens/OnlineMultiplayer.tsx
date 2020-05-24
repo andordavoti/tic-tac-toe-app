@@ -19,7 +19,7 @@ import {
     selectTheme,
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
-import * as Sentry from 'sentry-expo';
+import { handleError } from '../lib/handleError';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -76,8 +76,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
             setPlayerId(0);
             setLobbyId(data.lobbyId);
         } catch (err) {
-            Sentry.captureException(err);
-            console.error(err.message);
+            handleError(err);
         }
         setLoading(false);
     };
@@ -119,7 +118,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('success' as any);
         } catch (err) {
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 

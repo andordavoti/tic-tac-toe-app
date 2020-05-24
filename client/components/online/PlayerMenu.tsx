@@ -21,8 +21,7 @@ import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
 import Dropdown from '../Dropdown';
 import { gridSizeDropdownItems } from '../../lib/dropdownItems';
-import { Exception } from 'sentry-expo';
-import * as Sentry from 'sentry-expo';
+import { handleError } from '../../lib/handleError';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu: React.FC<Props> = ({
@@ -49,7 +48,7 @@ const PlayerMenu: React.FC<Props> = ({
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('success' as any);
         } catch (err) {
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 

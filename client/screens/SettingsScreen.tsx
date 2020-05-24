@@ -29,8 +29,7 @@ import {
     selectHaptics,
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
-import * as Sentry from 'sentry-expo';
-import { Exception } from 'sentry-expo';
+import { handleError } from '../lib/handleError';
 
 interface Props {
     theme: ThemeMode;
@@ -78,7 +77,7 @@ const SettingsScreen: React.FC<Props> = ({
         try {
             await WebBrowser.openBrowserAsync(link);
         } catch (err) {
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 

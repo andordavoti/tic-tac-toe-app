@@ -35,8 +35,7 @@ import {
     WinnerColumns,
     LobbyId,
 } from '../../types/Game';
-import * as Sentry from 'sentry-expo';
-import { Exception } from 'sentry-expo';
+import { handleError } from '../../lib/handleError';
 
 interface GameState {
     fieldTypes: FieldTypes;
@@ -104,7 +103,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.selectionAsync();
         } catch (err) {
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 
@@ -120,7 +119,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
                 { merge: true }
             );
         } catch (err) {
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 

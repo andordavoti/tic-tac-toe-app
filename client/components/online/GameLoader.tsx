@@ -34,7 +34,7 @@ import {
 import { colors } from '../../lib/constants';
 import { ThemeMode } from '../../types/Theme';
 import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
-import * as Sentry from 'sentry-expo';
+import { handleError } from '../../lib/handleError';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -103,9 +103,8 @@ const GameLoader: React.FC<Props> = ({
 
             quitGame();
         } catch (err) {
-            console.log(err.message); // TODO: Add sentry here.
             showError();
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 
@@ -118,9 +117,8 @@ const GameLoader: React.FC<Props> = ({
             });
             await docRef.set({ players }, { merge: true });
         } catch (err) {
-            console.log(err.message); // TODO: Add sentry here.
             showError();
-            Sentry.captureException(err);
+            handleError(err);
         }
     };
 
@@ -137,7 +135,7 @@ const GameLoader: React.FC<Props> = ({
         const docRef = firestore.collection('lobbies').doc(lobbyId);
         let initial = true;
         const channel = docRef.onSnapshot(
-            (snapshot) => {
+            snapshot => {
                 if (!snapshot.exists) return showError();
                 //TODO: This code will change.
                 if (initial) {
@@ -147,7 +145,7 @@ const GameLoader: React.FC<Props> = ({
                 }
                 setGameStateChange({ lobbyId, ...snapshot.data() });
             },
-            (err) => {
+            err => {
                 showError();
             }
         );
