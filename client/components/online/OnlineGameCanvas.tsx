@@ -84,39 +84,44 @@ const OnlineGameCanvas: React.FC<Props> = ({
     const canvasFrozen = playerId !== xIsNext;
 
     const handleFieldPress = async (num: number) => {
-        if (canvasFrozen) return;
-        const docRef = firestore.collection('lobbies').doc(lobbyId);
+        try {
+            if (canvasFrozen) return;
+            const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-        const newFieldTypes = [...fieldTypes];
+            const newFieldTypes = [...fieldTypes];
 
-        newFieldTypes[num] = getFieldType(playerId);
+            newFieldTypes[num] = getFieldType(playerId);
 
-        await docRef
-            .set(
+            await docRef.set(
                 {
                     gameStarted: true,
                     xIsNext: xIsNext === 0 ? 1 : 0,
                     fieldTypes: newFieldTypes,
                 },
                 { merge: true }
-            )
-            .catch((err: Exception) => Sentry.captureException(err));
+            );
 
-        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.selectionAsync();
+        } catch (err) {
+            Sentry.captureException(err);
+        }
     };
 
     const resetLobby = async () => {
-        const docRef = firestore.collection('lobbies').doc(lobbyId);
+        try {
+            const docRef = firestore.collection('lobbies').doc(lobbyId);
 
-        await docRef
-            .set(
+            await docRef.set(
                 {
                     fieldTypes: Array(gameSize * gameSize).fill(null),
                     xIsNext: 0,
                 },
                 { merge: true }
-            )
-            .catch((err: Exception) => Sentry.captureException(err));
+            );
+        } catch (err) {
+            Sentry.captureException(err);
+        }
     };
 
     const handleNewGame = () => {
@@ -144,7 +149,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
                 Haptics.notificationAsync('error' as any);
         }
 
-        timers.forEach((timer) => {
+        timers.forEach(timer => {
             clearTimeout(timer);
             timers.shift();
         });
@@ -159,7 +164,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
         setTimers([...timers, playerOnlineTimer]);
 
         return () => {
-            timers.forEach((timer) => {
+            timers.forEach(timer => {
                 clearTimeout(timer);
                 timers.shift();
             });

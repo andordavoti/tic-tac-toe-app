@@ -20,7 +20,6 @@ import {
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import * as Sentry from 'sentry-expo';
-import { Exception } from 'sentry-expo';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -84,41 +83,44 @@ const OnlineMultiplayer: React.FC<Props> = ({
     };
 
     const handleJoinGame = async () => {
-        // Fetching lobby from text input
-        const snapshot = await firestore
-            .collection('lobbies')
-            .doc(textInput.value)
-            .get()
-            .catch((err: Exception) => Sentry.captureException(err));
+        try {
+            // Fetching lobby from text input
+            const snapshot = await firestore
+                .collection('lobbies')
+                .doc(textInput.value)
+                .get();
 
-        // Checking if lobby exists
-        if (!snapshot.exists) {
+            // Checking if lobby exists
+            if (!snapshot.exists) {
+                if (Platform.OS === 'ios' && hapticsEnabled)
+                    Haptics.notificationAsync('error' as any);
+                return setTextInput({
+                    ...textInput,
+                    err: 'This lobby does not exist...',
+                });
+            }
+
+            const players = snapshot?.data()?.players;
+            const connected = getConnectedPlayers(players);
+            const playerId = players[0].connected
+                ? 1
+                : players[1].connected
+                ? 0
+                : 0;
+
+            if (connected.length >= 2) {
+                if (Platform.OS === 'ios' && hapticsEnabled)
+                    Haptics.notificationAsync('error' as any);
+                return setTextInput({ ...textInput, err: 'Lobby is full...' });
+            }
+
+            setPlayerId(playerId);
+            setLobbyId(textInput.value);
             if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('error' as any);
-            return setTextInput({
-                ...textInput,
-                err: 'This lobby does not exist...',
-            });
+                Haptics.notificationAsync('success' as any);
+        } catch (err) {
+            Sentry.captureException(err);
         }
-
-        const players = snapshot?.data()?.players;
-        const connected = getConnectedPlayers(players);
-        const playerId = players[0].connected
-            ? 1
-            : players[1].connected
-            ? 0
-            : 0;
-
-        if (connected.length >= 2) {
-            if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('error' as any);
-            return setTextInput({ ...textInput, err: 'Lobby is full...' });
-        }
-
-        setPlayerId(playerId);
-        setLobbyId(textInput.value);
-        if (Platform.OS === 'ios' && hapticsEnabled)
-            Haptics.notificationAsync('success' as any);
     };
 
     const handleInputChange = (text: string) =>

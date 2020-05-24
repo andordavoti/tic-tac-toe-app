@@ -39,16 +39,18 @@ const PlayerMenu: React.FC<Props> = ({
     const hapticsEnabled = useSelector(selectHaptics);
 
     const insertFromClipboard = async () => {
-        const text = await Clipboard.getString().catch((err: Exception) =>
-            Sentry.captureException(err)
-        );
-        showToast('Inserted text from Clipboard');
-        setTextInput((prevState: TextInputValues) => ({
-            ...prevState,
-            value: text,
-        }));
-        if (Platform.OS === 'ios' && hapticsEnabled)
-            Haptics.notificationAsync('success' as any);
+        try {
+            const text = await Clipboard.getString();
+            showToast('Inserted text from Clipboard');
+            setTextInput((prevState: TextInputValues) => ({
+                ...prevState,
+                value: text,
+            }));
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.notificationAsync('success' as any);
+        } catch (err) {
+            Sentry.captureException(err);
+        }
     };
 
     const clearInput = () => {

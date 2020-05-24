@@ -74,10 +74,13 @@ const SettingsScreen: React.FC<Props> = ({
         }
     };
 
-    const openLink = async (link: string) =>
-        await WebBrowser.openBrowserAsync(link).catch((err: Exception) =>
-            Sentry.captureException(err)
-        );
+    const openLink = async (link: string) => {
+        try {
+            await WebBrowser.openBrowserAsync(link);
+        } catch (err) {
+            Sentry.captureException(err);
+        }
+    };
 
     return (
         <View style={styles.container}>
