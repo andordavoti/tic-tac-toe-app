@@ -247,6 +247,7 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         gameOverText: {
             color: colors[theme].text,
+            marginTop: 10,
             marginBottom: 20,
             fontSize: 30,
             textAlign: 'center',
