@@ -11,11 +11,12 @@ import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
 
-import { createStructuredSelector } from 'reselect';
-import { connect, useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentTheme } from '../redux/settings/settings.action';
-import { selectSystemTheme, selectTheme } from '../redux/settings/settings.selectors';
-import { ThemeMode } from '../types/Theme';
+import {
+    selectSystemTheme,
+    selectTheme,
+} from '../redux/settings/settings.selectors';
 
 const Tab = createBottomTabNavigator();
 
@@ -23,132 +24,140 @@ const GameStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
 const GameStackScreen: React.FC = () => {
-  const theme = useSelector(selectTheme);
-  return (
-    <GameStack.Navigator>
-      <GameStack.Screen
-        name="Select Mode"
-        component={SelectMode}
-        options={{
-          title: 'Tic Tac Toe',
-          headerStyle: {
-            backgroundColor: colors[theme].main,
-            shadowColor: 'transparent',
-            borderBottomWidth: 0,
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 20,
-          },
-          headerTintColor: '#fff',
-        }}
-      />
-      <GameStack.Screen
-        name="Multiplayer"
-        component={Multiplayer}
-        options={{
-          headerBackTitle: 'Back',
-          headerStyle: {
-            backgroundColor: colors[theme].main,
-            shadowColor: 'transparent',
-            borderBottomWidth: 0,
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTintColor: '#fff',
-        }}
-      />
-      <GameStack.Screen
-        name="Online Multiplayer"
-        component={OnlineMultiplayer}
-        options={{
-          headerBackTitle: 'Back',
-          headerStyle: {
-            backgroundColor: colors[theme].main,
-            shadowColor: 'transparent',
-            borderBottomWidth: 0,
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTintColor: '#fff',
-        }}
-      />
-    </GameStack.Navigator>
-  );
+    const theme = useSelector(selectTheme);
+    return (
+        <GameStack.Navigator>
+            <GameStack.Screen
+                name="Select Mode"
+                component={SelectMode}
+                options={{
+                    title: 'Tic Tac Toe',
+                    headerStyle: {
+                        backgroundColor: colors[theme].main,
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0,
+                    },
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                        fontSize: 20,
+                    },
+                    headerTintColor: 'white',
+                }}
+            />
+            <GameStack.Screen
+                name="Multiplayer"
+                component={Multiplayer}
+                options={{
+                    headerBackTitle: 'Back',
+                    headerStyle: {
+                        backgroundColor: colors[theme].main,
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0,
+                    },
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                    headerTintColor: '#fff',
+                }}
+            />
+            <GameStack.Screen
+                name="Online Multiplayer"
+                component={OnlineMultiplayer}
+                options={{
+                    headerBackTitle: 'Back',
+                    headerStyle: {
+                        backgroundColor: colors[theme].main,
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0,
+                    },
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                    headerTintColor: '#fff',
+                }}
+            />
+        </GameStack.Navigator>
+    );
 };
 
 const SettingsStackScreen: React.FC = () => {
-  const theme = useSelector(selectTheme);
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen
-        name="Settings"
-        component={SettingsScreen}
-        options={{
-          title: 'Settings',
-          headerStyle: {
-            backgroundColor: colors[theme].main,
-            shadowColor: 'transparent',
-            borderBottomWidth: 0,
-          },
-          headerTitleStyle: {
-            fontWeight: 'bold',
-          },
-          headerTintColor: '#fff',
-        }}
-      />
-    </SettingsStack.Navigator>
-  );
+    const theme = useSelector(selectTheme);
+    return (
+        <SettingsStack.Navigator>
+            <SettingsStack.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{
+                    title: 'Settings',
+                    headerStyle: {
+                        backgroundColor: colors[theme].main,
+                        shadowColor: 'transparent',
+                        borderBottomWidth: 0,
+                    },
+                    headerTitleStyle: {
+                        fontWeight: 'bold',
+                    },
+                    headerTintColor: '#fff',
+                }}
+            />
+        </SettingsStack.Navigator>
+    );
 };
 
-interface Props {
-  theme: ThemeMode;
-  systemThemeEnabled: boolean;
-  setCurrentTheme: (param: ThemeMode) => void;
-}
+const AppNavigator: React.FC = () => {
+    const theme = useSelector(selectTheme);
+    const systemThemeEnabled = useSelector(selectSystemTheme);
 
-const AppNavigator: React.FC<Props> = ({ theme, systemThemeEnabled, setCurrentTheme }) => {
-  const deviceTheme = useColorScheme();
+    const dispatch = useDispatch();
 
-  if ((deviceTheme === 'light' || deviceTheme === 'dark') && systemThemeEnabled)
-    setCurrentTheme(deviceTheme);
+    const deviceTheme = useColorScheme();
 
-  return (
-    <AppearanceProvider>
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({ route }) => ({
-            tabBarIcon: ({ focused, size }) => {
-              let iconName;
-              let color = focused ? 'white' : 'lightgrey';
-              if (route.name === 'Settings') iconName = 'settings';
-              else iconName = 'gamepad';
-              return <MaterialCommunityIcons color={color} name={iconName} size={size} />;
-            },
-          })}
-          tabBarOptions={{
-            showLabel: false,
-            showIcon: true,
-            style: {
-              backgroundColor: colors[theme].main,
-              shadowColor: 'transparent',
-              borderTopWidth: 0,
-            },
-          }}
-        >
-          <Tab.Screen name="Home" component={GameStackScreen} />
-          <Tab.Screen name="Settings" component={SettingsStackScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </AppearanceProvider>
-  );
+    if (
+        (deviceTheme === 'light' || deviceTheme === 'dark') &&
+        systemThemeEnabled
+    ) {
+        dispatch(setCurrentTheme(deviceTheme));
+    }
+
+    return (
+        <AppearanceProvider>
+            <NavigationContainer>
+                <Tab.Navigator
+                    screenOptions={({ route }) => ({
+                        tabBarIcon: ({ focused, size }) => {
+                            let iconName;
+                            let color = focused ? 'white' : 'lightgrey';
+                            if (route.name === 'Settings')
+                                iconName = 'settings';
+                            else iconName = 'gamepad';
+                            return (
+                                <MaterialCommunityIcons
+                                    color={color}
+                                    name={iconName}
+                                    size={size}
+                                />
+                            );
+                        },
+                    })}
+                    tabBarOptions={{
+                        showLabel: false,
+                        showIcon: true,
+                        style: {
+                            backgroundColor: colors[theme].main,
+                            shadowColor: 'transparent',
+                            borderTopWidth: 0,
+                        },
+                    }}
+                >
+                    <Tab.Screen name="Home" component={GameStackScreen} />
+                    <Tab.Screen
+                        name="Settings"
+                        component={SettingsStackScreen}
+                    />
+                </Tab.Navigator>
+            </NavigationContainer>
+        </AppearanceProvider>
+    );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-  theme: selectTheme,
-  systemThemeEnabled: selectSystemTheme,
-});
-
-export default connect(mapStateToProps, { setCurrentTheme })(AppNavigator);
+export default AppNavigator;
