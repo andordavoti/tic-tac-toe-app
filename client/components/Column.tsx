@@ -84,7 +84,7 @@ const Column: React.FC<Props> = ({
                         color={
                             !isWinnerColumn
                                 ? (winner || tied) && disableFields
-                                    ? 'red'
+                                    ? 'grey'
                                     : 'white'
                                 : colors[theme].main
                         }
