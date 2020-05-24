@@ -170,7 +170,7 @@ const GameLoader: React.FC<Props> = ({
     };
 
     return (
-        <View>
+        <>
             <View
                 style={{
                     flexDirection: 'row',
@@ -200,7 +200,6 @@ const GameLoader: React.FC<Props> = ({
                 msg="Waiting for other player..."
                 loading={connectedPlayers.length < 2}
             />
-
             <Button
                 mode="contained"
                 style={styles.quitButton}
@@ -213,7 +212,7 @@ const GameLoader: React.FC<Props> = ({
             >
                 Quit Game
             </Button>
-        </View>
+        </>
     );
 };
 

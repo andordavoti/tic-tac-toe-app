@@ -175,11 +175,13 @@ const OnlineGameCanvas: React.FC<Props> = ({
             {timers.length ? (
                 <CountdownTimer size={48} duration={timeOutDuration} />
             ) : null}
-            <Text style={styles.text}>
-                {playerId === xIsNext
-                    ? 'Your turn'
-                    : `Player ${getPlayerName(xIsNext)} picking`}
-            </Text>
+            {!(Boolean(winner) || tied) ? (
+                <Text style={styles.text}>
+                    {playerId === xIsNext
+                        ? 'Your turn'
+                        : `Player ${getPlayerName(xIsNext)} picking`}
+                </Text>
+            ) : null}
             {Boolean(winner) || tied ? (
                 <View>
                     <Text style={styles.gameOverText}>

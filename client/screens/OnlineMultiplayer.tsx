@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet, Text, Platform } from 'react-native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -20,6 +21,7 @@ import {
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
+import { GridString } from '../types/Game';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -125,8 +127,13 @@ const OnlineMultiplayer: React.FC<Props> = ({
     const handleInputChange = (text: string) =>
         setTextInput({ ...textInput, value: text });
 
-    const handleDropdownChange = (type: string, value: number) =>
-        setGridSize(value);
+    const handleGridSizeChange = (value: GridString) => {
+        if (value) {
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.selectionAsync();
+            setGridSize(Number(value));
+        }
+    };
 
     if (connected) {
         return (
@@ -148,7 +155,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
                             textInput,
                             gridSize,
                             setGridSize,
-                            handleDropdownChange,
+                            handleGridSizeChange,
                             handleInputChange,
                             handleNewGame,
                             handleJoinGame,
@@ -203,7 +210,7 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         text: {
             color: colors[theme].text,
-            margin: 20,
+            margin: 10,
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
@@ -227,9 +234,15 @@ const getStyleSheet = (theme: ThemeMode) => {
             margin: 10,
             backgroundColor: colors[theme].main,
         },
+        buttonGroup: {
+            backgroundColor: colors[theme].main,
+        },
+        buttonGroupSelected: {
+            backgroundColor: colors[theme].text,
+        },
         quitButton: {
             margin: 20,
-            marginBottom: 40,
+            marginBottom: getBottomSpace(),
             backgroundColor: colors[theme].main,
         },
         image: {

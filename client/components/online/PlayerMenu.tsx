@@ -8,19 +8,16 @@ import {
     Platform,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Button } from 'react-native-paper';
+import { Button, ToggleButton } from 'react-native-paper';
 import { colors } from '../../lib/constants';
 import { showToast } from '../../lib/toast';
 import { useSelector } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import {
     selectHaptics,
     selectTheme,
 } from '../../redux/settings/settings.selectors';
 import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
-import Dropdown from '../Dropdown';
-import { gridSizeDropdownItems } from '../../lib/dropdownItems';
 import { handleError } from '../../lib/handleError';
 
 // Menu that displays "new game" or "Join game" options
@@ -30,7 +27,7 @@ const PlayerMenu: React.FC<Props> = ({
     setTextInput,
     handleInputChange,
     gridSize,
-    handleDropdownChange,
+    handleGridSizeChange,
     handleNewGame,
     handleJoinGame,
 }) => {
@@ -63,20 +60,62 @@ const PlayerMenu: React.FC<Props> = ({
 
     return (
         <View>
-            <View style={{ width: 130, alignSelf: 'center' }}>
-                <Dropdown
-                    label="Grid Size:"
-                    textStyle={styles.text}
-                    value={gridSize}
-                    onValueChange={handleDropdownChange}
-                    type="setGridSize"
-                    placeholder={{
-                        label: 'Select Grid Size',
-                        value: null,
-                        color: '#9EA0A4',
-                    }}
-                    items={gridSizeDropdownItems}
-                />
+            <View style={{ marginBottom: 20 }}>
+                <Text style={styles.text}>Grid Size:</Text>
+                <ToggleButton.Row
+                    style={{ justifyContent: 'center' }}
+                    onValueChange={handleGridSizeChange}
+                    value={gridSize.toString()}
+                >
+                    <ToggleButton
+                        activeOpacity={0.6}
+                        underlayColor={colors[theme].text}
+                        color={
+                            gridSize === 3
+                                ? colors[theme].bg
+                                : colors[theme].text
+                        }
+                        style={
+                            gridSize === 3
+                                ? styles.buttonGroupSelected
+                                : styles.buttonGroup
+                        }
+                        icon="numeric-3"
+                        value="3"
+                    />
+                    <ToggleButton
+                        activeOpacity={0.6}
+                        underlayColor={colors[theme].text}
+                        color={
+                            gridSize === 4
+                                ? colors[theme].bg
+                                : colors[theme].text
+                        }
+                        style={
+                            gridSize === 4
+                                ? styles.buttonGroupSelected
+                                : styles.buttonGroup
+                        }
+                        icon="numeric-4"
+                        value="4"
+                    />
+                    <ToggleButton
+                        activeOpacity={0.6}
+                        underlayColor={colors[theme].text}
+                        color={
+                            gridSize === 5
+                                ? colors[theme].bg
+                                : colors[theme].text
+                        }
+                        style={
+                            gridSize === 5
+                                ? styles.buttonGroupSelected
+                                : styles.buttonGroup
+                        }
+                        icon="numeric-5"
+                        value="5"
+                    />
+                </ToggleButton.Row>
             </View>
             <Button
                 onPress={() => {
@@ -181,7 +220,7 @@ interface Props {
     setTextInput: any;
     handleInputChange: any;
     gridSize: 3 | 4;
-    handleDropdownChange: () => void;
+    handleGridSizeChange: () => void;
     handleNewGame: any;
     handleJoinGame: any;
 }
