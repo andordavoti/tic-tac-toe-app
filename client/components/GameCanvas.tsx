@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
-import { Button } from 'react-native-paper';
+import {
+    FieldTypes,
+    Winner,
+    GridNumber,
+    WinnerColumns,
+    GridString,
+} from '../types/Game';
+import { Button, ToggleButton } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { checkGame } from '../lib/gameCanvasUtils';
 import { colors } from '../lib/constants';
@@ -10,9 +16,7 @@ import {
     selectHaptics,
     selectTheme,
 } from '../redux/settings/settings.selectors';
-import { gridSizeDropdownItems } from '../lib/dropdownItems';
 import Grid from './Grid';
-import Dropdown from './Dropdown';
 import { ThemeMode } from '../types/Theme';
 
 interface GameCanvasState {
@@ -104,11 +108,12 @@ const GameCanvas: React.FC = () => {
         }
     }, [gameState]);
 
-    const onValueChange = (type: string, value: GridNumber) => {
-        if (type === 'setGridSize') {
+    const onValueChange = (value: GridString) => {
+        if (value) {
+            Haptics.selectionAsync();
             setGameState({
                 ...gameState,
-                gridSize: value,
+                gridSize: Number(value),
             });
         }
     };
@@ -148,20 +153,62 @@ const GameCanvas: React.FC = () => {
         } else if (!gameStart) {
             return (
                 <>
-                    <View style={{ width: 130, alignSelf: 'center' }}>
-                        <Dropdown
-                            label="Grid Size:"
-                            textStyle={styles.text}
-                            value={gridSize}
+                    <View>
+                        <Text style={styles.text}>Grid Size:</Text>
+                        <ToggleButton.Row
+                            style={{ justifyContent: 'center' }}
                             onValueChange={onValueChange}
-                            type="setGridSize"
-                            placeholder={{
-                                label: 'Select Grid Size',
-                                value: null,
-                                color: '#9EA0A4',
-                            }}
-                            items={gridSizeDropdownItems}
-                        />
+                            value={gridSize.toString()}
+                        >
+                            <ToggleButton
+                                activeOpacity={0.6}
+                                underlayColor={colors[theme].text}
+                                color={
+                                    gridSize === 3
+                                        ? colors[theme].bg
+                                        : colors[theme].text
+                                }
+                                style={
+                                    gridSize === 3
+                                        ? styles.buttonGroupSelected
+                                        : styles.buttonGroup
+                                }
+                                icon="numeric-3"
+                                value="3"
+                            />
+                            <ToggleButton
+                                activeOpacity={0.6}
+                                underlayColor={colors[theme].text}
+                                color={
+                                    gridSize === 4
+                                        ? colors[theme].bg
+                                        : colors[theme].text
+                                }
+                                style={
+                                    gridSize === 4
+                                        ? styles.buttonGroupSelected
+                                        : styles.buttonGroup
+                                }
+                                icon="numeric-4"
+                                value="4"
+                            />
+                            <ToggleButton
+                                activeOpacity={0.6}
+                                underlayColor={colors[theme].text}
+                                color={
+                                    gridSize === 5
+                                        ? colors[theme].bg
+                                        : colors[theme].text
+                                }
+                                style={
+                                    gridSize === 5
+                                        ? styles.buttonGroupSelected
+                                        : styles.buttonGroup
+                                }
+                                icon="numeric-5"
+                                value="5"
+                            />
+                        </ToggleButton.Row>
                     </View>
                     <Text style={styles.winnerText}>
                         Press a column to start the game
@@ -214,6 +261,12 @@ const getStyleSheet = (theme: ThemeMode) => {
             margin: 20,
             marginBottom: 40,
             backgroundColor: colors[theme].main,
+        },
+        buttonGroup: {
+            backgroundColor: colors[theme].main,
+        },
+        buttonGroupSelected: {
+            backgroundColor: colors[theme].text,
         },
         text: {
             color: colors[theme].text,
