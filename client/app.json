@@ -31,7 +31,8 @@
         "android": {
             "package": "com.andordavoti.tictactoe.game",
             "versionCode": 20200309,
-            "permissions": []
+            "permissions": [],
+            "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
         }
     }
 }
