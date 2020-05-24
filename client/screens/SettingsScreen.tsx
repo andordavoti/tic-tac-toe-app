@@ -83,7 +83,9 @@ const SettingsScreen: React.FC<Props> = ({
 
     return (
         <View style={styles.container}>
-            <Text style={styles.text}>Theme:</Text>
+            <Text style={{ ...styles.text, margin: 0, marginBottom: 10 }}>
+                Theme:
+            </Text>
             <ToggleButton.Row
                 style={{ marginBottom: 20 }}
                 onValueChange={onValueChange}
@@ -261,7 +263,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            margin: 20,
+            marginTop: 20,
             fontWeight: 'bold',
         },
         header: {
