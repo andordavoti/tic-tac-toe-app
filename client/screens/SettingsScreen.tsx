@@ -81,6 +81,16 @@ const SettingsScreen: React.FC<Props> = ({
         }
     };
 
+    const sendEmail = () => {
+        try {
+            if (Platform.OS === 'ios' && hapticsEnabled)
+                Haptics.selectionAsync();
+            Linking.openURL('mailto:andor.davoti@gmail.com');
+        } catch (err) {
+            handleError(err);
+        }
+    };
+
     return (
         <View style={styles.container}>
             <Text style={{ ...styles.text, margin: 0, marginBottom: 10 }}>
@@ -208,11 +218,7 @@ const SettingsScreen: React.FC<Props> = ({
                         mode="contained"
                         style={styles.button}
                         labelStyle={{ color: 'white' }}
-                        onPress={() => {
-                            if (Platform.OS === 'ios' && hapticsEnabled)
-                                Haptics.selectionAsync();
-                            Linking.openURL('mailto:andor.davoti@gmail.com');
-                        }}
+                        onPress={sendEmail}
                     >
                         Contact us
                     </Button>
