@@ -5,21 +5,15 @@ import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { checkGame } from '../lib/gameCanvasUtils';
 import { colors } from '../lib/constants';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
     selectHaptics,
     selectTheme,
 } from '../redux/settings/settings.selectors';
-import { createStructuredSelector } from 'reselect';
 import { gridSizeDropdownItems } from '../lib/dropdownItems';
 import Grid from './Grid';
 import Dropdown from './Dropdown';
 import { ThemeMode } from '../types/Theme';
-
-interface Props {
-    theme: ThemeMode;
-    hapticsEnabled: boolean;
-}
 
 interface GameCanvasState {
     fieldTypes: FieldTypes;
@@ -32,7 +26,10 @@ interface GameCanvasState {
     gridSize: GridNumber;
 }
 
-const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
+const GameCanvas: React.FC = () => {
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+
     const styles = getStyleSheet(theme);
 
     const initialState = {
@@ -192,11 +189,6 @@ const GameCanvas: React.FC<Props> = ({ theme, hapticsEnabled }) => {
     );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    theme: selectTheme,
-    hapticsEnabled: selectHaptics,
-});
-
 const getStyleSheet = (theme: ThemeMode) => {
     return StyleSheet.create({
         container: {
@@ -233,4 +225,4 @@ const getStyleSheet = (theme: ThemeMode) => {
     });
 };
 
-export default connect(mapStateToProps)(GameCanvas);
+export default GameCanvas;

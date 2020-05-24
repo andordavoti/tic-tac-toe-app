@@ -55,7 +55,7 @@
     "@types/redux-sentry-middleware": "^0.1.1",
     "@types/reselect": "^2.2.0",
     "babel-preset-expo": "^8.1.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.9.3"
   },
   "private": true
 }
