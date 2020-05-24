@@ -270,7 +270,7 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         text: {
             color: colors[theme].text,
-            margin: 20,
+            margin: 10,
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',

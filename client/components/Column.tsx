@@ -54,7 +54,8 @@ const Column: React.FC<Props> = ({
             (winnerColumns[0] === num ||
                 winnerColumns[1] === num ||
                 winnerColumns[2] === num ||
-                winnerColumns[3] === num) &&
+                winnerColumns[3] === num ||
+                winnerColumns[4] === num) &&
             !isWinnerColumn
         ) {
             setIsWinnerColumn(true);
