@@ -131,6 +131,18 @@ const PlayerMenu: React.FC<Props> = ({
             >
                 New Game
             </Button>
+
+            <View
+                style={{
+                    marginLeft: 10,
+                    marginRight: 10,
+                    marginTop: 15,
+                    borderBottomColor: theme === 'dark' ? 'grey' : 'lightgrey',
+                    borderBottomWidth: 2,
+                    borderRadius: '50%',
+                }}
+            />
+
             <Text style={styles.joinText}>Join Game:</Text>
 
             <TextInput
