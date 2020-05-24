@@ -6,7 +6,7 @@ import {
     Platform,
     TouchableOpacity,
 } from 'react-native';
-import { Switch, Button } from 'react-native-paper';
+import { Switch, Button, ToggleButton } from 'react-native-paper';
 import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
 import * as StoreReview from 'expo-store-review';
@@ -14,9 +14,7 @@ import { Linking } from 'expo';
 import * as WebBrowser from 'expo-web-browser';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { themeDropdownItems } from '../lib/dropdownItems';
 import { colors, urls } from '../lib/constants';
-import Dropdown from '../components/Dropdown';
 
 import { connect } from 'react-redux';
 import {
@@ -60,8 +58,9 @@ const SettingsScreen: React.FC<Props> = ({
         else setSelectedTheme(theme);
     }, []);
 
-    const onValueChange = (type: string, value: 'system' | ThemeMode) => {
-        if (type === 'theme') {
+    const onValueChange = (value: 'system' | ThemeMode) => {
+        if (value) {
+            Haptics.selectionAsync();
             if (value === 'system') {
                 enableSystemTheme(true);
                 setSelectedTheme('system');
@@ -81,19 +80,61 @@ const SettingsScreen: React.FC<Props> = ({
 
     return (
         <View style={styles.container}>
-            <Dropdown
-                label="Theme:"
-                textStyle={styles.text}
-                value={selectedTheme}
+            <Text style={styles.text}>Theme:</Text>
+            <ToggleButton.Row
+                style={{ marginBottom: 20 }}
                 onValueChange={onValueChange}
-                type="theme"
-                placeholder={{
-                    label: 'Select Theme',
-                    value: null,
-                    color: '#9EA0A4',
-                }}
-                items={themeDropdownItems}
-            />
+                value={selectedTheme}
+            >
+                <ToggleButton
+                    activeOpacity={0.6}
+                    underlayColor={colors[theme].text}
+                    color={
+                        selectedTheme === 'system'
+                            ? colors[theme].bg
+                            : colors[theme].text
+                    }
+                    style={
+                        selectedTheme === 'system'
+                            ? styles.buttonGroupSelected
+                            : styles.buttonGroup
+                    }
+                    icon="theme-light-dark"
+                    value="system"
+                />
+                <ToggleButton
+                    activeOpacity={0.6}
+                    underlayColor={colors[theme].text}
+                    color={
+                        selectedTheme === 'light'
+                            ? colors[theme].bg
+                            : colors[theme].text
+                    }
+                    style={
+                        selectedTheme === 'light'
+                            ? styles.buttonGroupSelected
+                            : styles.buttonGroup
+                    }
+                    icon="weather-sunny"
+                    value="light"
+                />
+                <ToggleButton
+                    activeOpacity={0.6}
+                    underlayColor={colors[theme].text}
+                    color={
+                        selectedTheme === 'dark'
+                            ? colors[theme].bg
+                            : colors[theme].text
+                    }
+                    style={
+                        selectedTheme === 'dark'
+                            ? styles.buttonGroupSelected
+                            : styles.buttonGroup
+                    }
+                    icon="weather-night"
+                    value="dark"
+                />
+            </ToggleButton.Row>
             {Platform.OS === 'ios' ? (
                 <View style={styles.row}>
                     <Text style={styles.text}>Haptics:</Text>
@@ -232,6 +273,12 @@ const getStyleSheet = (theme: ThemeMode) => {
         button: {
             margin: 10,
             backgroundColor: colors[theme].main,
+        },
+        buttonGroup: {
+            backgroundColor: colors[theme].main,
+        },
+        buttonGroupSelected: {
+            backgroundColor: colors[theme].text,
         },
         rowData: {
             minHeight: 30,
