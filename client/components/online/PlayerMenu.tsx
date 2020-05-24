@@ -19,6 +19,7 @@ import {
 import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
 import { handleError } from '../../lib/handleError';
+import { GridNumber } from '../../types/Game';
 
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu: React.FC<Props> = ({
@@ -207,6 +208,8 @@ interface Styles {
     joinText: object;
     input: object;
     infoText: object;
+    buttonGroupSelected: object;
+    buttonGroup: object;
 }
 
 interface TextInputValues {
@@ -219,7 +222,7 @@ interface Props {
     textInput: TextInputValues;
     setTextInput: any;
     handleInputChange: any;
-    gridSize: 3 | 4;
+    gridSize: GridNumber;
     handleGridSizeChange: () => void;
     handleNewGame: any;
     handleJoinGame: any;
