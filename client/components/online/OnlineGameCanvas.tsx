@@ -71,7 +71,9 @@ const OnlineGameCanvas: React.FC<Props> = ({
     theme,
 }) => {
     const dispatch = useDispatch();
-    const [timers, setTimers] = useState<number[] | []>([]);
+    const [timers, setTimers] = useState<ReturnType<typeof setTimeout>[] | []>(
+        []
+    );
     const [winnerDetails, setWinnerDetails] = useState<WinnerState>(
         initialState
     );
@@ -130,7 +132,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
 
     useEffect(() => {
         const result = checkGame(fieldTypes, gameSize);
-        if (result.winner && result.winnerColumns.length) {
+        if (result?.winner && result.winnerColumns.length) {
             setWinnerDetails({
                 ...winnerDetails,
                 winner: result.winner,
@@ -142,29 +144,38 @@ const OnlineGameCanvas: React.FC<Props> = ({
             setWinnerDetails(initialState);
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('error' as any);
-        } else if (result.tied) {
+        } else if (result?.tied) {
             setWinnerDetails({ ...initialState, tied: true });
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('error' as any);
         }
 
-        timers.forEach(timer => {
-            clearTimeout(timer);
-            timers.shift();
-        });
+        if (!result) {
+            timers.forEach(timer => {
+                clearTimeout(timer);
+                timers.shift();
+            });
 
-        const playerOnlineTimer = setTimeout(() => {
-            if (gameStarted && (!winner || !result.tied)) {
-                dispatch(quitGame());
-                showToast('Lobby dispanded due to inactivity', 3500);
-            }
-        }, timeOutDuration);
+            const playerOnlineTimer = setTimeout(() => {
+                if (gameStarted && (!winner || !result)) {
+                    dispatch(quitGame());
+                    showToast('Lobby dispanded due to inactivity', 3500);
+                }
+            }, timeOutDuration);
 
-        setTimers([...timers, playerOnlineTimer]);
+            setTimers([...timers, playerOnlineTimer]);
+        }
+
+        if (result || winner) {
+            timers.forEach(timer => {
+                timer && clearTimeout(timer);
+                timers.shift();
+            });
+        }
 
         return () => {
             timers.forEach(timer => {
-                clearTimeout(timer);
+                timer && clearTimeout(timer);
                 timers.shift();
             });
         };

@@ -139,7 +139,6 @@ const PlayerMenu: React.FC<Props> = ({
                     marginTop: 15,
                     borderBottomColor: theme === 'dark' ? 'grey' : 'lightgrey',
                     borderBottomWidth: 2,
-                    borderRadius: '50%',
                 }}
             />
 

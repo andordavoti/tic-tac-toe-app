@@ -96,7 +96,7 @@ const GameCanvas: React.FC = () => {
         if (fieldTypes.length > 0) {
             const result = checkGame(fieldTypes, gridSize);
 
-            if ((result.winner || result.tied) && !winner && !tied) {
+            if ((result?.winner || result?.tied) && !winner && !tied) {
                 setGameState({
                     ...gameState,
                     winner: result.winner,
@@ -108,13 +108,13 @@ const GameCanvas: React.FC = () => {
         }
     }, [gameState]);
 
-    const onValueChange = (value: GridString) => {
+    const onValueChange = (value: string) => {
         if (value) {
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.selectionAsync();
             setGameState({
                 ...gameState,
-                gridSize: Number(value),
+                gridSize: Number(value) as GridNumber,
             });
         }
     };

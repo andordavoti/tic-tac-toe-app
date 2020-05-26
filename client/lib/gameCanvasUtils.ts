@@ -122,5 +122,6 @@ export const checkGame = (fieldTypes: FieldTypes, size: GridNumber = 3) => {
     });
 
     if (!winner && stringValues === fieldTypes.length) tied = true;
+    if (!winner && !tied) return undefined;
     return { winner, winnerColumns, tied };
 };
