@@ -68,6 +68,7 @@ const Column: React.FC<Props> = ({
     if (currentFieldTypes === 'o') icon = 'circle-outline';
     else if (currentFieldTypes === 'x') icon = 'close';
 
+    const size = gridSize === 3 ? 75 : gridSize === 4 ? 60 : 40; // making dynamic width height based on gridsize.
     return (
         <TouchableOpacity
             disabled={disableFields || Boolean(currentFieldTypes)}
@@ -79,18 +80,20 @@ const Column: React.FC<Props> = ({
         >
             {currentFieldTypes !== '' ? (
                 <View style={styles.container}>
-                    <MaterialCommunityIcons
-                        style={{ textAlign: 'center', marginTop: 6 }}
-                        color={
-                            !isWinnerColumn
-                                ? (winner || tied) && disableFields
-                                    ? 'grey'
-                                    : 'white'
-                                : colors[theme].main
-                        }
-                        name={icon}
-                        size={gridSize === 3 ? 75 : gridSize === 4 ? 60 : 40}
-                    />
+                    <View style={{ width: size, height: size }}>
+                        <MaterialCommunityIcons
+                            style={{ textAlign: 'center' }}
+                            color={
+                                !isWinnerColumn
+                                    ? (winner || tied) && disableFields
+                                        ? 'grey'
+                                        : 'white'
+                                    : colors[theme].main
+                            }
+                            name={icon}
+                            size={size}
+                        />
+                    </View>
                 </View>
             ) : null}
         </TouchableOpacity>
