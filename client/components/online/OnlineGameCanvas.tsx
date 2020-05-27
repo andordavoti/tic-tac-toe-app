@@ -197,7 +197,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
 
     return (
         <View style={styles.container}>
-            {timers.length ? (
+            {timers.length && gameStarted ? (
                 <CountdownTimer size={48} duration={timeOutDuration} />
             ) : null}
             {!(Boolean(winner) || tied) ? (
