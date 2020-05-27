@@ -241,8 +241,8 @@ const getStyleSheet = (theme: ThemeMode) => {
             backgroundColor: colors[theme].text,
         },
         quitButton: {
-            margin: 20,
-            marginBottom: getBottomSpace(),
+            margin: 10,
+            marginBottom: 30,
             backgroundColor: colors[theme].main,
         },
         image: {

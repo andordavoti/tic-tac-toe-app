@@ -280,7 +280,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             marginBottom: 20,
         },
         button: {
-            marginBottom: 40,
+            marginBottom: 20,
             backgroundColor: colors[theme].main,
         },
     });
