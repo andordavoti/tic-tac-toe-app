@@ -128,6 +128,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
     const handleNewGame = () => {
         if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
         resetLobby();
+        setWinnerDetails(initialState);
     };
 
     useEffect(() => {
