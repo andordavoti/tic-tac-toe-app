@@ -43,6 +43,7 @@ interface GameState {
     xIsNext: number;
     gameStarted: boolean;
     gameSize: GridNumber;
+    resetable?: boolean;
 }
 
 interface WinnerState {
@@ -78,7 +79,14 @@ const OnlineGameCanvas: React.FC<Props> = ({
         initialState
     );
     const { winner, winnerColumns, tied } = winnerDetails;
-    const { fieldTypes, playerId, xIsNext, gameStarted, gameSize } = gameState;
+    const {
+        fieldTypes,
+        playerId,
+        xIsNext,
+        gameStarted,
+        gameSize,
+        resetable,
+    } = gameState;
     const timeOutDuration = 60000;
     const styles = getStyleSheet(theme);
 
@@ -98,6 +106,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
                     gameStarted: true,
                     xIsNext: xIsNext === 0 ? 1 : 0,
                     fieldTypes: newFieldTypes,
+                    resetable: false,
                 },
                 { merge: true }
             );
@@ -117,6 +126,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
                 {
                     fieldTypes: Array(gameSize * gameSize).fill(null),
                     xIsNext: 0,
+                    resetable: true,
                 },
                 { merge: true }
             );
@@ -128,8 +138,11 @@ const OnlineGameCanvas: React.FC<Props> = ({
     const handleNewGame = () => {
         if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
         resetLobby();
-        setWinnerDetails(initialState);
     };
+
+    useEffect(() => {
+        resetable && setWinnerDetails(initialState);
+    }, [resetable]);
 
     useEffect(() => {
         const result = checkGame(fieldTypes, gameSize);
