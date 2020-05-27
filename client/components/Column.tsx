@@ -68,7 +68,7 @@ const Column: React.FC<Props> = ({
     if (currentFieldTypes === 'o') icon = 'circle-outline';
     else if (currentFieldTypes === 'x') icon = 'close';
 
-    const size = gridSize === 3 ? 75 : gridSize === 4 ? 60 : 40; // making dynamic width height based on gridsize.
+    const size = gridSize === 3 ? 75 : gridSize === 4 ? 50 : 35; // making dynamic width height based on gridsize.
     return (
         <TouchableOpacity
             disabled={disableFields || Boolean(currentFieldTypes)}
