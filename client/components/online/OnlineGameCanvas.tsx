@@ -22,7 +22,6 @@ import {
     checkGame,
     getPlayerName,
 } from '../../lib/gameCanvasUtils';
-import { showToast } from '../../lib/toast';
 import Grid from '../Grid';
 import CountdownTimer from '../CountdownTimer';
 import { ThemeMode } from '../../types/Theme';
@@ -186,7 +185,6 @@ const OnlineGameCanvas: React.FC<Props> = ({
             const playerOnlineTimer = setTimeout(() => {
                 if (gameStarted && (!winner || !result)) {
                     changeTurn();
-                    showToast("Time's up!", 3500);
                 }
             }, timeOutDuration);
 
