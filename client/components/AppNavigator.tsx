@@ -37,6 +37,7 @@ const GameStackScreen: React.FC = () => {
                         shadowColor: 'transparent',
                         borderBottomWidth: 0,
                     },
+                    headerTitleAlign: 'center',
                     headerTitleStyle: {
                         fontWeight: 'bold',
                         fontSize: 20,
@@ -54,6 +55,7 @@ const GameStackScreen: React.FC = () => {
                         shadowColor: 'transparent',
                         borderBottomWidth: 0,
                     },
+                    headerTitleAlign: 'center',
                     headerTitleStyle: {
                         fontWeight: 'bold',
                     },
@@ -70,6 +72,7 @@ const GameStackScreen: React.FC = () => {
                         shadowColor: 'transparent',
                         borderBottomWidth: 0,
                     },
+                    headerTitleAlign: 'center',
                     headerTitleStyle: {
                         fontWeight: 'bold',
                     },
@@ -94,6 +97,7 @@ const SettingsStackScreen: React.FC = () => {
                         shadowColor: 'transparent',
                         borderBottomWidth: 0,
                     },
+                    headerTitleAlign: 'center',
                     headerTitleStyle: {
                         fontWeight: 'bold',
                     },
