@@ -16,13 +16,12 @@ import {
     selectHaptics,
     selectTheme,
 } from '../../redux/settings/settings.selectors';
-import { connect, useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 import {
     getFieldType,
     checkGame,
     getPlayerName,
 } from '../../lib/gameCanvasUtils';
-import { quitGame } from '../../redux/game/game.actions';
 import { showToast } from '../../lib/toast';
 import Grid from '../Grid';
 import CountdownTimer from '../CountdownTimer';
@@ -71,7 +70,6 @@ const OnlineGameCanvas: React.FC<Props> = ({
     hapticsEnabled,
     theme,
 }) => {
-    const dispatch = useDispatch();
     const [timers, setTimers] = useState<ReturnType<typeof setTimeout>[] | []>(
         []
     );
@@ -87,7 +85,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
         gameSize,
         resetable,
     } = gameState;
-    const timeOutDuration = 60000;
+    const timeOutDuration = 10000;
     const styles = getStyleSheet(theme);
 
     const canvasFrozen = playerId !== xIsNext;
@@ -140,6 +138,21 @@ const OnlineGameCanvas: React.FC<Props> = ({
         resetLobby();
     };
 
+    const changeTurn = async () => {
+        try {
+            const docRef = firestore.collection('lobbies').doc(lobbyId);
+
+            await docRef.set(
+                {
+                    xIsNext: xIsNext === 1 ? 0 : 1,
+                },
+                { merge: true }
+            );
+        } catch (err) {
+            handleError(err);
+        }
+    };
+
     useEffect(() => {
         resetable && setWinnerDetails(initialState);
     }, [resetable]);
@@ -172,8 +185,8 @@ const OnlineGameCanvas: React.FC<Props> = ({
 
             const playerOnlineTimer = setTimeout(() => {
                 if (gameStarted && (!winner || !result)) {
-                    dispatch(quitGame());
-                    showToast('Lobby dispanded due to inactivity', 3500);
+                    changeTurn();
+                    showToast("Time's up!", 3500);
                 }
             }, timeOutDuration);
 
