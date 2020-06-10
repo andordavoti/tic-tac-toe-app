@@ -10,7 +10,7 @@ import {
 import { Button, ToggleButton } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { checkGame } from '../lib/gameCanvasUtils';
-import { colors } from '../lib/constants';
+import { colors, calcFromHeight } from '../lib/constants';
 import { useSelector } from 'react-redux';
 import {
     selectHaptics,
@@ -247,22 +247,22 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         gameOverText: {
             color: colors[theme].text,
-            marginTop: 10,
-            marginBottom: 20,
+            marginTop: calcFromHeight(10),
+            marginBottom: calcFromHeight(15),
             fontSize: 30,
             textAlign: 'center',
             fontWeight: '500',
         },
         winnerText: {
             color: colors[theme].text,
-            margin: 20,
+            margin: calcFromHeight(10),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '400',
         },
         button: {
-            margin: 20,
-            marginBottom: 40,
+            margin: calcFromHeight(15),
+            marginBottom: calcFromHeight(25),
             backgroundColor: colors[theme].main,
         },
         buttonGroup: {
@@ -273,7 +273,7 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         text: {
             color: colors[theme].text,
-            margin: 10,
+            margin: calcFromHeight(10),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',

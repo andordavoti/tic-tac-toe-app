@@ -14,7 +14,7 @@ import { Linking } from 'expo';
 import * as WebBrowser from 'expo-web-browser';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { colors, urls } from '../lib/constants';
+import { colors, urls, calcFromHeight } from '../lib/constants';
 
 import { connect } from 'react-redux';
 import {
@@ -93,11 +93,17 @@ const SettingsScreen: React.FC<Props> = ({
 
     return (
         <View style={styles.container}>
-            <Text style={{ ...styles.text, margin: 0, marginBottom: 10 }}>
+            <Text
+                style={{
+                    ...styles.text,
+                    margin: 0,
+                    marginBottom: calcFromHeight(8),
+                }}
+            >
                 Theme:
             </Text>
             <ToggleButton.Row
-                style={{ marginBottom: 20 }}
+                style={{ marginBottom: calcFromHeight(15) }}
                 onValueChange={onValueChange}
                 value={selectedTheme}
             >
@@ -163,7 +169,9 @@ const SettingsScreen: React.FC<Props> = ({
 
             <View>
                 <Text style={styles.header}>About the App:</Text>
-                <Text style={{ ...styles.text, marginBottom: 20 }}>
+                <Text
+                    style={{ ...styles.text, marginBottom: calcFromHeight(15) }}
+                >
                     Developed by:
                 </Text>
                 <View style={styles.row}>
@@ -173,7 +181,11 @@ const SettingsScreen: React.FC<Props> = ({
                         <Text style={styles.textAuthor}>Andor Davoti</Text>
                     </TouchableOpacity>
                     <Text
-                        style={{ ...styles.text, marginBottom: 20, margin: 5 }}
+                        style={{
+                            ...styles.text,
+                            marginBottom: calcFromHeight(15),
+                            margin: calcFromHeight(4),
+                        }}
                     >
                         &#38;{' '}
                     </Text>
@@ -186,7 +198,7 @@ const SettingsScreen: React.FC<Props> = ({
                 </View>
 
                 <TouchableOpacity
-                    style={{ ...styles.row, marginBottom: 20 }}
+                    style={{ ...styles.row, marginBottom: calcFromHeight(15) }}
                     onPress={() => openLink(urls.projectGithub)}
                 >
                     <MaterialCommunityIcons
@@ -254,14 +266,14 @@ const getStyleSheet = (theme: ThemeMode) => {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            margin: 10,
+            margin: calcFromHeight(8),
             fontWeight: 'bold',
         },
         textAuthor: {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            margin: 5,
+            margin: calcFromHeight(4),
             marginBottom: 20,
             fontStyle: 'italic',
         },
@@ -269,7 +281,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            marginTop: 20,
+            marginTop: calcFromHeight(15),
             fontWeight: 'bold',
         },
         header: {
@@ -277,12 +289,12 @@ const getStyleSheet = (theme: ThemeMode) => {
             fontSize: 25,
             color: colors[theme].text,
             fontWeight: '600',
-            margin: 20,
-            marginTop: 50,
+            margin: calcFromHeight(15),
+            marginTop: calcFromHeight(30),
             textDecorationLine: 'underline',
         },
         button: {
-            margin: 10,
+            margin: calcFromHeight(8),
             backgroundColor: colors[theme].main,
         },
         buttonGroup: {
@@ -290,13 +302,6 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         buttonGroupSelected: {
             backgroundColor: colors[theme].text,
-        },
-        rowData: {
-            minHeight: 30,
-            marginLeft: 25,
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
         },
     });
 };

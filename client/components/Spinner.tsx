@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '../lib/constants';
+import { colors, calcFromHeight } from '../lib/constants';
 import { ActivityIndicator } from 'react-native-paper';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
@@ -16,7 +16,7 @@ const Spinner: React.FC<Props> = ({ msg, size = 'large' }) => {
     const styles = getStyleSheet(theme);
 
     return (
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: calcFromHeight(10) }}>
             <ActivityIndicator color={colors[theme].main} size={size} />
             <Text style={styles.text}>{msg}</Text>
         </View>
@@ -29,7 +29,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             color: colors[theme].text,
             fontWeight: 'bold',
             fontSize: 15,
-            margin: 20,
+            margin: calcFromHeight(20),
             textAlign: 'center',
         },
     });

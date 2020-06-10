@@ -5,7 +5,7 @@ import { getBottomSpace } from 'react-native-iphone-x-helper';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, urls } from '../lib/constants';
+import { colors, urls, calcFromHeight } from '../lib/constants';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
@@ -203,35 +203,35 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         joinText: {
             color: colors[theme].text,
-            marginTop: 20,
+            marginTop: calcFromHeight(15),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
         },
         text: {
             color: colors[theme].text,
-            margin: 10,
+            margin: calcFromHeight(8),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
         },
         lobbyId: {
             color: colors[theme].text,
-            marginTop: 22,
+            marginTop: calcFromHeight(15),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: 'bold',
         },
         infoText: {
             color: colors[theme].warning,
-            margin: 5,
+            margin: calcFromHeight(5),
             fontSize: 15,
             textAlign: 'center',
             fontWeight: 'bold',
         },
         button: {
             width: 200,
-            margin: 10,
+            margin: calcFromHeight(8),
             backgroundColor: colors[theme].main,
         },
         buttonGroup: {
@@ -241,15 +241,9 @@ const getStyleSheet = (theme: ThemeMode) => {
             backgroundColor: colors[theme].text,
         },
         quitButton: {
-            margin: 10,
-            marginBottom: 30,
+            margin: calcFromHeight(8),
+            marginBottom: calcFromHeight(20),
             backgroundColor: colors[theme].main,
-        },
-        image: {
-            flex: 1,
-            height: 60,
-            width: 200,
-            margin: 10,
         },
         input: {
             color: 'white',
@@ -257,7 +251,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             backgroundColor: colors[theme].disabledButton,
             height: 40,
             width: 200,
-            margin: 10,
+            margin: calcFromHeight(8),
             borderRadius: 5,
             borderColor: colors[theme].main,
             fontSize: 20,

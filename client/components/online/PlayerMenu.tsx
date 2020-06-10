@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, ToggleButton } from 'react-native-paper';
-import { colors } from '../../lib/constants';
+import { colors, calcFromHeight, calcFromWidth } from '../../lib/constants';
 import { showToast } from '../../lib/toast';
 import { useSelector } from 'react-redux';
 import {
@@ -61,7 +61,7 @@ const PlayerMenu: React.FC<Props> = ({
 
     return (
         <View>
-            <View style={{ marginBottom: 20 }}>
+            <View style={{ marginBottom: calcFromHeight(15) }}>
                 <Text style={styles.text}>Grid Size:</Text>
                 <ToggleButton.Row
                     style={{ justifyContent: 'center' }}
@@ -134,9 +134,9 @@ const PlayerMenu: React.FC<Props> = ({
 
             <View
                 style={{
-                    marginLeft: 10,
-                    marginRight: 10,
-                    marginTop: 15,
+                    marginLeft: calcFromWidth(10),
+                    marginRight: calcFromWidth(10),
+                    marginTop: calcFromHeight(10),
                     borderBottomColor: theme === 'dark' ? 'grey' : 'lightgrey',
                     borderBottomWidth: 2,
                 }}

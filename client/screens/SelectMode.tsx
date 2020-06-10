@@ -4,7 +4,7 @@ import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { SplashScreen } from 'expo';
 
-import { colors } from '../lib/constants';
+import { colors, calcFromHeight } from '../lib/constants';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -81,21 +81,15 @@ const getStyleSheet = (theme: ThemeMode) => {
             justifyContent: 'center',
         },
         button: {
-            margin: 10,
+            margin: calcFromHeight(8),
             backgroundColor: colors[theme].main,
         },
         text: {
             color: colors[theme].text,
-            margin: 20,
+            margin: calcFromHeight(15),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
-        },
-        image: {
-            flex: 1,
-            height: 60,
-            width: 200,
-            margin: 10,
         },
     });
 };

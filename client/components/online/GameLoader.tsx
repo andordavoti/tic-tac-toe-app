@@ -31,7 +31,7 @@ import {
     selectHaptics,
     selectTheme,
 } from '../../redux/settings/settings.selectors';
-import { colors } from '../../lib/constants';
+import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
 import { ThemeMode } from '../../types/Theme';
 import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
@@ -185,7 +185,10 @@ const GameLoader: React.FC<Props> = ({
                         <MaterialCommunityIcons
                             color={colors[theme].text}
                             name="clipboard-text-outline"
-                            style={{ marginLeft: 10, marginTop: 15 }}
+                            style={{
+                                marginLeft: calcFromWidth(2),
+                                marginTop: calcFromHeight(12),
+                            }}
                             size={30}
                         />
                     </View>

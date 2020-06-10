@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
-import { colors } from '../../lib/constants';
+import { colors, calcFromHeight } from '../../lib/constants';
 import { firestore } from '../../lib/firebaseUtils';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -270,28 +270,28 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         gameOverText: {
             color: colors[theme].text,
-            margin: 20,
+            margin: calcFromHeight(15),
             fontSize: 30,
             textAlign: 'center',
             fontWeight: '500',
         },
         winnerText: {
             color: colors[theme].text,
-            margin: 20,
+            margin: calcFromHeight(15),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: 'bold',
         },
         text: {
             color: colors[theme].text,
-            marginTop: 20,
+            marginTop: calcFromHeight(15),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
-            marginBottom: 20,
+            marginBottom: calcFromHeight(15),
         },
         button: {
-            marginBottom: 20,
+            marginBottom: calcFromHeight(15),
             backgroundColor: colors[theme].main,
         },
     });

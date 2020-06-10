@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dimensions, TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { colors } from '../lib/constants';
+import { colors, calcFromWidth } from '../lib/constants';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
@@ -121,7 +121,7 @@ const getStyleSheet = (
                 ? colors[theme].disabledColumn
                 : colors[theme].main,
             borderRadius: 10,
-            margin: 10,
+            margin: calcFromWidth(8),
         },
     });
 };
