@@ -90,7 +90,7 @@ const Column: React.FC<Props> = ({
                                         : 'white'
                                     : colors[theme].main
                             }
-                            name={icon}
+                            name={icon ? icon : 'close'}
                             size={size}
                         />
                     </View>
