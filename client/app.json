@@ -7,7 +7,7 @@
         "privacy": "public",
         "userInterfaceStyle": "automatic",
         "platforms": ["ios", "android", "web"],
-        "version": "0.4.0",
+        "version": "1.0.0",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {
@@ -22,7 +22,7 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "bundleIdentifier": "com.andordavoti.tictactoe.game",
-            "buildNumber": "2020052702",
+            "buildNumber": "2020061001",
             "supportsTablet": false,
             "isTabletOnly": false,
             "config": {
@@ -31,7 +31,7 @@
         },
         "android": {
             "package": "com.andordavoti.tictactoe.game",
-            "versionCode": 2020052702,
+            "versionCode": 2020061001,
             "permissions": [],
             "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
         }
