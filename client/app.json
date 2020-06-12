@@ -7,7 +7,7 @@
         "privacy": "public",
         "userInterfaceStyle": "automatic",
         "platforms": ["ios", "android", "web"],
-        "version": "1.0.0",
+        "version": "1.0.1",
         "orientation": "portrait",
         "icon": "./assets/icon.png",
         "splash": {
@@ -22,16 +22,17 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "bundleIdentifier": "com.andordavoti.tictactoe.game",
-            "buildNumber": "2020061001",
+            "buildNumber": "2020061201",
             "supportsTablet": false,
             "isTabletOnly": false,
             "config": {
                 "usesNonExemptEncryption": false
-            }
+            },
+            "appStoreUrl": "https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441?ls=1"
         },
         "android": {
             "package": "com.andordavoti.tictactoe.game",
-            "versionCode": 2020061001,
+            "versionCode": 2020061201,
             "permissions": [],
             "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
         }
