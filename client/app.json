@@ -22,7 +22,7 @@
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "bundleIdentifier": "com.andordavoti.tictactoe.game",
-            "buildNumber": "2020061201",
+            "buildNumber": "2020061301",
             "supportsTablet": false,
             "isTabletOnly": false,
             "config": {
@@ -32,7 +32,7 @@
         },
         "android": {
             "package": "com.andordavoti.tictactoe.game",
-            "versionCode": 2020061201,
+            "versionCode": 2020061301,
             "permissions": [],
             "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
         }
