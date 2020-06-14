@@ -10,8 +10,10 @@ const Home: FC = () => {
                         class={style.phone}
                         src="../../assets/Mockup_iphone.png"
                     />
-                    <div disabled class={style.downloadBage}>
-                        <img src="../../assets/appstore.svg" />
+                    <div class={style.downloadBage}>
+                        <a href="https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441?ls=1">
+                            <img src="../../assets/appstore.svg" />
+                        </a>
                     </div>
                 </div>
                 <div class={style.phoneContainer}>
@@ -19,8 +21,10 @@ const Home: FC = () => {
                         class={style.phone}
                         src="../../assets/Mockup_android.png"
                     />
-                    <div disabled class={style.downloadBage}>
-                        <img src="../../assets/google-play-badge.png" />
+                    <div class={style.downloadBage}>
+                        <a href="https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game">
+                            <img src="../../assets/google-play-badge.png" />
+                        </a>
                     </div>
                 </div>
             </div>

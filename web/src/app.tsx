@@ -15,7 +15,7 @@ if ((module as any).hot) {
 const App: FunctionalComponent = () => {
     return (
         <div id="app">
-            <Header title="Tic Tac Online" />
+            <Header title="Tic Tac Toe" />
             <Router>
                 <Route path="/" component={Home} />
                 <Route path="/privacy/" component={Privacy} />
