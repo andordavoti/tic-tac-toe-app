@@ -213,7 +213,9 @@ const SettingsScreen: React.FC<Props> = ({
                         size={25}
                     />
                 </TouchableOpacity>
-                <View style={{ flexDirection: 'row' }}>
+                <View
+                    style={{ flexDirection: 'row', justifyContent: 'center' }}
+                >
                     <Button
                         mode="contained"
                         style={styles.button}
