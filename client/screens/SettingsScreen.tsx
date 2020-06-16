@@ -220,18 +220,20 @@ const SettingsScreen: React.FC<Props> = ({
                 <View
                     style={{ flexDirection: 'row', justifyContent: 'center' }}
                 >
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        labelStyle={{ color: 'white' }}
-                        onPress={() => {
-                            if (Platform.OS === 'ios' && hapticsEnabled)
-                                Haptics.selectionAsync();
-                            StoreReview.requestReview();
-                        }}
-                    >
-                        Rate App
-                    </Button>
+                    {Platform.OS !== 'web' ? (
+                        <Button
+                            mode="contained"
+                            style={styles.button}
+                            labelStyle={{ color: 'white' }}
+                            onPress={() => {
+                                if (Platform.OS === 'ios' && hapticsEnabled)
+                                    Haptics.selectionAsync();
+                                StoreReview.requestReview();
+                            }}
+                        >
+                            Rate App
+                        </Button>
+                    ) : null}
                     <Button
                         mode="contained"
                         style={styles.button}
