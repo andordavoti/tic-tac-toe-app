@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet, Text, Platform } from 'react-native';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
 import * as Haptics from 'expo-haptics';
-import NetInfo from '@react-native-community/netinfo';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls, calcFromHeight } from '../lib/constants';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
@@ -50,18 +49,10 @@ const OnlineMultiplayer: React.FC<Props> = ({
         value: '',
         err: false,
     });
-    const [connected, isConnected] = useState(true);
     const [gridSize, setGridSize] = useState(3);
+    const connection = useNetInfo();
 
     const styles = getStyleSheet(theme);
-
-    useEffect(() => {
-        const unsubscribe = NetInfo.addEventListener(state =>
-            isConnected(state.isConnected)
-        );
-
-        return () => unsubscribe();
-    }, []);
 
     const [loading, setLoading] = useState(false);
     const handleNewGame = async () => {
@@ -135,7 +126,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
         }
     };
 
-    if (connected) {
+    if (connection.isConnected) {
         return (
             <View style={styles.container}>
                 {lobbyId ? (
