@@ -32,7 +32,7 @@ const Column: React.FC<Props> = ({
     const [isWinnerColumn, setIsWinnerColumn] = useState(false);
     const theme = useSelector(selectTheme);
 
-    const size3 = Dimensions.get('window').width * 0.22;
+    const size3 = Dimensions.get('window').height * 0.1;
     const size4 = Dimensions.get('window').height * 0.08;
     const size5 = Dimensions.get('window').height * 0.06;
 
