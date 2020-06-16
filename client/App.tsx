@@ -4,6 +4,7 @@ import { decode, encode } from 'base-64';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
 import stores from './redux/store';
+import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
 import Constants from 'expo-constants';
 import { SplashScreen } from 'expo';
