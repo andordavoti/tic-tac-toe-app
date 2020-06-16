@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, Platform } from 'react-native';
 import { decode, encode } from 'base-64';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
 import stores from './redux/store';
-import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
 import Constants from 'expo-constants';
 import { SplashScreen } from 'expo';
@@ -24,14 +23,16 @@ const App: React.FC = () => {
         SplashScreen.preventAutoHide();
     }, []);
 
-    Sentry.init({
-        dsn: SENTRY_DSN,
-        enableInExpoDevelopment: false,
-        debug: process.env.NODE_ENV === 'development' ? true : false,
-    });
+    if (Platform.OS !== 'web') {
+        Sentry.init({
+            dsn: SENTRY_DSN,
+            enableInExpoDevelopment: false,
+            debug: process.env.NODE_ENV === 'development' ? true : false,
+        });
 
-    if (Constants.manifest.revisionId)
-        Sentry.setRelease(Constants.manifest.revisionId);
+        if (Constants.manifest.revisionId)
+            Sentry.setRelease(Constants.manifest.revisionId);
+    }
 
     const { store, persistor } = stores();
     return (

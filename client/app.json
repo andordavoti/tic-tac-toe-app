@@ -35,6 +35,13 @@
             "versionCode": 2020061401,
             "permissions": [],
             "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
+        },
+        "web": {
+            "build": {
+                "babel": {
+                    "include": ["static-container", "sentry-expo"]
+                }
+            }
         }
     }
 }
