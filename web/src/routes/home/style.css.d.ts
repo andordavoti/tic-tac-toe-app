@@ -4,3 +4,4 @@ export const phoneSection: string;
 export const phoneContainer: string;
 export const phone: string;
 export const downloadBage: string;
+export const description: string;
