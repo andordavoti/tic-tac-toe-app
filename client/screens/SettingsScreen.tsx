@@ -94,11 +94,13 @@ const SettingsScreen: React.FC<Props> = ({
     return (
         <View style={styles.container}>
             <Text
-                style={{
-                    ...styles.text,
-                    margin: 0,
-                    marginBottom: calcFromHeight(8),
-                }}
+                style={[
+                    styles.text,
+                    {
+                        margin: 0,
+                        marginBottom: calcFromHeight(8),
+                    },
+                ]}
             >
                 Theme:
             </Text>
@@ -170,7 +172,7 @@ const SettingsScreen: React.FC<Props> = ({
             <View>
                 <Text style={styles.header}>About the App:</Text>
                 <Text
-                    style={{ ...styles.text, marginBottom: calcFromHeight(15) }}
+                    style={[styles.text, { marginBottom: calcFromHeight(15) }]}
                 >
                     Developed by:
                 </Text>
@@ -181,11 +183,13 @@ const SettingsScreen: React.FC<Props> = ({
                         <Text style={styles.textAuthor}>Andor Davoti</Text>
                     </TouchableOpacity>
                     <Text
-                        style={{
-                            ...styles.text,
-                            marginBottom: calcFromHeight(15),
-                            margin: calcFromHeight(4),
-                        }}
+                        style={[
+                            styles.text,
+                            {
+                                marginBottom: calcFromHeight(15),
+                                margin: calcFromHeight(4),
+                            },
+                        ]}
                     >
                         &#38;{' '}
                     </Text>
@@ -198,7 +202,7 @@ const SettingsScreen: React.FC<Props> = ({
                 </View>
 
                 <TouchableOpacity
-                    style={{ ...styles.row, marginBottom: calcFromHeight(15) }}
+                    style={[styles.row, { marginBottom: calcFromHeight(15) }]}
                     onPress={() => openLink(urls.projectGithub)}
                 >
                     <MaterialCommunityIcons
