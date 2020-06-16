@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import Animated, { interpolate, multiply } from 'react-native-reanimated';
 import { colors } from '../lib/constants';
@@ -15,23 +16,25 @@ const CircularProgress: React.FC<PropTypes> = ({ progress, size = 64 }) => {
     const theme = useSelector(selectTheme);
     const α = interpolate(progress, {
         inputRange: [0, 1],
-        outputRange: [0, Math.PI * 2],
+        outputRange: [0, -Math.PI * 2],
     });
 
     const strokeDashoffset = multiply(α, radius);
 
     return (
-        <Svg width={size} height={size}>
-            <AnimatedCircle
-                stroke={colors[theme].main}
-                fill="none"
-                cx={size / 2}
-                cy={size / 2}
-                r={radius}
-                {...{ strokeWidth, strokeDashoffset }}
-                strokeDasharray={`${circumference} ${circumference}`}
-            />
-        </Svg>
+        <View style={{ transform: [{ rotate: '-90deg' }] }}>
+            <Svg width={size} height={size}>
+                <AnimatedCircle
+                    stroke={colors[theme].main}
+                    fill="none"
+                    cx={size / 2}
+                    cy={size / 2}
+                    r={radius}
+                    {...{ strokeWidth, strokeDashoffset }}
+                    strokeDasharray={`${circumference} ${circumference}`}
+                />
+            </Svg>
+        </View>
     );
 };
 
