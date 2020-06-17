@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
+import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls, calcFromHeight } from '../lib/constants';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
@@ -53,6 +53,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
     const [connected, setConnected] = useState(false);
 
     useEffect(() => {
+        // TODO: needs to be unsubscribed (web crashes with netinfo that's why we need the if)
         if (Platform.OS !== 'web') {
             const unsubscribe = NetInfo.addEventListener(state => {
                 setConnected(state.isConnected);
