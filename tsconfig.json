@@ -1,13 +1,14 @@
 {
-  "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "jsx": "react-native",
-    "lib": ["dom", "esnext"],
-    "moduleResolution": "node",
-    "noEmit": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "strict": true
-  }
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "downlevelIteration": true,
+        "jsx": "react-native",
+        "lib": ["dom", "esnext"],
+        "moduleResolution": "node",
+        "noEmit": true,
+        "skipLibCheck": true,
+        "resolveJsonModule": true,
+        "strict": true,
+        "esModuleInterlop": true
+    }
 }

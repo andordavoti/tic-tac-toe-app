@@ -163,27 +163,32 @@ const PlayerMenu: React.FC<Props> = ({
                     alignItems: 'center',
                 }}
             >
-                <TouchableOpacity onPress={insertFromClipboard}>
-                    <MaterialCommunityIcons
-                        color={colors[theme].text}
-                        name="clipboard-text-outline"
-                        size={30}
-                    />
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={clearInput}
-                    disabled={!Boolean(textInput.value.length)}
-                >
-                    <MaterialCommunityIcons
-                        color={
-                            !Boolean(textInput.value.length)
-                                ? 'grey'
-                                : colors[theme].text
-                        }
-                        name="backspace-outline"
-                        size={30}
-                    />
-                </TouchableOpacity>
+                {Platform.OS !== 'web' ? (
+                    <>
+                        <TouchableOpacity onPress={insertFromClipboard}>
+                            <MaterialCommunityIcons
+                                color={colors[theme].text}
+                                name="clipboard-text-outline"
+                                size={30}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={clearInput}
+                            disabled={!Boolean(textInput.value.length)}
+                        >
+                            <MaterialCommunityIcons
+                                color={
+                                    !Boolean(textInput.value.length)
+                                        ? 'grey'
+                                        : colors[theme].text
+                                }
+                                name="backspace-outline"
+                                size={30}
+                            />
+                        </TouchableOpacity>
+                    </>
+                ) : null}
             </View>
 
             {Boolean(textInput.err.length) && (
@@ -195,12 +200,12 @@ const PlayerMenu: React.FC<Props> = ({
                 onPress={handleJoinGame}
                 mode="contained"
                 style={
-                    textInput.value.length
+                    Boolean(textInput.value.length)
                         ? styles.button
-                        : {
-                              ...styles.button,
-                              backgroundColor: colors[theme].disabledButton,
-                          }
+                        : [
+                              styles.button,
+                              { backgroundColor: colors[theme].disabledButton },
+                          ]
                 }
                 labelStyle={{ color: 'white' }}
                 contentStyle={{ margin: 10 }}

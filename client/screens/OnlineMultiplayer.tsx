@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
-import { useNetInfo } from '@react-native-community/netinfo';
+import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls, calcFromHeight } from '../lib/constants';
 import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
@@ -50,7 +50,15 @@ const OnlineMultiplayer: React.FC<Props> = ({
         err: false,
     });
     const [gridSize, setGridSize] = useState(3);
-    const connection = useNetInfo();
+    const [connected, setConnected] = useState(false);
+
+    useEffect(() => {
+        if (Platform.OS !== 'web') {
+            const unsubscribe = NetInfo.addEventListener(state => {
+                setConnected(state.isConnected);
+            });
+        }
+    }, []);
 
     const styles = getStyleSheet(theme);
 
@@ -126,7 +134,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
         }
     };
 
-    if (connection.isConnected) {
+    if (connected || Platform.OS === 'web') {
         return (
             <View style={styles.container}>
                 {lobbyId ? (
