@@ -9,6 +9,7 @@ import { SENTRY_DSN } from './lib/apiKeys';
 import Constants from 'expo-constants';
 import { SplashScreen } from 'expo';
 import { PersistGate } from 'redux-persist/integration/react';
+import AppNavigatorWeb from './components/AppNavigatorWeb';
 
 declare const global: {
     HermesInternal: null | {};
@@ -41,7 +42,11 @@ const App: React.FC = () => {
             <PersistGate loading={null} persistor={persistor}>
                 <View style={{ flex: 1 }}>
                     <StatusBar barStyle="light-content" />
-                    <AppNavigator />
+                    {Platform.OS === 'web' ? (
+                        <AppNavigatorWeb />
+                    ) : (
+                        <AppNavigator />
+                    )}
                 </View>
             </PersistGate>
         </Provider>

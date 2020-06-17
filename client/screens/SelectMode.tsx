@@ -57,6 +57,21 @@ const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
                 >
                     Online Multiplayer
                 </Button>
+                {Platform.OS === 'web' ? (
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        labelStyle={{ color: 'white' }}
+                        onPress={() => {
+                            navigation.navigate('Settings');
+                            if (Platform.OS === 'ios' && hapticsEnabled)
+                                Haptics.selectionAsync();
+                        }}
+                        contentStyle={{ margin: 10 }}
+                    >
+                        Settings
+                    </Button>
+                ) : null}
             </View>
         </View>
     );
