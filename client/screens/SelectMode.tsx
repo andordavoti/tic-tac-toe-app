@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet, Platform, Image } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { SplashScreen } from 'expo';
 
-import { colors, calcFromHeight } from '../lib/constants';
+import { colors, calcFromHeight, calcFromWidth } from '../lib/constants';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -13,6 +14,7 @@ import {
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { openLink } from '../lib/openLink';
 
 interface Props {
     theme: ThemeMode;
@@ -73,6 +75,40 @@ const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
                     </Button>
                 ) : null}
             </View>
+            {Platform.OS === 'web' ? (
+                <>
+                    <Text style={styles.text}>Download the app:</Text>
+                    <View style={styles.storeButtonContainer}>
+                        <TouchableOpacity
+                            onPress={() =>
+                                openLink(
+                                    'https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441?ls=1'
+                                )
+                            }
+                        >
+                            <Image
+                                resizeMode="contain"
+                                style={styles.storeIcon}
+                                source={require('../assets/app-store-badge.png')}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            onPress={() =>
+                                openLink(
+                                    'https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game'
+                                )
+                            }
+                        >
+                            <Image
+                                resizeMode="contain"
+                                style={styles.storeIcon}
+                                source={require('../assets/google-play-badge.png')}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </>
+            ) : null}
         </View>
     );
 };
@@ -105,6 +141,16 @@ const getStyleSheet = (theme: ThemeMode) => {
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
+        },
+        storeButtonContainer: {
+            flexDirection: 'row',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+        },
+        storeIcon: {
+            height: 60,
+            width: 200,
+            margin: 10,
         },
     });
 };

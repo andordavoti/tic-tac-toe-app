@@ -11,7 +11,6 @@ import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
 import * as StoreReview from 'expo-store-review';
 import { Linking } from 'expo';
-import * as WebBrowser from 'expo-web-browser';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { colors, urls, calcFromHeight } from '../lib/constants';
@@ -30,6 +29,7 @@ import {
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
+import { openLink } from '../lib/openLink';
 
 interface Props {
     theme: ThemeMode;
@@ -70,14 +70,6 @@ const SettingsScreen: React.FC<Props> = ({
                 setCurrentTheme(value);
                 enableSystemTheme(false);
             }
-        }
-    };
-
-    const openLink = async (link: string) => {
-        try {
-            await WebBrowser.openBrowserAsync(link);
-        } catch (err) {
-            handleError(err);
         }
     };
 
