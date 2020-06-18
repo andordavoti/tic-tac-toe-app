@@ -6,6 +6,8 @@ Play Tic Tac Toe cross-platform. Both online and in-person with your friends. We
 
 Simple landing page and privacy policy made with preact: https://ticktacktoe-7aa6d.web.app/
 
+Web version is coming soon...
+
 Authors:
   - Andor Davoti
   - Sanna Jammeh
