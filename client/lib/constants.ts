@@ -1,10 +1,7 @@
-import { Dimensions } from 'react-native';
-
-const { height, width } = Dimensions.get('window');
-export const fullWidth = width;
-export const fullHeight = height;
-export const calcFromWidth = (value: number) => value * (width / 375.0);
-export const calcFromHeight = (value: number) => value * (height / 667.0);
+export const calcFromWidth = (value: number, width: number) =>
+    value * (width / 375.0);
+export const calcFromHeight = (value: number, height: number) =>
+    value * (height / 667.0);
 
 export const colors = {
     light: {

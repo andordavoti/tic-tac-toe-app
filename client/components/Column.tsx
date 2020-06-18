@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Dimensions, TouchableOpacity, View, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth } from '../lib/constants';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
@@ -32,9 +33,11 @@ const Column: React.FC<Props> = ({
     const [isWinnerColumn, setIsWinnerColumn] = useState(false);
     const theme = useSelector(selectTheme);
 
-    const size3 = Dimensions.get('window').height * 0.1;
-    const size4 = Dimensions.get('window').height * 0.08;
-    const size5 = Dimensions.get('window').height * 0.06;
+    const { width, height } = useDimensions().window;
+
+    const size3 = height * 0.1;
+    const size4 = height * 0.08;
+    const size5 = height * 0.06;
 
     const styles = getStyleSheet(
         theme,
@@ -42,7 +45,8 @@ const Column: React.FC<Props> = ({
         disableFields,
         size3,
         size4,
-        size5
+        size5,
+        width
     );
 
     useEffect(() => {
@@ -106,7 +110,8 @@ const getStyleSheet = (
     disableFields: boolean,
     size3: number,
     size4: number,
-    size5: number
+    size5: number,
+    width: number
 ) => {
     return StyleSheet.create({
         container: {
@@ -121,7 +126,7 @@ const getStyleSheet = (
                 ? colors[theme].disabledColumn
                 : colors[theme].main,
             borderRadius: 10,
-            margin: calcFromWidth(8),
+            margin: calcFromWidth(8, width),
         },
     });
 };

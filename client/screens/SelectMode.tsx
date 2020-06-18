@@ -5,7 +5,7 @@ import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { SplashScreen } from 'expo';
 
-import { colors, calcFromHeight, calcFromWidth } from '../lib/constants';
+import { colors, calcFromHeight } from '../lib/constants';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import {
@@ -15,6 +15,7 @@ import {
 import { ThemeMode } from '../types/Theme';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { openLink } from '../lib/openLink';
+import { useDimensions } from '@react-native-community/hooks';
 
 interface Props {
     theme: ThemeMode;
@@ -27,7 +28,9 @@ const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
         SplashScreen.hide();
     }, []);
 
-    const styles = getStyleSheet(theme);
+    const { width, height } = useDimensions().window;
+
+    const styles = getStyleSheet(theme, height);
 
     return (
         <View style={styles.container}>
@@ -118,7 +121,7 @@ const mapStateToProps = createStructuredSelector<any, any>({
     hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme: ThemeMode) => {
+const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
             flex: 1,
@@ -132,12 +135,12 @@ const getStyleSheet = (theme: ThemeMode) => {
             justifyContent: 'center',
         },
         button: {
-            margin: calcFromHeight(8),
+            margin: calcFromHeight(8, height),
             backgroundColor: colors[theme].main,
         },
         text: {
             color: colors[theme].text,
-            margin: calcFromHeight(15),
+            margin: calcFromHeight(15, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',

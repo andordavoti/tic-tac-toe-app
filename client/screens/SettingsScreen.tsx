@@ -30,6 +30,7 @@ import {
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { openLink } from '../lib/openLink';
+import { useDimensions } from '@react-native-community/hooks';
 
 interface Props {
     theme: ThemeMode;
@@ -50,7 +51,9 @@ const SettingsScreen: React.FC<Props> = ({
 }) => {
     const [selectedTheme, setSelectedTheme] = useState('system');
 
-    const styles = getStyleSheet(theme);
+    const { width, height } = useDimensions().window;
+
+    const styles = getStyleSheet(theme, height);
 
     useEffect(() => {
         if (systemThemeEnabled) setSelectedTheme('system');
@@ -90,14 +93,14 @@ const SettingsScreen: React.FC<Props> = ({
                     styles.text,
                     {
                         margin: 0,
-                        marginBottom: calcFromHeight(8),
+                        marginBottom: calcFromHeight(8, height),
                     },
                 ]}
             >
                 Theme:
             </Text>
             <ToggleButton.Row
-                style={{ marginBottom: calcFromHeight(15) }}
+                style={{ marginBottom: calcFromHeight(15, height) }}
                 onValueChange={onValueChange}
                 value={selectedTheme}
             >
@@ -164,7 +167,10 @@ const SettingsScreen: React.FC<Props> = ({
             <View>
                 <Text style={styles.header}>About the App:</Text>
                 <Text
-                    style={[styles.text, { marginBottom: calcFromHeight(15) }]}
+                    style={[
+                        styles.text,
+                        { marginBottom: calcFromHeight(15, height) },
+                    ]}
                 >
                     Developed by:
                 </Text>
@@ -178,8 +184,8 @@ const SettingsScreen: React.FC<Props> = ({
                         style={[
                             styles.text,
                             {
-                                marginBottom: calcFromHeight(15),
-                                margin: calcFromHeight(4),
+                                marginBottom: calcFromHeight(15, height),
+                                margin: calcFromHeight(4, height),
                             },
                         ]}
                     >
@@ -194,7 +200,10 @@ const SettingsScreen: React.FC<Props> = ({
                 </View>
 
                 <TouchableOpacity
-                    style={[styles.row, { marginBottom: calcFromHeight(15) }]}
+                    style={[
+                        styles.row,
+                        { marginBottom: calcFromHeight(15, height) },
+                    ]}
                     onPress={() => openLink(urls.projectGithub)}
                 >
                     <MaterialCommunityIcons
@@ -249,7 +258,7 @@ const mapStateToProps = createStructuredSelector<any, any>({
     hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme: ThemeMode) => {
+const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
             flex: 1,
@@ -266,14 +275,14 @@ const getStyleSheet = (theme: ThemeMode) => {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            margin: calcFromHeight(8),
+            margin: calcFromHeight(8, height),
             fontWeight: 'bold',
         },
         textAuthor: {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            margin: calcFromHeight(4),
+            margin: calcFromHeight(4, height),
             marginBottom: 20,
             fontStyle: 'italic',
         },
@@ -281,7 +290,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             textAlign: 'center',
             fontSize: 20,
             color: colors[theme].text,
-            marginTop: calcFromHeight(15),
+            marginTop: calcFromHeight(15, height),
             fontWeight: 'bold',
         },
         header: {
@@ -289,12 +298,12 @@ const getStyleSheet = (theme: ThemeMode) => {
             fontSize: 25,
             color: colors[theme].text,
             fontWeight: '600',
-            margin: calcFromHeight(15),
-            marginTop: calcFromHeight(30),
+            margin: calcFromHeight(15, height),
+            marginTop: calcFromHeight(30, height),
             textDecorationLine: 'underline',
         },
         button: {
-            margin: calcFromHeight(8),
+            margin: calcFromHeight(8, height),
             backgroundColor: colors[theme].main,
         },
         buttonGroup: {

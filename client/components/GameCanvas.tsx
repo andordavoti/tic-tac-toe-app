@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import {
-    FieldTypes,
-    Winner,
-    GridNumber,
-    WinnerColumns,
-    GridString,
-} from '../types/Game';
+import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
 import { Button, ToggleButton } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { checkGame } from '../lib/gameCanvasUtils';
@@ -18,6 +12,7 @@ import {
 } from '../redux/settings/settings.selectors';
 import Grid from './Grid';
 import { ThemeMode } from '../types/Theme';
+import { useDimensions } from '@react-native-community/hooks';
 
 interface GameCanvasState {
     fieldTypes: FieldTypes;
@@ -34,7 +29,9 @@ const GameCanvas: React.FC = () => {
     const theme = useSelector(selectTheme);
     const hapticsEnabled = useSelector(selectHaptics);
 
-    const styles = getStyleSheet(theme);
+    const { width, height } = useDimensions().window;
+
+    const styles = getStyleSheet(theme, height);
 
     const initialState = {
         fieldTypes: [],
@@ -238,7 +235,7 @@ const GameCanvas: React.FC = () => {
     );
 };
 
-const getStyleSheet = (theme: ThemeMode) => {
+const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
             flex: 1,
@@ -247,22 +244,22 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         gameOverText: {
             color: colors[theme].text,
-            marginTop: calcFromHeight(10),
-            marginBottom: calcFromHeight(15),
+            marginTop: calcFromHeight(10, height),
+            marginBottom: calcFromHeight(15, height),
             fontSize: 30,
             textAlign: 'center',
             fontWeight: '500',
         },
         winnerText: {
             color: colors[theme].text,
-            margin: calcFromHeight(10),
+            margin: calcFromHeight(10, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '400',
         },
         button: {
-            margin: calcFromHeight(15),
-            marginBottom: calcFromHeight(25),
+            margin: calcFromHeight(15, height),
+            marginBottom: calcFromHeight(25, height),
             backgroundColor: colors[theme].main,
         },
         buttonGroup: {
@@ -273,7 +270,7 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         text: {
             color: colors[theme].text,
-            margin: calcFromHeight(10),
+            margin: calcFromHeight(10, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',

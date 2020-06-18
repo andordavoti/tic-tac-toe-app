@@ -21,6 +21,7 @@ import {
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { GridString } from '../types/Game';
+import { useDimensions } from '@react-native-community/hooks';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -61,7 +62,9 @@ const OnlineMultiplayer: React.FC<Props> = ({
         }
     }, []);
 
-    const styles = getStyleSheet(theme);
+    const { width, height } = useDimensions().window;
+
+    const styles = getStyleSheet(theme, height);
 
     const [loading, setLoading] = useState(false);
     const handleNewGame = async () => {
@@ -193,7 +196,7 @@ const actions = {
     setPlayerId,
 };
 
-const getStyleSheet = (theme: ThemeMode) => {
+const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
             flex: 1,
@@ -203,35 +206,35 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         joinText: {
             color: colors[theme].text,
-            marginTop: calcFromHeight(15),
+            marginTop: calcFromHeight(15, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
         },
         text: {
             color: colors[theme].text,
-            margin: calcFromHeight(8),
+            margin: calcFromHeight(8, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
         },
         lobbyId: {
             color: colors[theme].text,
-            marginTop: calcFromHeight(15),
+            marginTop: calcFromHeight(15, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: 'bold',
         },
         infoText: {
             color: colors[theme].warning,
-            margin: calcFromHeight(5),
+            margin: calcFromHeight(5, height),
             fontSize: 15,
             textAlign: 'center',
             fontWeight: 'bold',
         },
         button: {
             width: 200,
-            margin: calcFromHeight(8),
+            margin: calcFromHeight(8, height),
             backgroundColor: colors[theme].main,
         },
         buttonGroup: {
@@ -241,8 +244,8 @@ const getStyleSheet = (theme: ThemeMode) => {
             backgroundColor: colors[theme].text,
         },
         quitButton: {
-            margin: calcFromHeight(8),
-            marginBottom: calcFromHeight(20),
+            margin: calcFromHeight(8, height),
+            marginBottom: calcFromHeight(20, height),
             backgroundColor: colors[theme].main,
         },
         input: {
@@ -251,7 +254,7 @@ const getStyleSheet = (theme: ThemeMode) => {
             backgroundColor: colors[theme].disabledButton,
             height: 40,
             width: 200,
-            margin: calcFromHeight(8),
+            margin: calcFromHeight(8, height),
             borderRadius: 5,
             borderColor: colors[theme].main,
             fontSize: 20,

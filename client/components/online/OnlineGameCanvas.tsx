@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
+import { useDimensions } from '@react-native-community/hooks';
 
 import { colors, calcFromHeight } from '../../lib/constants';
 import { firestore } from '../../lib/firebaseUtils';
@@ -85,7 +86,10 @@ const OnlineGameCanvas: React.FC<Props> = ({
         resetable,
     } = gameState;
     const timeOutDuration = 10000;
-    const styles = getStyleSheet(theme);
+
+    const { width, height } = useDimensions().window;
+
+    const styles = getStyleSheet(theme, height);
 
     const canvasFrozen = playerId !== xIsNext;
 
@@ -261,7 +265,7 @@ const mapStateToProps = createStructuredSelector<any, any>({
     hapticsEnabled: selectHaptics,
 });
 
-const getStyleSheet = (theme: ThemeMode) => {
+const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
             flex: 1,
@@ -270,28 +274,28 @@ const getStyleSheet = (theme: ThemeMode) => {
         },
         gameOverText: {
             color: colors[theme].text,
-            margin: calcFromHeight(15),
+            margin: calcFromHeight(15, height),
             fontSize: 30,
             textAlign: 'center',
             fontWeight: '500',
         },
         winnerText: {
             color: colors[theme].text,
-            margin: calcFromHeight(15),
+            margin: calcFromHeight(15, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: 'bold',
         },
         text: {
             color: colors[theme].text,
-            marginTop: calcFromHeight(15),
+            marginTop: calcFromHeight(15, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
-            marginBottom: calcFromHeight(15),
+            marginBottom: calcFromHeight(15, height),
         },
         button: {
-            marginBottom: calcFromHeight(15),
+            marginBottom: calcFromHeight(15, height),
             backgroundColor: colors[theme].main,
         },
     });

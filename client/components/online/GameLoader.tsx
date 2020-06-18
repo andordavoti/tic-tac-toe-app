@@ -31,6 +31,8 @@ import {
     selectHaptics,
     selectTheme,
 } from '../../redux/settings/settings.selectors';
+
+import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
 import { ThemeMode } from '../../types/Theme';
 import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
@@ -84,6 +86,8 @@ const GameLoader: React.FC<Props> = ({
     hapticsEnabled,
 }) => {
     const { playerId, lobbyId } = game;
+
+    const { width, height } = useDimensions().window;
 
     const disconnectPlayer = async () => {
         try {
@@ -186,8 +190,8 @@ const GameLoader: React.FC<Props> = ({
                             color={colors[theme].text}
                             name="clipboard-text-outline"
                             style={{
-                                marginLeft: calcFromWidth(2),
-                                marginTop: calcFromHeight(12),
+                                marginLeft: calcFromWidth(2, width),
+                                marginTop: calcFromHeight(12, height),
                             }}
                             size={30}
                         />

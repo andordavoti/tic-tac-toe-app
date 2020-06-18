@@ -16,6 +16,8 @@ import {
     selectHaptics,
     selectTheme,
 } from '../../redux/settings/settings.selectors';
+
+import { useDimensions } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
 import { handleError } from '../../lib/handleError';
@@ -34,6 +36,8 @@ const PlayerMenu: React.FC<Props> = ({
 }) => {
     const theme = useSelector(selectTheme);
     const hapticsEnabled = useSelector(selectHaptics);
+
+    const { width, height } = useDimensions().window;
 
     const insertFromClipboard = async () => {
         try {
@@ -61,7 +65,7 @@ const PlayerMenu: React.FC<Props> = ({
 
     return (
         <View>
-            <View style={{ marginBottom: calcFromHeight(15) }}>
+            <View style={{ marginBottom: calcFromHeight(15, height) }}>
                 <Text style={styles.text}>Grid Size:</Text>
                 <ToggleButton.Row
                     style={{ justifyContent: 'center' }}
@@ -134,9 +138,9 @@ const PlayerMenu: React.FC<Props> = ({
 
             <View
                 style={{
-                    marginLeft: calcFromWidth(10),
-                    marginRight: calcFromWidth(10),
-                    marginTop: calcFromHeight(10),
+                    marginLeft: calcFromWidth(10, width),
+                    marginRight: calcFromWidth(10, width),
+                    marginTop: calcFromHeight(10, height),
                     borderBottomColor: theme === 'dark' ? 'grey' : 'lightgrey',
                     borderBottomWidth: 2,
                 }}
