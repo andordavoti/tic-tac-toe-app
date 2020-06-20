@@ -45,10 +45,10 @@ const OnlineMultiplayer: React.FC<Props> = ({
 }) => {
     const [textInput, setTextInput] = useState<{
         value: string;
-        err: boolean | string;
+        err: string;
     }>({
         value: '',
-        err: false,
+        err: '',
     });
     const [gridSize, setGridSize] = useState(3);
     const [connected, setConnected] = useState(false);
