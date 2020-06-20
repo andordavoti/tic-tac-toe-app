@@ -48,7 +48,7 @@ const OnlineMultiplayer: React.FC<Props> = ({
         err: string;
     }>({
         value: '',
-        err: '',
+        err: false,
     });
     const [gridSize, setGridSize] = useState(3);
     const [connected, setConnected] = useState(false);
