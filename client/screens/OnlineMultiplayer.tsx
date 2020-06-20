@@ -54,12 +54,17 @@ const OnlineMultiplayer: React.FC<Props> = ({
     const [connected, setConnected] = useState(false);
 
     useEffect(() => {
-        // TODO: needs to be unsubscribed (web crashes with netinfo that's why we need the if)
+        let unsubscribe: any;
         if (Platform.OS !== 'web') {
-            const unsubscribe = NetInfo.addEventListener(state => {
+            unsubscribe = NetInfo.addEventListener(state => {
                 setConnected(state.isConnected);
             });
         }
+        return () => {
+            if (Platform.OS !== 'web') {
+                unsubscribe();
+            }
+        };
     }, []);
 
     const { width, height } = useDimensions().window;
