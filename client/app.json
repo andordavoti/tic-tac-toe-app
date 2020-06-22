@@ -1,7 +1,7 @@
 {
     "expo": {
         "name": "Tic Tac Toe",
-        "description": "Online Tic Tac Toe game for iOS and android.",
+        "description": "Online Tic Tac Toe game for mobile and web.",
         "githubUrl": "https://github.com/andordavoti/tic-tac-toe-app",
         "slug": "tic-tac-toe",
         "privacy": "public",
