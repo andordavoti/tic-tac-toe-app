@@ -210,11 +210,19 @@ const OnlineGameCanvas: React.FC<Props> = ({
         };
     }, [fieldTypes]);
 
+    const renderTimer = () => {
+        if (timers.length && gameStarted) {
+            if (Platform.OS !== 'web')
+                return <CountdownTimer size={48} duration={timeOutDuration} />;
+            if (Platform.OS === 'web') {
+                //return <Text>{timers}</Text>;
+            }
+        }
+    };
+
     return (
         <View style={styles.container}>
-            {timers.length && gameStarted ? (
-                <CountdownTimer size={48} duration={timeOutDuration} />
-            ) : null}
+            {renderTimer()}
             {!(Boolean(winner) || tied) ? (
                 <Text style={styles.text}>
                     {playerId === xIsNext
