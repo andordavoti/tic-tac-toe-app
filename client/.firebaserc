@@ -1,0 +1,14 @@
+{
+    "projects": {
+        "default": "tictactoeonline-b8a2b"
+    },
+    "targets": {
+        "ticktacktoe-7aa6d": {
+            "hosting": {
+                "client": [
+                    "tictactoeonline-b8a2b"
+                ]
+            }
+        }
+    }
+}

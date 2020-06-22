@@ -1,0 +1,14 @@
+{
+    "hosting": [
+        {
+            "target": "client",
+            "public": "web-build",
+            "rewrites": [
+                {
+                    "source": "**",
+                    "destination": "/index.html"
+                }
+            ]
+        }
+    ]
+}

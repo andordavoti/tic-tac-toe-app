@@ -37,6 +37,7 @@
             "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
         },
         "web": {
+            "favicon": "./assets/icon.png",
             "build": {
                 "babel": {
                     "include": ["static-container", "sentry-expo"]
