@@ -215,7 +215,10 @@ const OnlineGameCanvas: React.FC<Props> = ({
         if (timers.length && gameStarted) {
             if (Platform.OS !== 'web')
                 return <CountdownTimer size={48} duration={timeOutDuration} />;
-            else return <CountdownWeb duration={timeOutDuration} />;
+            else
+                return (
+                    <CountdownWeb key={xIsNext} duration={timeOutDuration} />
+                );
         }
     };
 
