@@ -155,7 +155,10 @@ const PlayerMenu: React.FC<Props> = ({
             <Text style={styles.joinText}>Join Game:</Text>
 
             <TextInput
-                style={styles.input}
+                style={[
+                    styles.input,
+                    Platform.OS === 'web' ? { outlineWidth: 0 } : null,
+                ]}
                 value={textInput.value}
                 onChangeText={handleInputChange}
                 keyboardAppearance={theme}
