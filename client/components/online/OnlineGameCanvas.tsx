@@ -35,6 +35,7 @@ import {
     LobbyId,
 } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
+import CountdownWeb from '../CountdownTimer.web';
 
 interface GameState {
     fieldTypes: FieldTypes;
@@ -214,9 +215,7 @@ const OnlineGameCanvas: React.FC<Props> = ({
         if (timers.length && gameStarted) {
             if (Platform.OS !== 'web')
                 return <CountdownTimer size={48} duration={timeOutDuration} />;
-            if (Platform.OS === 'web') {
-                //return <Text>{timers}</Text>;
-            }
+            else return <CountdownWeb duration={timeOutDuration} />;
         }
     };
 
