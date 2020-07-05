@@ -6,10 +6,14 @@ Tri-platform (iOS, android and web) online multiplayer game, built using React N
 
 Play Tic Tac Toe cross-platform. Both online and in-person with your friends. We don't require you to create an account. Instead, we utilize anonymous lobby id's. Therefore only you and the one you're playing with online know who is playing with who.
 
-Web app: https://tictactoe.no/
+**App Store:** https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441?ls=1
+
+**Google Play:** https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game
+
+**Web app:** https://tictactoe.no/
 
 Simple landing page and privacy policy made with preact: https://ticktacktoe-7aa6d.web.app/
 
-Authors:
+**Authors:**
   - Andor Davoti
   - Sanna Jammeh
