@@ -20,6 +20,7 @@
         "base-64": "^0.1.0",
         "expo": "37.0.8",
         "expo-haptics": "~8.1.0",
+        "expo-linking": "^1.0.3",
         "expo-store-review": "^2.1.0",
         "expo-web-browser": "^8.2.1",
         "firebase": "^7.9.0",

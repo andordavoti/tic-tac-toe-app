@@ -10,7 +10,7 @@ import { Switch, Button, ToggleButton } from 'react-native-paper';
 import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
 import * as StoreReview from 'expo-store-review';
-import { Linking } from 'expo';
+import * as Linking from 'expo-linking';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { colors, urls, calcFromHeight } from '../lib/constants';
@@ -105,8 +105,6 @@ const SettingsScreen: React.FC<Props> = ({
                 value={selectedTheme}
             >
                 <ToggleButton
-                    activeOpacity={0.6}
-                    underlayColor={colors[theme].text}
                     color={
                         selectedTheme === 'system'
                             ? colors[theme].bg
@@ -121,8 +119,6 @@ const SettingsScreen: React.FC<Props> = ({
                     value="system"
                 />
                 <ToggleButton
-                    activeOpacity={0.6}
-                    underlayColor={colors[theme].text}
                     color={
                         selectedTheme === 'light'
                             ? colors[theme].bg
@@ -137,8 +133,6 @@ const SettingsScreen: React.FC<Props> = ({
                     value="light"
                 />
                 <ToggleButton
-                    activeOpacity={0.6}
-                    underlayColor={colors[theme].text}
                     color={
                         selectedTheme === 'dark'
                             ? colors[theme].bg
