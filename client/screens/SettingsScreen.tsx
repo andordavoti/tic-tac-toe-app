@@ -101,7 +101,7 @@ const SettingsScreen: React.FC<Props> = ({
             </Text>
             <ToggleButton.Row
                 style={{ marginBottom: calcFromHeight(15, height) }}
-                onValueChange={onValueChange}
+                onValueChange={onValueChange as (e: string) => void}
                 value={selectedTheme}
             >
                 <ToggleButton
