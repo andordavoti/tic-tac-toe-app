@@ -10,7 +10,7 @@ import PlayerMenu from '../components/online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
 import GameLoader from '../components/online/GameLoader';
 // Redux
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
 import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
@@ -26,23 +26,7 @@ import { useDimensions } from '@react-native-community/hooks';
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
-interface Props {
-    lobbyId: string;
-    playerId: number;
-    setLobbyId: (e: string) => void;
-    setPlayerId: (e: number) => void;
-    theme: ThemeMode;
-    hapticsEnabled: boolean;
-}
-
-const OnlineMultiplayer: React.FC<Props> = ({
-    lobbyId,
-    playerId,
-    setLobbyId,
-    setPlayerId,
-    theme,
-    hapticsEnabled,
-}) => {
+const OnlineMultiplayer: React.FC = () => {
     const [textInput, setTextInput] = useState<{
         value: string;
         err: string;
@@ -52,6 +36,13 @@ const OnlineMultiplayer: React.FC<Props> = ({
     });
     const [gridSize, setGridSize] = useState(3);
     const [connected, setConnected] = useState(false);
+
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+    const lobbyId = useSelector(selectLobbyId);
+    const playerId = useSelector(selectPlayerId);
+
+    const dispatch = useDispatch();
 
     useEffect(() => {
         let unsubscribe: any;
@@ -83,8 +74,8 @@ const OnlineMultiplayer: React.FC<Props> = ({
 
             const { data } = response;
 
-            setPlayerId(0);
-            setLobbyId(data.lobbyId);
+            dispatch(setPlayerId(0));
+            dispatch(setLobbyId(data.lobbyId));
         } catch (err) {
             handleError(err);
         }
@@ -123,8 +114,8 @@ const OnlineMultiplayer: React.FC<Props> = ({
                 return setTextInput({ ...textInput, err: 'Lobby is full...' });
             }
 
-            setPlayerId(playerId);
-            setLobbyId(textInput.value);
+            dispatch(setPlayerId(playerId));
+            dispatch(setLobbyId(textInput.value));
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('success' as any);
         } catch (err) {
@@ -196,11 +187,6 @@ const mapStateToProps = createStructuredSelector<any, any>({
     hapticsEnabled: selectHaptics,
 });
 
-const actions = {
-    setLobbyId,
-    setPlayerId,
-};
-
 const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
@@ -267,4 +253,4 @@ const getStyleSheet = (theme: ThemeMode, height: number) => {
     });
 };
 
-export default connect(mapStateToProps, actions)(OnlineMultiplayer);
+export default connect(mapStateToProps)(OnlineMultiplayer);
