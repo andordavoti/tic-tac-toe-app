@@ -10,8 +10,7 @@ import PlayerMenu from '../components/online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
 import GameLoader from '../components/online/GameLoader';
 // Redux
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
 import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
 import {
@@ -180,13 +179,6 @@ const OnlineMultiplayer: React.FC = () => {
     }
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    playerId: selectPlayerId,
-    lobbyId: selectLobbyId,
-    theme: selectTheme,
-    hapticsEnabled: selectHaptics,
-});
-
 const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
@@ -253,4 +245,4 @@ const getStyleSheet = (theme: ThemeMode, height: number) => {
     });
 };
 
-export default connect(mapStateToProps)(OnlineMultiplayer);
+export default OnlineMultiplayer;
