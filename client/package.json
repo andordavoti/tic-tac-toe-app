@@ -19,6 +19,7 @@
     "axios": "^0.19.2",
     "base-64": "^0.1.0",
     "expo": "^38.0.0",
+    "expo-clipboard": "^1.0.1",
     "expo-haptics": "~8.2.1",
     "expo-linking": "^1.0.3",
     "expo-store-review": "~2.1.2",

@@ -4,9 +4,9 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
-    Clipboard,
     Platform,
 } from 'react-native';
+import Clipboard from 'expo-clipboard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, ToggleButton } from 'react-native-paper';
 import { colors, calcFromHeight, calcFromWidth } from '../../lib/constants';
@@ -41,7 +41,7 @@ const PlayerMenu: React.FC<Props> = ({
 
     const insertFromClipboard = async () => {
         try {
-            const text = await Clipboard.getString();
+            const text = await Clipboard.getStringAsync();
             if (Boolean(text.length)) {
                 showToast('Inserted text from Clipboard');
                 setTextInput((prevState: TextInputValues) => ({

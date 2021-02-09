@@ -13,13 +13,8 @@ import {
     setLobbyId,
     quitGame,
 } from '../../redux/game/game.actions';
-import {
-    View,
-    Text,
-    Clipboard,
-    TouchableOpacity,
-    Platform,
-} from 'react-native';
+import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import Clipboard from 'expo-clipboard';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { connect } from 'react-redux';
@@ -169,8 +164,9 @@ const GameLoader: React.FC<Props> = ({
     const copyLobbyId = () => {
         showToast('Copied Lobby ID to Clipboard');
         Clipboard.setString(lobbyId);
-        if (Platform.OS === 'ios' && hapticsEnabled)
+        if (Platform.OS === 'ios' && hapticsEnabled) {
             Haptics.notificationAsync('success' as any);
+        }
     };
 
     return (
