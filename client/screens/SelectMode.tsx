@@ -1,6 +1,12 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform, Image } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Platform,
+    Image,
+    TouchableOpacity,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
@@ -57,7 +63,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                 >
                     Online Multiplayer
                 </Button>
-                {Platform.OS === 'web' ? (
+                {Platform.OS === 'web' && (
                     <Button
                         mode="contained"
                         style={styles.button}
@@ -71,9 +77,9 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                     >
                         Settings
                     </Button>
-                ) : null}
+                )}
             </View>
-            {Platform.OS === 'web' ? (
+            {Platform.OS === 'web' && (
                 <>
                     <Text style={styles.text}>Download the app:</Text>
                     <View style={styles.storeButtonContainer}>
@@ -106,7 +112,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </>
-            ) : null}
+            )}
         </View>
     );
 };
