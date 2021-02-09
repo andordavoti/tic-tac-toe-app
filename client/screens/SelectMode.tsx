@@ -29,7 +29,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
     const theme = useSelector(selectTheme);
     const hapticsEnabled = useSelector(selectHaptics);
 
-    const { width, height } = useDimensions().window;
+    const { height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
 

@@ -15,7 +15,7 @@ interface Props {
 const Spinner: React.FC<Props> = ({ msg, size = 'large' }) => {
     const theme = useSelector(selectTheme);
 
-    const { width, height } = useDimensions().window;
+    const { height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
 

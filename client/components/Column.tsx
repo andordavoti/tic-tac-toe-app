@@ -51,6 +51,7 @@ const Column: React.FC<Props> = ({
 
     useEffect(() => {
         checkIfWinnerColumn();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [winnerColumns]);
 
     const checkIfWinnerColumn = () => {

@@ -13,6 +13,7 @@ import AppNavigatorWeb from './components/AppNavigatorWeb';
 if (Platform.OS !== 'web') {
     LogBox.ignoreLogs([
         'YellowBox has been replaced with LogBox. Please call LogBox.ignoreLogs() instead.',
+        'Cannot update a component from inside the function body of a different component.',
     ]);
 }
 

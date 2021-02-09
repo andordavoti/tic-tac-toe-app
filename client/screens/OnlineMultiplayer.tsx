@@ -9,9 +9,8 @@ import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
 import GameLoader from '../components/online/GameLoader';
-// Redux
 import { useDispatch, useSelector } from 'react-redux';
-import { selectPlayerId, selectLobbyId } from '../redux/game/game.selectors';
+import { selectLobbyId } from '../redux/game/game.selectors';
 import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
 import {
     selectHaptics,
@@ -34,7 +33,6 @@ const OnlineMultiplayer: React.FC = () => {
     const theme = useSelector(selectTheme);
     const hapticsEnabled = useSelector(selectHaptics);
     const lobbyId = useSelector(selectLobbyId);
-    const playerId = useSelector(selectPlayerId);
 
     const dispatch = useDispatch();
 
@@ -52,7 +50,7 @@ const OnlineMultiplayer: React.FC = () => {
         };
     }, []);
 
-    const { width, height } = useDimensions().window;
+    const { height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
 
@@ -94,14 +92,14 @@ const OnlineMultiplayer: React.FC = () => {
             }
 
             const players = snapshot?.data()?.players;
-            const connected = getConnectedPlayers(players);
+            const connectedPlayers = getConnectedPlayers(players);
             const playerId = players[0].connected
                 ? 1
                 : players[1].connected
                 ? 0
                 : 0;
 
-            if (connected.length >= 2) {
+            if (connectedPlayers.length >= 2) {
                 if (Platform.OS === 'ios' && hapticsEnabled) {
                     Haptics.notificationAsync('error' as any);
                 }

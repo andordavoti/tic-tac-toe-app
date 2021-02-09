@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../redux/settings/settings.selectors';
 
@@ -10,7 +10,7 @@ const CountdownWeb: React.FC<{ duration: number }> = ({ duration }) => {
     useEffect(() => {
         if (counter > 0) setTimeout(() => setCounter(counter - 1), 1000);
         else setCounter(duration / 1000);
-    }, [counter]);
+    }, [counter, duration]);
 
     return (
         <Text

@@ -29,7 +29,7 @@ const GameCanvas: React.FC = () => {
     const theme = useSelector(selectTheme);
     const hapticsEnabled = useSelector(selectHaptics);
 
-    const { width, height } = useDimensions().window;
+    const { height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
 
@@ -87,6 +87,7 @@ const GameCanvas: React.FC = () => {
                 fieldTypes: fieldTypesArray,
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameStart]);
 
     useEffect(() => {
@@ -103,6 +104,7 @@ const GameCanvas: React.FC = () => {
                 });
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [gameState]);
 
     const onValueChange = (value: string) => {
@@ -117,24 +119,19 @@ const GameCanvas: React.FC = () => {
     };
 
     const renderInfo = () => {
-        let winnerOutput = null;
-
-        if (tied)
-            winnerOutput = <Text style={styles.winnerText}>It's a Tie</Text>;
-        else
-            winnerOutput = (
-                <Text style={styles.winnerText}>
-                    The winner is {winner && winner.toUpperCase()}
-                </Text>
-            );
-
         if (canvasFrozen && (winner || tied)) {
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('success' as any);
             return (
                 <View>
                     <Text style={styles.gameOverText}>Game Over</Text>
-                    {winnerOutput}
+                    {tied ? (
+                        <Text style={styles.winnerText}>It's a Tie</Text>
+                    ) : (
+                        <Text style={styles.winnerText}>
+                            The winner is {winner && winner.toUpperCase()}
+                        </Text>
+                    )}
                     <Button
                         mode="contained"
                         style={styles.button}
@@ -160,8 +157,6 @@ const GameCanvas: React.FC = () => {
                             value={gridSize.toString()}
                         >
                             <ToggleButton
-                                activeOpacity={0.6}
-                                underlayColor={colors[theme].text}
                                 color={
                                     gridSize === 3
                                         ? colors[theme].bg
@@ -176,8 +171,6 @@ const GameCanvas: React.FC = () => {
                                 value="3"
                             />
                             <ToggleButton
-                                activeOpacity={0.6}
-                                underlayColor={colors[theme].text}
                                 color={
                                     gridSize === 4
                                         ? colors[theme].bg
@@ -192,8 +185,6 @@ const GameCanvas: React.FC = () => {
                                 value="4"
                             />
                             <ToggleButton
-                                activeOpacity={0.6}
-                                underlayColor={colors[theme].text}
                                 color={
                                     gridSize === 5
                                         ? colors[theme].bg

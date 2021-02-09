@@ -40,14 +40,14 @@ const SettingsScreen: React.FC = ({}) => {
 
     const [selectedTheme, setSelectedTheme] = useState('system');
 
-    const { width, height } = useDimensions().window;
+    const { height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
 
     useEffect(() => {
         if (systemThemeEnabled) setSelectedTheme('system');
         else setSelectedTheme(theme);
-    }, []);
+    }, [systemThemeEnabled, theme]);
 
     const onValueChange = (value: 'system' | ThemeMode) => {
         if (value) {
