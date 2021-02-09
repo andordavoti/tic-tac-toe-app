@@ -59,11 +59,16 @@ const OnlineGameCanvas: React.FC = () => {
     } = gameState;
     const timeOutDuration = 10000;
 
-    const { width, height } = useDimensions().window;
+    const { height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
 
     const canvasFrozen = playerId !== xIsNext;
+
+    useEffect(() => {
+        console.log('gameState: ', gameState);
+        console.log('winnerDetails: ', winnerDetails);
+    }, [gameState, winnerDetails]);
 
     const handleFieldPress = async (num: number) => {
         try {
@@ -180,6 +185,7 @@ const OnlineGameCanvas: React.FC = () => {
                 timers.shift();
             });
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fieldTypes]);
 
     const renderTimer = () => {
@@ -203,26 +209,25 @@ const OnlineGameCanvas: React.FC = () => {
                         : `Player ${getPlayerName(xIsNext)} picking`}
                 </Text>
             )}
-            {Boolean(winner) ||
-                (tied && (
-                    <View>
-                        <Text style={styles.gameOverText}>
-                            {Boolean(winner)
-                                ? winner === getFieldType(playerId)
-                                    ? 'You won'
-                                    : 'You lost'
-                                : `It's a tie`}
-                        </Text>
-                        <Button
-                            mode="contained"
-                            style={styles.button}
-                            labelStyle={{ color: 'white' }}
-                            onPress={handleNewGame}
-                        >
-                            New Game
-                        </Button>
-                    </View>
-                ))}
+            {(Boolean(winner) || tied) && (
+                <View>
+                    <Text style={styles.gameOverText}>
+                        {winner
+                            ? winner === getFieldType(playerId)
+                                ? 'You won'
+                                : 'You lost'
+                            : "It's a tie"}
+                    </Text>
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        labelStyle={{ color: 'white' }}
+                        onPress={handleNewGame}
+                    >
+                        New Game
+                    </Button>
+                </View>
+            )}
             <Grid
                 gridSize={gameSize}
                 {...{
