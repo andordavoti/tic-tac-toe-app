@@ -21,18 +21,13 @@ import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { GridString } from '../types/Game';
 import { useDimensions } from '@react-native-community/hooks';
+import { showToast } from '../lib/toast';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
 const OnlineMultiplayer: React.FC = () => {
-    const [textInput, setTextInput] = useState<{
-        value: string;
-        err: string;
-    }>({
-        value: '',
-        err: false,
-    });
+    const [textInput, setTextInput] = useState('');
     const [gridSize, setGridSize] = useState(3);
     const [connected, setConnected] = useState(false);
 
@@ -86,17 +81,16 @@ const OnlineMultiplayer: React.FC = () => {
             // Fetching lobby from text input
             const snapshot = await firestore
                 .collection('lobbies')
-                .doc(textInput.value)
+                .doc(textInput)
                 .get();
 
             // Checking if lobby exists
             if (!snapshot.exists) {
-                if (Platform.OS === 'ios' && hapticsEnabled)
+                if (Platform.OS === 'ios' && hapticsEnabled) {
                     Haptics.notificationAsync('error' as any);
-                return setTextInput({
-                    ...textInput,
-                    err: 'This lobby does not exist...',
-                });
+                }
+                showToast('This lobby does not exist...');
+                return;
             }
 
             const players = snapshot?.data()?.players;
@@ -108,13 +102,16 @@ const OnlineMultiplayer: React.FC = () => {
                 : 0;
 
             if (connected.length >= 2) {
-                if (Platform.OS === 'ios' && hapticsEnabled)
+                if (Platform.OS === 'ios' && hapticsEnabled) {
                     Haptics.notificationAsync('error' as any);
-                return setTextInput({ ...textInput, err: 'Lobby is full...' });
+                }
+
+                showToast('Lobby is full...');
+                return;
             }
 
             dispatch(setPlayerId(playerId));
-            dispatch(setLobbyId(textInput.value));
+            dispatch(setLobbyId(textInput));
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.notificationAsync('success' as any);
         } catch (err) {
@@ -122,8 +119,7 @@ const OnlineMultiplayer: React.FC = () => {
         }
     };
 
-    const handleInputChange = (text: string) =>
-        setTextInput({ ...textInput, value: text });
+    const handleInputChange = (text: string) => setTextInput(text);
 
     const handleGridSizeChange = (value: GridString) => {
         if (value) {
@@ -137,11 +133,7 @@ const OnlineMultiplayer: React.FC = () => {
         return (
             <View style={styles.container}>
                 {lobbyId ? (
-                    <GameLoader
-                        styles={styles}
-                        playerId={playerId}
-                        lobbyId={lobbyId}
-                    />
+                    <GameLoader styles={styles} />
                 ) : (
                     //No nested if, loading state passed directly to component
                     <PlayerMenuWithSpinner

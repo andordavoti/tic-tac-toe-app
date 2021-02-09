@@ -23,6 +23,32 @@ import Toast from 'react-native-tiny-toast';
 import { handleError } from '../../lib/handleError';
 import { GridNumber } from '../../types/Game';
 
+interface Styles {
+    text: object;
+    button: object;
+    joinText: object;
+    input: object;
+    infoText: object;
+    buttonGroupSelected: object;
+    buttonGroup: object;
+}
+
+interface TextInputValues {
+    value: string;
+    err: string;
+}
+
+interface Props {
+    styles: Styles;
+    textInput: TextInputValues;
+    setTextInput: (e: string) => void;
+    handleInputChange: any;
+    gridSize: GridNumber;
+    handleGridSizeChange: () => void;
+    handleNewGame: any;
+    handleJoinGame: any;
+}
+
 // Menu that displays "new game" or "Join game" options
 const PlayerMenu: React.FC<Props> = ({
     styles,
@@ -44,10 +70,7 @@ const PlayerMenu: React.FC<Props> = ({
             const text = await Clipboard.getStringAsync();
             if (Boolean(text.length)) {
                 showToast('Inserted text from Clipboard');
-                setTextInput((prevState: TextInputValues) => ({
-                    ...prevState,
-                    value: text,
-                }));
+                setTextInput(text);
                 if (Platform.OS === 'ios' && hapticsEnabled)
                     Haptics.notificationAsync('success' as any);
             } else {
@@ -61,10 +84,7 @@ const PlayerMenu: React.FC<Props> = ({
     };
 
     const clearInput = () => {
-        setTextInput((prevState: TextInputValues) => ({
-            ...prevState,
-            value: '',
-        }));
+        setTextInput('');
         if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
         Toast.hide;
     };
@@ -204,10 +224,6 @@ const PlayerMenu: React.FC<Props> = ({
                 ) : null}
             </View>
 
-            {Boolean(textInput.err.length) && (
-                <Text style={styles.infoText}>{textInput.err}</Text>
-            )}
-
             <Button
                 disabled={!textInput.value.length}
                 onPress={handleJoinGame}
@@ -230,29 +246,3 @@ const PlayerMenu: React.FC<Props> = ({
 };
 
 export default PlayerMenu;
-
-interface Styles {
-    text: object;
-    button: object;
-    joinText: object;
-    input: object;
-    infoText: object;
-    buttonGroupSelected: object;
-    buttonGroup: object;
-}
-
-interface TextInputValues {
-    value: string;
-    err: string;
-}
-
-interface Props {
-    styles: Styles;
-    textInput: TextInputValues;
-    setTextInput: any;
-    handleInputChange: any;
-    gridSize: GridNumber;
-    handleGridSizeChange: () => void;
-    handleNewGame: any;
-    handleJoinGame: any;
-}
