@@ -33,14 +33,9 @@ interface Styles {
     buttonGroup: object;
 }
 
-interface TextInputValues {
-    value: string;
-    err: string;
-}
-
 interface Props {
     styles: Styles;
-    textInput: TextInputValues;
+    textInput: string;
     setTextInput: (e: string) => void;
     handleInputChange: any;
     gridSize: GridNumber;
@@ -179,7 +174,7 @@ const PlayerMenu: React.FC<Props> = ({
                     styles.input,
                     Platform.OS === 'web' ? { outlineWidth: 0 } : null,
                 ]}
-                value={textInput.value}
+                value={textInput}
                 onChangeText={handleInputChange}
                 keyboardAppearance={theme}
                 selectionColor={colors[theme].main}
@@ -208,11 +203,11 @@ const PlayerMenu: React.FC<Props> = ({
 
                         <TouchableOpacity
                             onPress={clearInput}
-                            disabled={!Boolean(textInput.value.length)}
+                            disabled={!Boolean(textInput.length)}
                         >
                             <MaterialCommunityIcons
                                 color={
-                                    !Boolean(textInput.value.length)
+                                    !Boolean(textInput.length)
                                         ? 'grey'
                                         : colors[theme].text
                                 }
@@ -225,11 +220,11 @@ const PlayerMenu: React.FC<Props> = ({
             </View>
 
             <Button
-                disabled={!textInput.value.length}
+                disabled={!textInput.length}
                 onPress={handleJoinGame}
                 mode="contained"
                 style={
-                    Boolean(textInput.value.length)
+                    Boolean(textInput.length)
                         ? styles.button
                         : [
                               styles.button,
