@@ -243,15 +243,6 @@ const OnlineGameCanvas: React.FC = ({}) => {
     );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    lobbyId: selectLobbyId,
-    playerId: selectPlayerId,
-    fieldTypes: selectFieldTypes,
-    gameState: selectGame,
-    theme: selectTheme,
-    hapticsEnabled: selectHaptics,
-});
-
 const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {

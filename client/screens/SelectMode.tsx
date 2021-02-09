@@ -5,8 +5,7 @@ import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 
 import { colors, calcFromHeight } from '../lib/constants';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useSelector } from 'react-redux';
 import {
     selectHaptics,
     selectTheme,
@@ -17,12 +16,13 @@ import { openLink } from '../lib/openLink';
 import { useDimensions } from '@react-native-community/hooks';
 
 interface Props {
-    theme: ThemeMode;
-    hapticsEnabled: boolean;
     navigation: StackNavigationProp<any, 'Select Mode'>;
 }
 
-const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
+const SelectMode: React.FC<Props> = ({ navigation }) => {
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+
     const { width, height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);
@@ -111,11 +111,6 @@ const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
     );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    theme: selectTheme,
-    hapticsEnabled: selectHaptics,
-});
-
 const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
@@ -153,4 +148,4 @@ const getStyleSheet = (theme: ThemeMode, height: number) => {
     });
 };
 
-export default connect(mapStateToProps)(SelectMode);
+export default SelectMode;

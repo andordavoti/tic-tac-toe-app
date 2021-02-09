@@ -15,13 +15,12 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { colors, urls, calcFromHeight } from '../lib/constants';
 
-import { connect } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     setCurrentTheme,
     enableSystemTheme,
     enableHaptics,
 } from '../redux/settings/settings.action';
-import { createStructuredSelector } from 'reselect';
 import {
     selectTheme,
     selectSystemTheme,
@@ -32,23 +31,13 @@ import { handleError } from '../lib/handleError';
 import { openLink } from '../lib/openLink';
 import { useDimensions } from '@react-native-community/hooks';
 
-interface Props {
-    theme: ThemeMode;
-    systemThemeEnabled: boolean;
-    setCurrentTheme: (param: ThemeMode) => void;
-    enableSystemTheme: (param: boolean) => void;
-    enableHaptics: (param: boolean) => void;
-    hapticsEnabled: boolean;
-}
+const SettingsScreen: React.FC = ({}) => {
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+    const systemThemeEnabled = useSelector(selectSystemTheme);
 
-const SettingsScreen: React.FC<Props> = ({
-    theme,
-    systemThemeEnabled,
-    setCurrentTheme,
-    enableSystemTheme,
-    enableHaptics,
-    hapticsEnabled,
-}) => {
+    const dispatch = useDispatch();
+
     const [selectedTheme, setSelectedTheme] = useState('system');
 
     const { width, height } = useDimensions().window;
@@ -65,13 +54,13 @@ const SettingsScreen: React.FC<Props> = ({
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.selectionAsync();
             if (value === 'system') {
-                enableSystemTheme(true);
+                dispatch(enableSystemTheme(true));
                 setSelectedTheme('system');
             }
             if (value === 'light' || value === 'dark') {
                 setSelectedTheme(value);
-                setCurrentTheme(value);
-                enableSystemTheme(false);
+                dispatch(setCurrentTheme(value));
+                dispatch(enableSystemTheme(false));
             }
         }
     };
@@ -153,7 +142,9 @@ const SettingsScreen: React.FC<Props> = ({
                     <Switch
                         color={colors[theme].main}
                         value={hapticsEnabled}
-                        onValueChange={() => enableHaptics(!hapticsEnabled)}
+                        onValueChange={() =>
+                            dispatch(enableHaptics(!hapticsEnabled))
+                        }
                     />
                 </View>
             ) : null}
@@ -246,12 +237,6 @@ const SettingsScreen: React.FC<Props> = ({
     );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    theme: selectTheme,
-    systemThemeEnabled: selectSystemTheme,
-    hapticsEnabled: selectHaptics,
-});
-
 const getStyleSheet = (theme: ThemeMode, height: number) => {
     return StyleSheet.create({
         container: {
@@ -309,8 +294,4 @@ const getStyleSheet = (theme: ThemeMode, height: number) => {
     });
 };
 
-export default connect(mapStateToProps, {
-    setCurrentTheme,
-    enableSystemTheme,
-    enableHaptics,
-})(SettingsScreen);
+export default SettingsScreen;
