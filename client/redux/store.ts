@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './rootReducer';
 import logger from 'redux-logger';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistReducer } from 'redux-persist';
 import createSentryMiddleware from 'redux-sentry-middleware';
 import * as Sentry from 'sentry-expo';
