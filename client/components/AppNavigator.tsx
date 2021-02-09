@@ -145,7 +145,6 @@ const AppNavigator: React.FC = () => {
                     })}
                     tabBarOptions={{
                         showLabel: false,
-                        showIcon: true,
                         style: {
                             backgroundColor: colors[theme].main,
                             shadowColor: 'transparent',

@@ -19,7 +19,7 @@ import {
 } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
-import { GridString } from '../types/Game';
+import { GridNumber, GridString } from '../types/Game';
 import { useDimensions } from '@react-native-community/hooks';
 import { showToast } from '../lib/toast';
 
@@ -28,7 +28,7 @@ const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
 
 const OnlineMultiplayer: React.FC = () => {
     const [textInput, setTextInput] = useState('');
-    const [gridSize, setGridSize] = useState(3);
+    const [gridSize, setGridSize] = useState<GridNumber>(3);
     const [connected, setConnected] = useState(false);
 
     const theme = useSelector(selectTheme);
@@ -125,7 +125,7 @@ const OnlineMultiplayer: React.FC = () => {
         if (value) {
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.selectionAsync();
-            setGridSize(Number(value));
+            setGridSize(Number(value) as GridNumber);
         }
     };
 

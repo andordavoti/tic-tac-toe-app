@@ -21,7 +21,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import Toast from 'react-native-tiny-toast';
 import { handleError } from '../../lib/handleError';
-import { GridNumber } from '../../types/Game';
+import { GridNumber, GridString } from '../../types/Game';
 
 interface Styles {
     text: object;
@@ -39,7 +39,7 @@ interface Props {
     setTextInput: (e: string) => void;
     handleInputChange: any;
     gridSize: GridNumber;
-    handleGridSizeChange: () => void;
+    handleGridSizeChange: (value: GridString) => void;
     handleNewGame: any;
     handleJoinGame: any;
 }
