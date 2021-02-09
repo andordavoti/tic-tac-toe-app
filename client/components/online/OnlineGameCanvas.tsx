@@ -6,13 +6,7 @@ import { useDimensions } from '@react-native-community/hooks';
 
 import { colors, calcFromHeight } from '../../lib/constants';
 import { firestore } from '../../lib/firebaseUtils';
-import { createStructuredSelector } from 'reselect';
-import {
-    selectLobbyId,
-    selectFieldTypes,
-    selectPlayerId,
-    selectGame,
-} from '../../redux/game/game.selectors';
+import { selectLobbyId, selectGame } from '../../redux/game/game.selectors';
 import {
     selectHaptics,
     selectTheme,
@@ -42,7 +36,7 @@ const initialState = {
     winnerColumns: [],
 };
 
-const OnlineGameCanvas: React.FC = ({}) => {
+const OnlineGameCanvas: React.FC = () => {
     const lobbyId = useSelector(selectLobbyId);
     const gameState = useSelector(selectGame);
     const theme = useSelector(selectTheme);
