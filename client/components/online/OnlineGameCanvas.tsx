@@ -196,32 +196,33 @@ const OnlineGameCanvas: React.FC = () => {
     return (
         <View style={styles.container}>
             {renderTimer()}
-            {!(Boolean(winner) || tied) ? (
+            {!(Boolean(winner) || tied) && (
                 <Text style={styles.text}>
                     {playerId === xIsNext
                         ? 'Your turn'
                         : `Player ${getPlayerName(xIsNext)} picking`}
                 </Text>
-            ) : null}
-            {Boolean(winner) || tied ? (
-                <View>
-                    <Text style={styles.gameOverText}>
-                        {Boolean(winner)
-                            ? winner === getFieldType(playerId)
-                                ? 'You won'
-                                : 'You lost'
-                            : `It's a tie`}
-                    </Text>
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        labelStyle={{ color: 'white' }}
-                        onPress={handleNewGame}
-                    >
-                        New Game
-                    </Button>
-                </View>
-            ) : null}
+            )}
+            {Boolean(winner) ||
+                (tied && (
+                    <View>
+                        <Text style={styles.gameOverText}>
+                            {Boolean(winner)
+                                ? winner === getFieldType(playerId)
+                                    ? 'You won'
+                                    : 'You lost'
+                                : `It's a tie`}
+                        </Text>
+                        <Button
+                            mode="contained"
+                            style={styles.button}
+                            labelStyle={{ color: 'white' }}
+                            onPress={handleNewGame}
+                        >
+                            New Game
+                        </Button>
+                    </View>
+                ))}
             <Grid
                 gridSize={gameSize}
                 {...{

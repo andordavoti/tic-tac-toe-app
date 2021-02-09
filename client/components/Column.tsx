@@ -81,7 +81,7 @@ const Column: React.FC<Props> = ({
                 if (!currentFieldTypes) action(num);
             }}
         >
-            {currentFieldTypes !== '' ? (
+            {currentFieldTypes !== '' && (
                 <View style={styles.container}>
                     <View style={{ width: size, height: size }}>
                         <MaterialCommunityIcons
@@ -98,7 +98,7 @@ const Column: React.FC<Props> = ({
                         />
                     </View>
                 </View>
-            ) : null}
+            )}
         </TouchableOpacity>
     );
 };

@@ -136,7 +136,7 @@ const SettingsScreen: React.FC = ({}) => {
                     value="dark"
                 />
             </ToggleButton.Row>
-            {Platform.OS === 'ios' ? (
+            {Platform.OS === 'ios' && (
                 <View style={styles.row}>
                     <Text style={styles.text}>Haptics:</Text>
                     <Switch
@@ -147,7 +147,7 @@ const SettingsScreen: React.FC = ({}) => {
                         }
                     />
                 </View>
-            ) : null}
+            )}
 
             <View>
                 <Text style={styles.header}>About the App:</Text>
@@ -206,7 +206,7 @@ const SettingsScreen: React.FC = ({}) => {
                 <View
                     style={{ flexDirection: 'row', justifyContent: 'center' }}
                 >
-                    {Platform.OS !== 'web' ? (
+                    {Platform.OS !== 'web' && (
                         <Button
                             mode="contained"
                             style={styles.button}
@@ -219,7 +219,7 @@ const SettingsScreen: React.FC = ({}) => {
                         >
                             Rate App
                         </Button>
-                    ) : null}
+                    )}
                     <Button
                         mode="contained"
                         style={styles.button}
