@@ -11,15 +11,17 @@ import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
 
 const App: React.FC = () => {
-    if (Platform.OS !== 'web') {
-        Sentry.init({
-            dsn: SENTRY_DSN,
-            enableInExpoDevelopment: false,
-            debug: process.env.NODE_ENV === 'development' ? true : false,
-        });
+    useEffect(() => {
+        if (Platform.OS !== 'web') {
+            Sentry.init({
+                dsn: SENTRY_DSN,
+                enableInExpoDevelopment: false,
+                debug: process.env.NODE_ENV === 'development' ? true : false,
+            });
 
-        Sentry.setRelease(Constants.manifest.revisionId);
-    }
+            Sentry.setRelease(Constants.manifest.revisionId);
+        }
+    }, []);
 
     const { store, persistor } = stores();
     return (
