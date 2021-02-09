@@ -17,7 +17,7 @@ import {
     selectHaptics,
     selectTheme,
 } from '../../redux/settings/settings.selectors';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
     getFieldType,
     checkGame,
@@ -26,37 +26,14 @@ import {
 import Grid from '../Grid';
 import CountdownTimer from '../CountdownTimer';
 import { ThemeMode } from '../../types/Theme';
-import {
-    FieldTypes,
-    PlayerId,
-    GridNumber,
-    Winner,
-    WinnerColumns,
-    LobbyId,
-} from '../../types/Game';
+import { Winner, WinnerColumns } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
 import CountdownWeb from '../CountdownTimer.web';
-
-interface GameState {
-    fieldTypes: FieldTypes;
-    playerId: PlayerId;
-    xIsNext: number;
-    gameStarted: boolean;
-    gameSize: GridNumber;
-    resetable?: boolean;
-}
 
 interface WinnerState {
     winner: Winner;
     tied: boolean;
     winnerColumns: WinnerColumns;
-}
-
-interface Props {
-    gameState: GameState;
-    lobbyId: LobbyId;
-    hapticsEnabled: boolean;
-    theme: ThemeMode;
 }
 
 const initialState = {
@@ -65,12 +42,12 @@ const initialState = {
     winnerColumns: [],
 };
 
-const OnlineGameCanvas: React.FC<Props> = ({
-    gameState,
-    lobbyId,
-    hapticsEnabled,
-    theme,
-}) => {
+const OnlineGameCanvas: React.FC = ({}) => {
+    const lobbyId = useSelector(selectLobbyId);
+    const gameState = useSelector(selectGame);
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+
     const [timers, setTimers] = useState<ReturnType<typeof setTimeout>[] | []>(
         []
     );
@@ -311,4 +288,4 @@ const getStyleSheet = (theme: ThemeMode, height: number) => {
     });
 };
 
-export default connect(mapStateToProps)(OnlineGameCanvas);
+export default OnlineGameCanvas;
