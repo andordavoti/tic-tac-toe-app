@@ -55,7 +55,7 @@
     "@types/base-64": "^0.1.3",
     "@types/node": "^13.13.12",
     "@types/react": "~16.9.35",
-    "@types/react-native": "~0.63.2",
+    "@types/react-native": "^0.63.40",
     "@types/react-redux": "^7.1.8",
     "@types/redux-logger": "^3.0.7",
     "@types/redux-sentry-middleware": "^0.1.1",
