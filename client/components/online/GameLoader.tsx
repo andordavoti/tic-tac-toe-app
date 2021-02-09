@@ -10,15 +10,13 @@ import withSpinner from '../withSpinner';
 import {
     setGameStateChange,
     setGameLoaded,
-    setLobbyId,
     quitGame,
 } from '../../redux/game/game.actions';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import Clipboard from 'expo-clipboard';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectGame } from '../../redux/game/game.selectors';
 import OnlineGameCanvas from './OnlineGameCanvas';
 import { showToast } from '../../lib/toast';
@@ -29,9 +27,9 @@ import {
 
 import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
-import { ThemeMode } from '../../types/Theme';
 import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
+import { GameState } from '../../redux/game/game.reducer';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -63,23 +61,15 @@ interface SetGameArg {
 
 interface Props {
     styles: Styles;
-    game: Game;
-    setGameLoaded: (e: SetGameArg) => void;
-    setGameStateChange: (e: SetGameArg) => void;
-    quitGame: () => void;
-    theme: ThemeMode;
-    hapticsEnabled: boolean;
 }
 
-const GameLoader: React.FC<Props> = ({
-    styles,
-    game,
-    setGameLoaded,
-    setGameStateChange,
-    quitGame,
-    theme,
-    hapticsEnabled,
-}) => {
+const GameLoader: React.FC<Props> = ({ styles }) => {
+    const theme = useSelector(selectTheme);
+    const hapticsEnabled = useSelector(selectHaptics);
+    const game = useSelector(selectGame);
+
+    const dispatch = useDispatch();
+
     const { playerId, lobbyId } = game;
 
     const { width, height } = useDimensions().window;
@@ -100,7 +90,7 @@ const GameLoader: React.FC<Props> = ({
 
             await docRef.set({ players }, { merge: true });
 
-            quitGame();
+            dispatch(quitGame());
         } catch (err) {
             showError();
             handleError(err);
@@ -123,7 +113,7 @@ const GameLoader: React.FC<Props> = ({
 
     const showError = () => {
         showToast('Could not connect to game server');
-        quitGame();
+        dispatch(quitGame());
     };
 
     useEffect(() => {
@@ -138,11 +128,21 @@ const GameLoader: React.FC<Props> = ({
                 if (!snapshot.exists) return showError();
 
                 if (initial) {
-                    setGameLoaded({ lobbyId, ...snapshot.data() });
+                    dispatch(
+                        setGameLoaded({
+                            lobbyId,
+                            ...snapshot.data(),
+                        })
+                    );
                     initial = false;
                     return;
                 }
-                setGameStateChange({ lobbyId, ...snapshot.data() });
+                dispatch(
+                    setGameStateChange({
+                        lobbyId,
+                        ...snapshot.data(),
+                    } as GameState)
+                );
             },
             err => {
                 showError();
@@ -219,17 +219,4 @@ const GameLoader: React.FC<Props> = ({
     );
 };
 
-const mapStateToProps = createStructuredSelector<any, any>({
-    game: selectGame,
-    theme: selectTheme,
-    hapticsEnabled: selectHaptics,
-});
-
-const actions = {
-    setGameStateChange,
-    setGameLoaded,
-    setLobbyId,
-    quitGame,
-};
-
-export default connect(mapStateToProps, actions)(GameLoader);
+export default GameLoader;
