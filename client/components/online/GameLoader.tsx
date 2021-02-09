@@ -141,7 +141,7 @@ const GameLoader: React.FC<Props> = ({
         const channel = docRef.onSnapshot(
             snapshot => {
                 if (!snapshot.exists) return showError();
-                //TODO: This code will change.
+
                 if (initial) {
                     setGameLoaded({ lobbyId, ...snapshot.data() });
                     initial = false;

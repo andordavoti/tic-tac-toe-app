@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Platform, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { SplashScreen } from 'expo';
 
 import { colors, calcFromHeight } from '../lib/constants';
 import { connect } from 'react-redux';
@@ -20,14 +19,10 @@ import { useDimensions } from '@react-native-community/hooks';
 interface Props {
     theme: ThemeMode;
     hapticsEnabled: boolean;
-    navigation: StackNavigationProp<any, 'Select Mode'>; // TODO change to Route based naming.
+    navigation: StackNavigationProp<any, 'Select Mode'>;
 }
 
 const SelectMode: React.FC<Props> = ({ navigation, hapticsEnabled, theme }) => {
-    useEffect(() => {
-        SplashScreen.hide();
-    }, []);
-
     const { width, height } = useDimensions().window;
 
     const styles = getStyleSheet(theme, height);

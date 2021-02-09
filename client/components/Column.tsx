@@ -78,8 +78,7 @@ const Column: React.FC<Props> = ({
             disabled={disableFields || Boolean(currentFieldTypes)}
             style={styles.column}
             onPress={() => {
-                if (!currentFieldTypes)
-                    action(num); /* TODO: Add an else with error haptics here */
+                if (!currentFieldTypes) action(num);
             }}
         >
             {currentFieldTypes !== '' ? (
