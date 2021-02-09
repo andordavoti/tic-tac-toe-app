@@ -10,9 +10,11 @@ import AppLoading from 'expo-app-loading';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
 
-LogBox.ignoreLogs([
-    'YellowBox has been replaced with LogBox. Please call LogBox.ignoreLogs() instead.',
-]);
+if (Platform.OS !== 'web') {
+    LogBox.ignoreLogs([
+        'YellowBox has been replaced with LogBox. Please call LogBox.ignoreLogs() instead.',
+    ]);
+}
 
 const App: React.FC = () => {
     useEffect(() => {
