@@ -6,7 +6,7 @@ import stores from './redux/store';
 import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
 import Constants from 'expo-constants';
-import { AppLoading } from 'expo';
+import AppLoading from 'expo-app-loading';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
 
