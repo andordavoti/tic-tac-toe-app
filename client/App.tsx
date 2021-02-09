@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, StatusBar, Platform } from 'react-native';
+import { View, StatusBar, Platform, LogBox } from 'react-native';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
 import stores from './redux/store';
@@ -9,6 +9,10 @@ import Constants from 'expo-constants';
 import AppLoading from 'expo-app-loading';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
+
+LogBox.ignoreLogs([
+    'YellowBox has been replaced with LogBox. Please call LogBox.ignoreLogs() instead.',
+]);
 
 const App: React.FC = () => {
     useEffect(() => {
