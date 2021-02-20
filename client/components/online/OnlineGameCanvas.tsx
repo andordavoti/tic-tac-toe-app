@@ -65,11 +65,6 @@ const OnlineGameCanvas: React.FC = () => {
 
     const canvasFrozen = playerId !== xIsNext;
 
-    useEffect(() => {
-        console.log('gameState: ', gameState);
-        console.log('winnerDetails: ', winnerDetails);
-    }, [gameState, winnerDetails]);
-
     const handleFieldPress = async (num: number) => {
         try {
             if (canvasFrozen) return;
