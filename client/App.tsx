@@ -24,9 +24,8 @@ const App: React.FC = () => {
                 dsn: SENTRY_DSN,
                 enableInExpoDevelopment: false,
                 debug: process.env.NODE_ENV === 'development' ? true : false,
+                enableAutoSessionTracking: true,
             });
-
-            Sentry.setRelease(Constants.manifest.revisionId);
         }
     }, []);
 

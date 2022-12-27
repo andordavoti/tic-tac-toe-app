@@ -131,9 +131,7 @@ const AppNavigator: React.FC = () => {
                         tabBarIcon: ({ focused, size }) => {
                             const color = focused ? 'white' : 'lightgrey';
                             const iconName =
-                                route.name === 'Settings'
-                                    ? 'settings'
-                                    : 'gamepad';
+                                route.name === 'Settings' ? 'cog' : 'gamepad';
                             return (
                                 <MaterialCommunityIcons
                                     color={color}
