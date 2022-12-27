@@ -193,13 +193,13 @@ const SettingsScreen: React.FC = ({}) => {
                 >
                     <MaterialCommunityIcons
                         color={colors[theme].text}
-                        name="github-circle"
+                        name="github"
                         size={25}
                     />
                     <Text style={styles.text}>Project on GitHub</Text>
                     <MaterialCommunityIcons
                         color={colors[theme].text}
-                        name="github-circle"
+                        name="github"
                         size={25}
                     />
                 </TouchableOpacity>

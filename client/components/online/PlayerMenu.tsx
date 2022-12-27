@@ -63,7 +63,7 @@ const PlayerMenu: React.FC<Props> = ({
     const insertFromClipboard = async () => {
         try {
             const text = await Clipboard.getStringAsync();
-            if (Boolean(text.length)) {
+            if (text.length) {
                 showToast('Inserted text from Clipboard');
                 setTextInput(text);
                 if (Platform.OS === 'ios' && hapticsEnabled)
@@ -203,11 +203,11 @@ const PlayerMenu: React.FC<Props> = ({
 
                         <TouchableOpacity
                             onPress={clearInput}
-                            disabled={!Boolean(textInput.length)}
+                            disabled={!textInput.length}
                         >
                             <MaterialCommunityIcons
                                 color={
-                                    !Boolean(textInput.length)
+                                    !textInput.length
                                         ? 'grey'
                                         : colors[theme].text
                                 }
@@ -224,7 +224,7 @@ const PlayerMenu: React.FC<Props> = ({
                 onPress={handleJoinGame}
                 mode="contained"
                 style={
-                    Boolean(textInput.length)
+                    textInput.length
                         ? styles.button
                         : [
                               styles.button,
