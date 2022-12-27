@@ -6,9 +6,13 @@
     "scripts": {
         "start": "cd client && expo start",
         "start-c": "cd client && expo start -c",
-        "start-web": "cd web && npm run dev",
+        "ios": "cd client && expo start --ios",
+        "android": "cd client && expo start --android",
+        "web": "cd web && npm run dev",
+        "build:ios": "cd client && expo build:ios",
+        "build:android": "cd client && expo build:android",
         "deploy-server": "cd server && npm run deploy",
-        "deploy-web": "cd landing-page && npm run build && firebase deploy --only hosting"
+        "deploy-landing": "cd landing-page && npm run build && firebase deploy --only hosting"
     },
     "repository": {
         "type": "git",
