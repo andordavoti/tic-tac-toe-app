@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { View, StatusBar, Platform, LogBox } from 'react-native';
+import { StatusBar, Platform, LogBox } from 'react-native';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
 import stores from './redux/store';
 import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
-import Constants from 'expo-constants';
 import AppLoading from 'expo-app-loading';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 if (Platform.OS !== 'web') {
     LogBox.ignoreLogs([
@@ -33,14 +33,14 @@ const App: React.FC = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={<AppLoading />} persistor={persistor}>
-                <View style={{ flex: 1 }}>
+                <GestureHandlerRootView style={{ flex: 1 }}>
                     <StatusBar barStyle="light-content" />
                     {Platform.OS === 'web' ? (
                         <AppNavigatorWeb />
                     ) : (
                         <AppNavigator />
                     )}
-                </View>
+                </GestureHandlerRootView>
             </PersistGate>
         </Provider>
     );
