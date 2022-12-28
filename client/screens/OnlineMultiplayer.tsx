@@ -81,7 +81,9 @@ const OnlineMultiplayer: React.FC = () => {
             // Checking if lobby exists
             if (!snapshot.exists) {
                 if (Platform.OS === 'ios' && hapticsEnabled) {
-                    Haptics.notificationAsync('error' as any);
+                    Haptics.notificationAsync(
+                        Haptics.NotificationFeedbackType.Error
+                    );
                 }
                 showErrorToast('This lobby does not exist...');
                 return;
@@ -97,9 +99,10 @@ const OnlineMultiplayer: React.FC = () => {
 
             if (connectedPlayers.length >= 2) {
                 if (Platform.OS === 'ios' && hapticsEnabled) {
-                    Haptics.notificationAsync('error' as any);
+                    Haptics.notificationAsync(
+                        Haptics.NotificationFeedbackType.Error
+                    );
                 }
-
                 showErrorToast('Lobby is full...');
                 return;
             }
@@ -107,7 +110,9 @@ const OnlineMultiplayer: React.FC = () => {
             dispatch(setPlayerId(playerId));
             dispatch(setLobbyId(textInput));
             if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('success' as any);
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Success
+                );
         } catch (err) {
             handleError(err);
         }

@@ -16,7 +16,6 @@ import OnlineGameCanvas from './OnlineGameCanvas';
 
 import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
-import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
 import { showErrorToast, showInfoToast } from '../../lib/toast';
 import { useHapticsEnabled, useSelectedTheme } from '../../redux/settingsSlice';
@@ -40,15 +39,6 @@ interface Styles {
 interface Player {
     connected: boolean;
     id: string;
-}
-
-interface Game {
-    lobbyId: LobbyId;
-    playerId: PlayerId;
-    xIsNext: number;
-    fieldTypes: FieldTypes;
-    players: Player[];
-    gameLoaded: boolean;
 }
 
 interface Props {
@@ -89,27 +79,27 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
         }
     };
 
-    const connectPlayer = async () => {
-        try {
-            const docRef = firestore.collection('lobbies').doc(lobbyId);
-
-            const players = modifyPlayer(game.players, playerId, {
-                connected: true,
-            });
-            await docRef.set({ players }, { merge: true });
-        } catch (err) {
-            showError();
-            handleError(err);
-        }
-    };
-
     const showError = () => {
         showErrorToast('Could not connect to game server');
         dispatch(quitGame());
     };
 
     useEffect(() => {
-        game.gameLoaded && connectPlayer();
+        const connectPlayer = async () => {
+            try {
+                const docRef = firestore.collection('lobbies').doc(lobbyId);
+
+                const players = modifyPlayer(game.players, playerId, {
+                    connected: true,
+                });
+                await docRef.set({ players }, { merge: true });
+            } catch (err) {
+                showError();
+                handleError(err);
+            }
+        };
+
+        if (game.gameLoaded) connectPlayer();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [game.gameLoaded]);
 
@@ -124,6 +114,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
                     setGameLoaded({
                         lobbyId,
                         ...(snapshot.data() as GameState),
+                        gameLoaded: true,
                     })
                 );
                 initial = false;
@@ -154,7 +145,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
         showInfoToast('Copied Lobby ID to Clipboard');
         Clipboard.setString(lobbyId);
         if (Platform.OS === 'ios' && hapticsEnabled) {
-            Haptics.notificationAsync('success' as any);
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         }
     };
 

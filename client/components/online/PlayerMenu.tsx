@@ -32,11 +32,11 @@ interface Props {
     styles: Styles;
     textInput: string;
     setTextInput: (e: string) => void;
-    handleInputChange: any;
+    handleInputChange: (text: string) => void;
     gridSize: GridNumber;
     handleGridSizeChange: (value: GridString) => void;
-    handleNewGame: any;
-    handleJoinGame: any;
+    handleNewGame: () => void;
+    handleJoinGame: () => void;
 }
 
 // Menu that displays "new game" or "Join game" options
@@ -62,11 +62,15 @@ const PlayerMenu: React.FC<Props> = ({
                 showInfoToast('Inserted text from Clipboard');
                 setTextInput(text);
                 if (Platform.OS === 'ios' && hapticsEnabled)
-                    Haptics.notificationAsync('success' as any);
+                    Haptics.notificationAsync(
+                        Haptics.NotificationFeedbackType.Success
+                    );
             } else {
                 showInfoToast('Clipboard is empty');
                 if (Platform.OS === 'ios' && hapticsEnabled)
-                    Haptics.notificationAsync('error' as any);
+                    Haptics.notificationAsync(
+                        Haptics.NotificationFeedbackType.Error
+                    );
             }
         } catch (err) {
             handleError(err);

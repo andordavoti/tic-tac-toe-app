@@ -135,15 +135,21 @@ const OnlineGameCanvas: React.FC = () => {
                 winnerColumns: result.winnerColumns,
             });
             if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('success' as any);
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Success
+                );
         } else if (winner) {
             setWinnerDetails(initialState);
             if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('error' as any);
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Error
+                );
         } else if (result?.tied) {
             setWinnerDetails({ ...initialState, tied: true });
             if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('error' as any);
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Error
+                );
         }
 
         if (!result) {
