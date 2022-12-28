@@ -13,7 +13,7 @@ import {
     quitGame,
 } from '../../redux/game/game.actions';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
-import Clipboard from 'expo-clipboard';
+import * as Clipboard from 'expo-clipboard';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,11 +52,6 @@ interface Game {
     fieldTypes: FieldTypes;
     players: Player[];
     gameLoaded: boolean;
-}
-
-interface SetGameArg {
-    lobbyId: string;
-    //...snapshot.data() TODO: what's this type?
 }
 
 interface Props {
@@ -118,41 +113,38 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
 
     useEffect(() => {
         game.gameLoaded && connectPlayer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [game.gameLoaded]);
 
     useEffect(() => {
         const docRef = firestore.collection('lobbies').doc(lobbyId);
         let initial = true;
-        const channel = docRef.onSnapshot(
-            snapshot => {
-                if (!snapshot.exists) return showError();
+        const channel = docRef.onSnapshot(snapshot => {
+            if (!snapshot.exists) return showError();
 
-                if (initial) {
-                    dispatch(
-                        setGameLoaded({
-                            lobbyId,
-                            ...snapshot.data(),
-                        })
-                    );
-                    initial = false;
-                    return;
-                }
+            if (initial) {
                 dispatch(
-                    setGameStateChange({
+                    setGameLoaded({
                         lobbyId,
-                        ...snapshot.data(),
-                    } as GameState)
+                        ...(snapshot.data() as GameState),
+                    })
                 );
-            },
-            err => {
-                showError();
+                initial = false;
+                return;
             }
-        );
+            dispatch(
+                setGameStateChange({
+                    lobbyId,
+                    ...snapshot.data(),
+                } as GameState)
+            );
+        }, showError);
 
         return () => {
             disconnectPlayer();
             channel();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lobbyId]);
 
     const connectedPlayers = useMemo(() => {
