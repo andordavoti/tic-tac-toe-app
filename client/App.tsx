@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { StatusBar, Platform, LogBox } from 'react-native';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
@@ -19,18 +19,14 @@ if (Platform.OS !== 'web') {
     ]);
 }
 
-const App: React.FC = () => {
-    useEffect(() => {
-        if (Platform.OS !== 'web') {
-            Sentry.init({
-                dsn: SENTRY_DSN,
-                enableInExpoDevelopment: false,
-                debug: process.env.NODE_ENV === 'development' ? true : false,
-                enableAutoSessionTracking: true,
-            });
-        }
-    }, []);
+Sentry.init({
+    dsn: SENTRY_DSN,
+    enableInExpoDevelopment: false,
+    debug: process.env.NODE_ENV === 'development' ? true : false,
+    enableAutoSessionTracking: true,
+});
 
+const App: React.FC = () => {
     return (
         <Provider store={store}>
             <PersistGate loading={<AppLoading />} persistor={persistor}>
