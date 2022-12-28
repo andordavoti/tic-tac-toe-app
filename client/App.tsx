@@ -4,7 +4,6 @@ import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
 import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
-import AppLoading from 'expo-app-loading';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
 import Toast from 'react-native-toast-message';
@@ -29,7 +28,7 @@ Sentry.init({
 const App: React.FC = () => {
     return (
         <Provider store={store}>
-            <PersistGate loading={<AppLoading />} persistor={persistor}>
+            <PersistGate loading={null} persistor={persistor}>
                 <GestureHandlerRootView style={{ flex: 1 }}>
                     <StatusBar barStyle="light-content" />
                     {Platform.OS === 'web' ? (
