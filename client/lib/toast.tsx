@@ -5,6 +5,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 type BaseToastProps = ComponentProps<typeof BaseToast>;
 type ErrorToastProps = ComponentProps<typeof ErrorToast>;
 
+const TOAST_WIDTH = 250;
+const TOAST_HEIGHT = 56;
+
 export const toastConfig = {
     info: (props: BaseToastProps): ReactNode => (
         <BaseToast
@@ -14,8 +17,8 @@ export const toastConfig = {
                 borderRadius: 40,
                 borderLeftColor: 'white',
                 paddingLeft: 8,
-                width: 300,
-                height: 56,
+                width: TOAST_WIDTH,
+                height: TOAST_HEIGHT,
             }}
             contentContainerStyle={{ paddingHorizontal: 8 }}
             text1NumberOfLines={3}
@@ -37,8 +40,8 @@ export const toastConfig = {
                 borderRadius: 40,
                 borderLeftColor: 'white',
                 paddingLeft: 8,
-                width: 300,
-                height: 56,
+                width: TOAST_WIDTH,
+                height: TOAST_HEIGHT,
             }}
             contentContainerStyle={{ paddingHorizontal: 8 }}
             text1NumberOfLines={3}
@@ -60,7 +63,7 @@ export const showInfoToast = (title: string, description?: string): void => {
         text2: description,
         position: 'top',
         type: 'info',
-        topOffset: 50,
+        topOffset: 55,
         visibilityTime: 2000,
     });
 };
@@ -71,7 +74,7 @@ export const showErrorToast = (title: string, description?: string): void => {
         text2: description,
         position: 'top',
         type: 'error',
-        topOffset: 50,
+        topOffset: 55,
         visibilityTime: 5000,
     });
 };
