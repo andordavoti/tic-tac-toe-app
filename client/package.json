@@ -7,8 +7,7 @@
         "web": "expo start --web",
         "eject": "expo eject",
         "deploy-web": "expo build:web && firebase deploy --only hosting:client",
-        "types": "tsc --noEmit",
-        "postinstall": "patch-package"
+        "types": "tsc --noEmit"
     },
     "dependencies": {
         "@expo/webpack-config": "~0.16.21",
