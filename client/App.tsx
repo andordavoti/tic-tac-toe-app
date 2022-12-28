@@ -15,6 +15,8 @@ if (Platform.OS !== 'web') {
     LogBox.ignoreLogs([
         'YellowBox has been replaced with LogBox. Please call LogBox.ignoreLogs() instead.',
         'Cannot update a component from inside the function body of a different component.',
+        "Constants.platform.ios.model has been deprecated in favor of expo-device's Device.modelName property.",
+        'AsyncStorage has been extracted from react-native core and will be removed in a future release.',
     ]);
 }
 
