@@ -22,7 +22,6 @@ import CountdownTimer from '../CountdownTimer';
 import { ThemeMode } from '../../types/Theme';
 import { Winner, WinnerColumns } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
-import CountdownWeb from '../CountdownTimer.web';
 
 interface WinnerState {
     winner: Winner;
@@ -45,18 +44,11 @@ const OnlineGameCanvas: React.FC = () => {
     const [timers, setTimers] = useState<ReturnType<typeof setTimeout>[] | []>(
         []
     );
-    const [winnerDetails, setWinnerDetails] = useState<WinnerState>(
-        initialState
-    );
+    const [winnerDetails, setWinnerDetails] =
+        useState<WinnerState>(initialState);
     const { winner, winnerColumns, tied } = winnerDetails;
-    const {
-        fieldTypes,
-        playerId,
-        xIsNext,
-        gameStarted,
-        gameSize,
-        resetable,
-    } = gameState;
+    const { fieldTypes, playerId, xIsNext, gameStarted, gameSize, resetable } =
+        gameState;
     const timeOutDuration = 10000;
 
     const { height } = useDimensions().window;
@@ -185,12 +177,7 @@ const OnlineGameCanvas: React.FC = () => {
 
     const renderTimer = () => {
         if (timers.length && gameStarted) {
-            if (Platform.OS !== 'web')
-                return <CountdownTimer size={48} duration={timeOutDuration} />;
-            else
-                return (
-                    <CountdownWeb key={xIsNext} duration={timeOutDuration} />
-                );
+            return <CountdownTimer key={xIsNext} duration={timeOutDuration} />;
         }
     };
 

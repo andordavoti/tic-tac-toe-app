@@ -1,25 +1,28 @@
-import React from 'react';
-import { Clock, Easing } from 'react-native-reanimated';
-import { timing } from 'react-native-redash';
-import CircularProgress from './CircularProgress';
+import React, { useState, useEffect } from 'react';
+import { Text } from 'react-native';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../redux/settings/settings.selectors';
 
-const CountdownTimer: React.FC<PropTypes> = ({ size, duration }) => {
-    const clock = new Clock();
+const CountdownWeb: React.FC<{ duration: number }> = ({ duration }) => {
+    const theme = useSelector(selectTheme);
+    const [counter, setCounter] = useState(duration / 1000);
 
-    const progress = timing({
-        clock,
-        duration,
-        from: 0,
-        to: 1,
-        easing: Easing.linear,
-    });
+    useEffect(() => {
+        if (counter > 0) setTimeout(() => setCounter(counter - 1), 1000);
+        else setCounter(duration / 1000);
+    }, [counter, duration]);
 
-    return <CircularProgress size={size} progress={progress} />;
+    return (
+        <Text
+            style={{
+                fontSize: 36,
+                fontWeight: 'bold',
+                color: theme === 'dark' ? '#fff' : '#121212',
+            }}
+        >
+            {counter}
+        </Text>
+    );
 };
 
-interface PropTypes {
-    size: number;
-    duration: number;
-}
-
-export default CountdownTimer;
+export default React.memo(CountdownWeb);
