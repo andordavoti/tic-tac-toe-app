@@ -2,10 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, calcFromHeight } from '../lib/constants';
 import { ActivityIndicator } from 'react-native-paper';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { useDimensions } from '@react-native-community/hooks';
+import { useSelectedTheme } from '../redux/settingsSlice';
 
 interface Props {
     msg: string;
@@ -13,7 +12,7 @@ interface Props {
 }
 
 const Spinner: React.FC<Props> = ({ msg, size = 'large' }) => {
-    const theme = useSelector(selectTheme);
+    const theme = useSelectedTheme();
 
     const { height } = useDimensions().window;
 

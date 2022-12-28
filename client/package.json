@@ -18,6 +18,7 @@
         "@react-navigation/bottom-tabs": "^5.2.7",
         "@react-navigation/native": "^5.0.9",
         "@react-navigation/stack": "^5.1.1",
+        "@reduxjs/toolkit": "^1.9.1",
         "axios": "^0.21.1",
         "base-64": "^0.1.0",
         "expo": "^44.0.0",
@@ -47,10 +48,8 @@
         "react-native-toast-message": "^2.1.5",
         "react-native-web": "0.17.1",
         "react-redux": "^7.2.0",
-        "redux": "^4.0.5",
         "redux-logger": "^3.0.6",
         "redux-persist": "^6.0.0",
-        "reselect": "^4.0.0",
         "sentry-expo": "^4.0.0"
     },
     "devDependencies": {
@@ -63,7 +62,6 @@
         "@types/react-native": "~0.64.12",
         "@types/react-redux": "^7.1.8",
         "@types/redux-logger": "^3.0.7",
-        "@types/reselect": "^2.2.0",
         "babel-preset-expo": "9.0.2",
         "eslint": "^7.19.0",
         "typescript": "~4.3.5"

@@ -6,12 +6,6 @@ import { useDimensions } from '@react-native-community/hooks';
 
 import { colors, calcFromHeight } from '../../lib/constants';
 import { firestore } from '../../lib/firebaseUtils';
-import { selectLobbyId, selectGame } from '../../redux/game/game.selectors';
-import {
-    selectHaptics,
-    selectTheme,
-} from '../../redux/settings/settings.selectors';
-import { useSelector } from 'react-redux';
 import {
     getFieldType,
     checkGame,
@@ -22,6 +16,8 @@ import CountdownTimer from '../CountdownTimer';
 import { ThemeMode } from '../../types/Theme';
 import { Winner, WinnerColumns } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
+import { useHapticsEnabled, useSelectedTheme } from '../../redux/settingsSlice';
+import { useGame } from '../../redux/gameSlice';
 
 interface WinnerState {
     winner: Winner;
@@ -36,10 +32,9 @@ const initialState = {
 };
 
 const OnlineGameCanvas: React.FC = () => {
-    const lobbyId = useSelector(selectLobbyId);
-    const gameState = useSelector(selectGame);
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
+    const game = useGame();
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
 
     const [timers, setTimers] = useState<ReturnType<typeof setTimeout>[] | []>(
         []
@@ -47,8 +42,15 @@ const OnlineGameCanvas: React.FC = () => {
     const [winnerDetails, setWinnerDetails] =
         useState<WinnerState>(initialState);
     const { winner, winnerColumns, tied } = winnerDetails;
-    const { fieldTypes, playerId, xIsNext, gameStarted, gameSize, resetable } =
-        gameState;
+    const {
+        fieldTypes,
+        playerId,
+        xIsNext,
+        gameStarted,
+        gameSize,
+        resetable,
+        lobbyId,
+    } = game;
     const timeOutDuration = 10000;
 
     const { height } = useDimensions().window;

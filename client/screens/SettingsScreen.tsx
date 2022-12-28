@@ -15,26 +15,24 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { colors, urls, calcFromHeight } from '../lib/constants';
 
-import { useDispatch, useSelector } from 'react-redux';
-import {
-    setCurrentTheme,
-    enableSystemTheme,
-    enableHaptics,
-} from '../redux/settings/settings.action';
-import {
-    selectTheme,
-    selectSystemTheme,
-    selectHaptics,
-} from '../redux/settings/settings.selectors';
+import { useDispatch } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { openLink } from '../lib/openLink';
 import { useDimensions } from '@react-native-community/hooks';
+import {
+    setCurrentTheme,
+    setUseSystemTheme,
+    toggleHaptics,
+    useHapticsEnabled,
+    useSelectedTheme,
+    useSystemThemeEnabled,
+} from '../redux/settingsSlice';
 
 const SettingsScreen: React.FC = ({}) => {
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
-    const systemThemeEnabled = useSelector(selectSystemTheme);
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
+    const systemThemeEnabled = useSystemThemeEnabled();
 
     const dispatch = useDispatch();
 
@@ -54,13 +52,13 @@ const SettingsScreen: React.FC = ({}) => {
             if (Platform.OS === 'ios' && hapticsEnabled)
                 Haptics.selectionAsync();
             if (value === 'system') {
-                dispatch(enableSystemTheme(true));
+                dispatch(setUseSystemTheme(true));
                 setSelectedTheme('system');
             }
             if (value === 'light' || value === 'dark') {
                 setSelectedTheme(value);
                 dispatch(setCurrentTheme(value));
-                dispatch(enableSystemTheme(false));
+                dispatch(setUseSystemTheme(false));
             }
         }
     };
@@ -142,9 +140,9 @@ const SettingsScreen: React.FC = ({}) => {
                     <Switch
                         color={colors[theme].main}
                         value={hapticsEnabled}
-                        onValueChange={() =>
-                            dispatch(enableHaptics(!hapticsEnabled))
-                        }
+                        onValueChange={() => {
+                            dispatch(toggleHaptics());
+                        }}
                     />
                 </View>
             )}

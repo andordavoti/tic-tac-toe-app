@@ -9,18 +9,14 @@ import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
 import PlayerMenu from '../components/online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
 import GameLoader from '../components/online/GameLoader';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectLobbyId } from '../redux/game/game.selectors';
-import { setLobbyId, setPlayerId } from '../redux/game/game.actions';
-import {
-    selectHaptics,
-    selectTheme,
-} from '../redux/settings/settings.selectors';
+import { useDispatch } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { GridNumber, GridString } from '../types/Game';
 import { useDimensions } from '@react-native-community/hooks';
 import { showErrorToast } from '../lib/toast';
+import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
+import { setLobbyId, setPlayerId, useLobbyId } from '../redux/gameSlice';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -30,9 +26,9 @@ const OnlineMultiplayer: React.FC = () => {
     const [gridSize, setGridSize] = useState<GridNumber>(3);
     const [connected, setConnected] = useState(false);
 
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
-    const lobbyId = useSelector(selectLobbyId);
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
+    const lobbyId = useLobbyId();
 
     const dispatch = useDispatch();
 

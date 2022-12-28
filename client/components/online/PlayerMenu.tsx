@@ -10,17 +10,13 @@ import * as Clipboard from 'expo-clipboard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, ToggleButton } from 'react-native-paper';
 import { colors, calcFromHeight, calcFromWidth } from '../../lib/constants';
-import { useSelector } from 'react-redux';
-import {
-    selectHaptics,
-    selectTheme,
-} from '../../redux/settings/settings.selectors';
 
 import { useDimensions } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import { handleError } from '../../lib/handleError';
 import { GridNumber, GridString } from '../../types/Game';
 import { showInfoToast } from '../../lib/toast';
+import { useHapticsEnabled, useSelectedTheme } from '../../redux/settingsSlice';
 
 interface Styles {
     text: object;
@@ -54,8 +50,8 @@ const PlayerMenu: React.FC<Props> = ({
     handleNewGame,
     handleJoinGame,
 }) => {
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
 
     const { width, height } = useDimensions().window;
 
@@ -173,7 +169,10 @@ const PlayerMenu: React.FC<Props> = ({
                 placeholder="Enter lobby id"
                 placeholderTextColor="white"
                 autoCapitalize="none"
+                autoCorrect={false}
                 underlineColorAndroid="transparent"
+                returnKeyType="join"
+                onSubmitEditing={handleJoinGame}
             />
 
             <View

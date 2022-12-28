@@ -9,25 +9,20 @@ import {
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-
 import { colors, calcFromHeight } from '../lib/constants';
-import { useSelector } from 'react-redux';
-import {
-    selectHaptics,
-    selectTheme,
-} from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { openLink } from '../lib/openLink';
 import { useDimensions } from '@react-native-community/hooks';
+import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 
 interface Props {
     navigation: StackNavigationProp<any, 'Select Mode'>;
 }
 
 const SelectMode: React.FC<Props> = ({ navigation }) => {
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
 
     const { height } = useDimensions().window;
 

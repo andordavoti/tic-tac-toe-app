@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../redux/settings/settings.selectors';
+import { useSelectedTheme } from '../redux/settingsSlice';
 
 const CountdownWeb: React.FC<{ duration: number }> = ({ duration }) => {
-    const theme = useSelector(selectTheme);
+    const theme = useSelectedTheme();
     const [counter, setCounter] = useState(duration / 1000);
 
     useEffect(() => {

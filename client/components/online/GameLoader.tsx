@@ -7,29 +7,26 @@ import {
 } from '../../lib/firebaseUtils';
 import { getPlayerName } from '../../lib/gameCanvasUtils';
 import withSpinner from '../withSpinner';
-import {
-    setGameStateChange,
-    setGameLoaded,
-    quitGame,
-} from '../../redux/game/game.actions';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectGame } from '../../redux/game/game.selectors';
+import { useDispatch } from 'react-redux';
 import OnlineGameCanvas from './OnlineGameCanvas';
-import {
-    selectHaptics,
-    selectTheme,
-} from '../../redux/settings/settings.selectors';
 
 import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
 import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
-import { GameState } from '../../redux/game/game.reducer';
 import { showErrorToast, showInfoToast } from '../../lib/toast';
+import { useHapticsEnabled, useSelectedTheme } from '../../redux/settingsSlice';
+import {
+    GameState,
+    quitGame,
+    setGameLoaded,
+    setGameStateChange,
+    useGame,
+} from '../../redux/gameSlice';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -59,9 +56,9 @@ interface Props {
 }
 
 const GameLoader: React.FC<Props> = ({ styles }) => {
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
-    const game = useSelector(selectGame);
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
+    const game = useGame();
 
     const dispatch = useDispatch();
 

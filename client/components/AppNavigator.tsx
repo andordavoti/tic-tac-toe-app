@@ -11,12 +11,12 @@ import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentTheme } from '../redux/settings/settings.action';
+import { useDispatch } from 'react-redux';
 import {
-    selectSystemTheme,
-    selectTheme,
-} from '../redux/settings/settings.selectors';
+    setCurrentTheme,
+    useSelectedTheme,
+    useSystemThemeEnabled,
+} from '../redux/settingsSlice';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +24,7 @@ const GameStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 
 const GameStackScreen: React.FC = () => {
-    const theme = useSelector(selectTheme);
+    const theme = useSelectedTheme();
     return (
         <GameStack.Navigator>
             <GameStack.Screen
@@ -84,7 +84,7 @@ const GameStackScreen: React.FC = () => {
 };
 
 const SettingsStackScreen: React.FC = () => {
-    const theme = useSelector(selectTheme);
+    const theme = useSelectedTheme();
     return (
         <SettingsStack.Navigator>
             <SettingsStack.Screen
@@ -109,8 +109,8 @@ const SettingsStackScreen: React.FC = () => {
 };
 
 const AppNavigator: React.FC = () => {
-    const theme = useSelector(selectTheme);
-    const systemThemeEnabled = useSelector(selectSystemTheme);
+    const theme = useSelectedTheme();
+    const systemThemeEnabled = useSystemThemeEnabled();
 
     const dispatch = useDispatch();
 

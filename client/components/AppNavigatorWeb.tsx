@@ -9,16 +9,16 @@ import Multiplayer from '../screens/Multiplayer';
 import OnlineMultiplayer from '../screens/OnlineMultiplayer';
 import SettingsScreen from '../screens/SettingsScreen';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentTheme } from '../redux/settings/settings.action';
+import { useDispatch } from 'react-redux';
 import {
-    selectSystemTheme,
-    selectTheme,
-} from '../redux/settings/settings.selectors';
+    setCurrentTheme,
+    useSelectedTheme,
+    useSystemThemeEnabled,
+} from '../redux/settingsSlice';
 
 const AppNavigatorWeb: React.FC = () => {
-    const theme = useSelector(selectTheme);
-    const systemThemeEnabled = useSelector(selectSystemTheme);
+    const theme = useSelectedTheme();
+    const systemThemeEnabled = useSystemThemeEnabled();
 
     const dispatch = useDispatch();
 

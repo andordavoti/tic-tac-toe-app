@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { StatusBar, Platform, LogBox } from 'react-native';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
-import stores from './redux/store';
 import * as Sentry from 'sentry-expo';
 import { SENTRY_DSN } from './lib/apiKeys';
 import AppLoading from 'expo-app-loading';
@@ -11,6 +10,7 @@ import AppNavigatorWeb from './components/AppNavigatorWeb';
 import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { toastConfig } from './lib/toast';
+import store, { persistor } from './redux/store';
 
 if (Platform.OS !== 'web') {
     LogBox.ignoreLogs([
@@ -31,7 +31,6 @@ const App: React.FC = () => {
         }
     }, []);
 
-    const { store, persistor } = stores();
     return (
         <Provider store={store}>
             <PersistGate loading={<AppLoading />} persistor={persistor}>

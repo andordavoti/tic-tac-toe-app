@@ -3,12 +3,11 @@ import { View, StyleSheet } from 'react-native';
 
 import { colors } from '../lib/constants';
 import GameCanvas from '../components/GameCanvas';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
+import { useSelectedTheme } from '../redux/settingsSlice';
 
 const Multiplayer: React.FC = () => {
-    const theme = useSelector(selectTheme);
+    const theme = useSelectedTheme();
     const styles = getStyleSheet(theme);
 
     return (

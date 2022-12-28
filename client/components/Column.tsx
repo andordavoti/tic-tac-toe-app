@@ -4,10 +4,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth } from '../lib/constants';
-import { useSelector } from 'react-redux';
-import { selectTheme } from '../redux/settings/settings.selectors';
 import { ThemeMode } from '../types/Theme';
 import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
+import { useSelectedTheme } from '../redux/settingsSlice';
 
 interface Props {
     winnerColumns: WinnerColumns;
@@ -31,7 +30,7 @@ const Column: React.FC<Props> = ({
     gridSize,
 }) => {
     const [isWinnerColumn, setIsWinnerColumn] = useState(false);
-    const theme = useSelector(selectTheme);
+    const theme = useSelectedTheme();
 
     const { width, height } = useDimensions().window;
 

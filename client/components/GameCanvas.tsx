@@ -5,14 +5,10 @@ import { Button, ToggleButton } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { checkGame } from '../lib/gameCanvasUtils';
 import { colors, calcFromHeight } from '../lib/constants';
-import { useSelector } from 'react-redux';
-import {
-    selectHaptics,
-    selectTheme,
-} from '../redux/settings/settings.selectors';
 import Grid from './Grid';
 import { ThemeMode } from '../types/Theme';
 import { useDimensions } from '@react-native-community/hooks';
+import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 
 interface GameCanvasState {
     fieldTypes: FieldTypes;
@@ -26,8 +22,8 @@ interface GameCanvasState {
 }
 
 const GameCanvas: React.FC = () => {
-    const theme = useSelector(selectTheme);
-    const hapticsEnabled = useSelector(selectHaptics);
+    const theme = useSelectedTheme();
+    const hapticsEnabled = useHapticsEnabled();
 
     const { height } = useDimensions().window;
 
@@ -121,7 +117,9 @@ const GameCanvas: React.FC = () => {
     const renderInfo = () => {
         if (canvasFrozen && (winner || tied)) {
             if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.notificationAsync('success' as any);
+                Haptics.notificationAsync(
+                    Haptics.NotificationFeedbackType.Success
+                );
             return (
                 <View>
                     <Text style={styles.gameOverText}>Game Over</Text>
