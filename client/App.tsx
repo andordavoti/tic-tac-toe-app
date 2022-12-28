@@ -8,7 +8,9 @@ import { SENTRY_DSN } from './lib/apiKeys';
 import AppLoading from 'expo-app-loading';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
+import Toast from 'react-native-toast-message';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { toastConfig } from './lib/toast';
 
 if (Platform.OS !== 'web') {
     LogBox.ignoreLogs([
@@ -40,6 +42,7 @@ const App: React.FC = () => {
                     ) : (
                         <AppNavigator />
                     )}
+                    <Toast config={toastConfig} />
                 </GestureHandlerRootView>
             </PersistGate>
         </Provider>

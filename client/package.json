@@ -44,6 +44,7 @@
         "react-native-screens": "~3.10.1",
         "react-native-svg": "12.1.1",
         "react-native-tiny-toast": "^1.0.7",
+        "react-native-toast-message": "^2.1.5",
         "react-native-web": "0.17.1",
         "react-redux": "^7.2.0",
         "redux": "^4.0.5",

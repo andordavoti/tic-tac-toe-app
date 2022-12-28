@@ -19,7 +19,6 @@ import * as Haptics from 'expo-haptics';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGame } from '../../redux/game/game.selectors';
 import OnlineGameCanvas from './OnlineGameCanvas';
-import { showToast } from '../../lib/toast';
 import {
     selectHaptics,
     selectTheme,
@@ -30,6 +29,7 @@ import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
 import { LobbyId, PlayerId, FieldTypes } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
 import { GameState } from '../../redux/game/game.reducer';
+import { showErrorToast, showInfoToast } from '../../lib/toast';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -107,7 +107,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
     };
 
     const showError = () => {
-        showToast('Could not connect to game server');
+        showErrorToast('Could not connect to game server');
         dispatch(quitGame());
     };
 
@@ -154,7 +154,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
     }, [game.players]);
 
     const copyLobbyId = () => {
-        showToast('Copied Lobby ID to Clipboard');
+        showInfoToast('Copied Lobby ID to Clipboard');
         Clipboard.setString(lobbyId);
         if (Platform.OS === 'ios' && hapticsEnabled) {
             Haptics.notificationAsync('success' as any);

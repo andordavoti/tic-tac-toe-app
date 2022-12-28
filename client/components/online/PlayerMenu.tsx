@@ -6,11 +6,10 @@ import {
     TouchableOpacity,
     Platform,
 } from 'react-native';
-import Clipboard from 'expo-clipboard';
+import * as Clipboard from 'expo-clipboard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, ToggleButton } from 'react-native-paper';
 import { colors, calcFromHeight, calcFromWidth } from '../../lib/constants';
-import { showToast } from '../../lib/toast';
 import { useSelector } from 'react-redux';
 import {
     selectHaptics,
@@ -19,9 +18,9 @@ import {
 
 import { useDimensions } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
-import Toast from 'react-native-tiny-toast';
 import { handleError } from '../../lib/handleError';
 import { GridNumber, GridString } from '../../types/Game';
+import { showInfoToast } from '../../lib/toast';
 
 interface Styles {
     text: object;
@@ -64,12 +63,12 @@ const PlayerMenu: React.FC<Props> = ({
         try {
             const text = await Clipboard.getStringAsync();
             if (text.length) {
-                showToast('Inserted text from Clipboard');
+                showInfoToast('Inserted text from Clipboard');
                 setTextInput(text);
                 if (Platform.OS === 'ios' && hapticsEnabled)
                     Haptics.notificationAsync('success' as any);
             } else {
-                showToast('Clipboard is empty');
+                showInfoToast('Clipboard is empty');
                 if (Platform.OS === 'ios' && hapticsEnabled)
                     Haptics.notificationAsync('error' as any);
             }
@@ -81,7 +80,6 @@ const PlayerMenu: React.FC<Props> = ({
     const clearInput = () => {
         setTextInput('');
         if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
-        Toast.hide;
     };
 
     return (
@@ -94,8 +92,6 @@ const PlayerMenu: React.FC<Props> = ({
                     value={gridSize.toString()}
                 >
                     <ToggleButton
-                        activeOpacity={0.6}
-                        underlayColor={colors[theme].text}
                         color={
                             gridSize === 3
                                 ? colors[theme].bg
@@ -110,8 +106,6 @@ const PlayerMenu: React.FC<Props> = ({
                         value="3"
                     />
                     <ToggleButton
-                        activeOpacity={0.6}
-                        underlayColor={colors[theme].text}
                         color={
                             gridSize === 4
                                 ? colors[theme].bg
@@ -126,8 +120,6 @@ const PlayerMenu: React.FC<Props> = ({
                         value="4"
                     />
                     <ToggleButton
-                        activeOpacity={0.6}
-                        underlayColor={colors[theme].text}
                         color={
                             gridSize === 5
                                 ? colors[theme].bg

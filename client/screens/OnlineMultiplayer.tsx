@@ -20,7 +20,7 @@ import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { GridNumber, GridString } from '../types/Game';
 import { useDimensions } from '@react-native-community/hooks';
-import { showToast } from '../lib/toast';
+import { showErrorToast } from '../lib/toast';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -87,7 +87,7 @@ const OnlineMultiplayer: React.FC = () => {
                 if (Platform.OS === 'ios' && hapticsEnabled) {
                     Haptics.notificationAsync('error' as any);
                 }
-                showToast('This lobby does not exist...');
+                showErrorToast('This lobby does not exist...');
                 return;
             }
 
@@ -104,7 +104,7 @@ const OnlineMultiplayer: React.FC = () => {
                     Haptics.notificationAsync('error' as any);
                 }
 
-                showToast('Lobby is full...');
+                showErrorToast('Lobby is full...');
                 return;
             }
 
