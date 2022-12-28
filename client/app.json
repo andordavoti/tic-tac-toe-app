@@ -28,7 +28,7 @@
             "config": {
                 "usesNonExemptEncryption": false
             },
-            "appStoreUrl": "https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441?ls=1"
+            "appStoreUrl": "https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441"
         },
         "android": {
             "package": "com.andordavoti.tictactoe.game",
