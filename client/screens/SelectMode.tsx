@@ -76,7 +76,16 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
             </View>
             {Platform.OS === 'web' && (
                 <>
-                    <Text style={styles.text}>Download the app:</Text>
+                    <Text
+                        style={[
+                            styles.text,
+                            {
+                                marginTop: calcFromHeight(16, height),
+                            },
+                        ]}
+                    >
+                        Download the app:
+                    </Text>
                     <View style={styles.storeButtonContainer}>
                         <TouchableOpacity
                             onPress={() =>
@@ -131,7 +140,7 @@ const getStyleSheet = (theme: ThemeMode, height: number) => {
         },
         text: {
             color: colors[theme].text,
-            margin: calcFromHeight(15, height),
+            marginBottom: calcFromHeight(8, height),
             fontSize: 20,
             textAlign: 'center',
             fontWeight: '500',
