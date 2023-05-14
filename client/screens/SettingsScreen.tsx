@@ -1,11 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    View,
-    StyleSheet,
-    Text,
-    Platform,
-    TouchableOpacity,
-} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Switch, Button, ToggleButton } from 'react-native-paper';
 import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
@@ -13,7 +7,7 @@ import * as StoreReview from 'expo-store-review';
 import * as Linking from 'expo-linking';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { colors, urls, calcFromHeight } from '../lib/constants';
+import { colors, urls, calcFromHeight, IS_IOS, IS_WEB } from '../lib/constants';
 
 import { useDispatch } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
@@ -49,8 +43,7 @@ const SettingsScreen: React.FC = ({}) => {
 
     const onValueChange = (value: 'system' | ThemeMode) => {
         if (value) {
-            if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.selectionAsync();
+            if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
             if (value === 'system') {
                 dispatch(setUseSystemTheme(true));
                 setSelectedTheme('system');
@@ -65,9 +58,8 @@ const SettingsScreen: React.FC = ({}) => {
 
     const sendEmail = () => {
         try {
-            if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.selectionAsync();
-            Linking.openURL('mailto:andor.davoti@gmail.com');
+            if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
+            Linking.openURL(`mailto:${urls.contactEmail}`);
         } catch (err) {
             handleError(err);
         }
@@ -134,7 +126,7 @@ const SettingsScreen: React.FC = ({}) => {
                     value="dark"
                 />
             </ToggleButton.Row>
-            {Platform.OS === 'ios' && (
+            {IS_IOS && (
                 <View style={styles.row}>
                     <Text style={styles.text}>Haptics:</Text>
                     <Switch
@@ -204,13 +196,13 @@ const SettingsScreen: React.FC = ({}) => {
                 <View
                     style={{ flexDirection: 'row', justifyContent: 'center' }}
                 >
-                    {Platform.OS !== 'web' && (
+                    {!IS_WEB && (
                         <Button
                             mode="contained"
                             style={styles.button}
                             labelStyle={{ color: 'white' }}
                             onPress={() => {
-                                if (Platform.OS === 'ios' && hapticsEnabled)
+                                if (IS_IOS && hapticsEnabled)
                                     Haptics.selectionAsync();
                                 StoreReview.requestReview();
                             }}

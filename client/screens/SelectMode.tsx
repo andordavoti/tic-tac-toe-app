@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { colors, calcFromHeight, IS_IOS, IS_WEB } from '../lib/constants';
+import { colors, calcFromHeight, IS_IOS, IS_WEB, urls } from '../lib/constants';
 import { ThemeMode } from '../types/Theme';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { openLink } from '../lib/openLink';
@@ -79,11 +79,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                     </Text>
                     <View style={styles.storeButtonContainer}>
                         <TouchableOpacity
-                            onPress={() =>
-                                openLink(
-                                    'https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441?ls=1'
-                                )
-                            }
+                            onPress={() => openLink(urls.appStoreUrl)}
                         >
                             <Image
                                 resizeMode="contain"
@@ -93,11 +89,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                         </TouchableOpacity>
 
                         <TouchableOpacity
-                            onPress={() =>
-                                openLink(
-                                    'https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game'
-                                )
-                            }
+                            onPress={() => openLink(urls.playStoreUrl)}
                         >
                             <Image
                                 resizeMode="contain"
