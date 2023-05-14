@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "deploy": "cd functions && npm run deploy"
+        "deploy": "cd functions && yarn deploy"
     },
     "keywords": [],
     "author": "",

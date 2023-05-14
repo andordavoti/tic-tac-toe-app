@@ -8,7 +8,9 @@
         "prebuild": "npx expo prebuild",
         "prebuild:clean": "npx expo prebuild --clean",
         "install:ios:devclient": "expo client:install:ios",
-        "deploy-web": "expo build:web && firebase deploy --only hosting:client",
+        "build:ios": "eas build --platform ios",
+        "build:android": "eas build --platform android",
+        "deploy:web": "expo build:web && firebase deploy --only hosting:client",
         "types": "tsc --noEmit"
     },
     "dependencies": {
