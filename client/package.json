@@ -27,6 +27,7 @@
         "@react-navigation/stack": "^6.3.16",
         "@reduxjs/toolkit": "^1.9.5",
         "@sentry/react-native": "4.13.0",
+        "dotenv": "^16.0.3",
         "expo": "~48.0.15",
         "expo-application": "~5.1.1",
         "expo-build-properties": "~0.6.0",
