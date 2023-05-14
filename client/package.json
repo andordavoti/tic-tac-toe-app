@@ -8,11 +8,12 @@
         "prebuild": "npx expo prebuild",
         "prebuild:clean": "npx expo prebuild --clean",
         "install:ios:devclient": "expo client:install:ios",
-        "build:ios": "node ./generate-easignore.ts && eas build --platform ios",
-        "build:android": "node ./generate-easignore.ts && eas build --platform android",
+        "build:ios": "eas build --platform ios",
+        "build:android": "eas build --platform android",
         "deploy:web": "expo build:web && firebase deploy --only hosting:client",
         "update:deps": "yarn upgrade-interactive --latest",
-        "types": "tsc --noEmit"
+        "types": "tsc --noEmit",
+        "eas-build-pre-install": "echo $GOOGLE_SERVICES_JSON | base64 --decode > ./google-services.json && echo $GOOGLE_SERVICES_PLIST | base64 --decode > ./GoogleService-Info.plist"
     },
     "dependencies": {
         "@expo/webpack-config": "^18.0.1",
