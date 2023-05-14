@@ -8,8 +8,8 @@
         "prebuild": "npx expo prebuild",
         "prebuild:clean": "npx expo prebuild --clean",
         "install:ios:devclient": "expo client:install:ios",
-        "build:ios": "eas build --platform ios",
-        "build:android": "eas build --platform android",
+        "build:ios": "node ./generate-easignore && eas build --platform ios",
+        "build:android": "node ./generate-easignore && eas build --platform android",
         "deploy:web": "expo build:web && firebase deploy --only hosting:client",
         "update:deps": "yarn upgrade-interactive --latest",
         "types": "tsc --noEmit"
