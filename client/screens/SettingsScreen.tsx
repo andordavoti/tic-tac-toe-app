@@ -12,9 +12,7 @@ import * as Haptics from 'expo-haptics';
 import * as StoreReview from 'expo-store-review';
 import * as Linking from 'expo-linking';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
 import { colors, urls, calcFromHeight, IS_IOS, IS_WEB } from '../lib/constants';
-
 import { useDispatch } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
@@ -164,8 +162,8 @@ const SettingsScreen: React.FC = ({}) => {
                         style={[
                             styles.text,
                             {
-                                marginBottom: calcFromHeight(15, height),
                                 margin: calcFromHeight(4, height),
+                                marginBottom: 20,
                             },
                         ]}
                     >

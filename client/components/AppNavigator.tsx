@@ -150,10 +150,17 @@ const AppNavigator: React.FC = () => {
         >
             <Tab.Navigator
                 screenOptions={({ route }) => ({
+                    headerShown: false,
+                    tabBarShowLabel: false,
+                    tabBarStyle: {
+                        backgroundColor: colors[theme].main,
+                        shadowColor: 'transparent',
+                        borderTopWidth: 0,
+                    },
                     tabBarIcon: ({ focused, size }) => {
                         const color = focused ? 'white' : 'lightgrey';
                         const iconName =
-                            route.name === 'Settings' ? 'cog' : 'gamepad';
+                            route.name === 'SettingsTab' ? 'cog' : 'gamepad';
                         return (
                             <MaterialCommunityIcons
                                 color={color}
@@ -163,17 +170,12 @@ const AppNavigator: React.FC = () => {
                         );
                     },
                 })}
-                tabBarOptions={{
-                    showLabel: false,
-                    style: {
-                        backgroundColor: colors[theme].main,
-                        shadowColor: 'transparent',
-                        borderTopWidth: 0,
-                    },
-                }}
             >
-                <Tab.Screen name="Home" component={GameStackScreen} />
-                <Tab.Screen name="Settings" component={SettingsStackScreen} />
+                <Tab.Screen name="HomeTab" component={GameStackScreen} />
+                <Tab.Screen
+                    name="SettingsTab"
+                    component={SettingsStackScreen}
+                />
             </Tab.Navigator>
         </NavigationContainer>
     );
