@@ -16,6 +16,7 @@ import { showErrorToast } from '../lib/toast';
 import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 import { setLobbyId, setPlayerId, useLobbyId } from '../redux/gameSlice';
 import { getLobbyDocRef } from '../lib/firebase/firestore';
+import { GAME_URL } from '@env';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -53,7 +54,7 @@ const OnlineMultiplayer: React.FC = () => {
     const handleNewGame = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${urls.gameUrl}/new`, {
+            const response = await fetch(`${GAME_URL}/new`, {
                 method: 'POST',
                 body: JSON.stringify({ gameSize: gridSize }),
             });

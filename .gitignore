@@ -17,11 +17,10 @@ client/ios
 client/android
 client/index.js
 client/metro.config.js
+client/.env
 
 # macOS
 client/.DS_Store
-
-client/lib/apiKeys.ts
 
 #global
 

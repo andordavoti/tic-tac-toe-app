@@ -32,7 +32,6 @@ export const urls = {
     andorGithub: 'https://github.com/andordavoti',
     sannaGithub: 'https://github.com/sannajammeh',
     projectGithub: 'https://github.com/andordavoti/tic-tac-toe-app',
-    gameUrl: 'https://us-central1-ticktacktoe-7aa6d.cloudfunctions.net/game',
     appStoreUrl:
         'https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441',
     playStoreUrl:
