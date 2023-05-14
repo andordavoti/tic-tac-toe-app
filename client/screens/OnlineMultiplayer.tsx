@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Axios from 'axios';
 import { View, StyleSheet, Text, Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, urls, calcFromHeight } from '../lib/constants';
-import { firestore, getConnectedPlayers } from '../lib/firebaseUtils';
+import { getConnectedPlayers } from '../lib/playerUtils';
 import PlayerMenu from '../components/Online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
 import GameLoader from '../components/Online/GameLoader';
@@ -17,6 +16,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { showErrorToast } from '../lib/toast';
 import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 import { setLobbyId, setPlayerId, useLobbyId } from '../redux/gameSlice';
+import firestore from '../lib/firebase/firestore-web';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -54,13 +54,12 @@ const OnlineMultiplayer: React.FC = () => {
     const handleNewGame = async () => {
         setLoading(true);
         try {
-            const response = await Axios({
+            const response = await fetch(`${urls.gameUrl}/new`, {
                 method: 'POST',
-                url: `${urls.gameUrl}/new`,
-                data: { gameSize: gridSize },
+                body: JSON.stringify({ gameSize: gridSize }),
             });
 
-            const { data } = response;
+            const data = await response.json();
 
             dispatch(setPlayerId(0));
             dispatch(setLobbyId(data.lobbyId));
@@ -73,7 +72,7 @@ const OnlineMultiplayer: React.FC = () => {
     const handleJoinGame = async () => {
         try {
             // Fetching lobby from text input
-            const snapshot = await firestore
+            const snapshot = await firestore()
                 .collection('lobbies')
                 .doc(textInput)
                 .get();
