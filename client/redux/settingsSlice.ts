@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
+import { useAppSelector } from './hooks';
 
 interface SettingsState {
     theme: ThemeMode;
@@ -36,12 +36,12 @@ export const { setCurrentTheme, setUseSystemTheme, toggleHaptics } =
     settingsSlice.actions;
 
 export const useSelectedTheme = () =>
-    useSelector(state => state.settings.theme);
+    useAppSelector(state => state.settings.theme);
 
 export const useSystemThemeEnabled = () =>
-    useSelector(state => state.settings.systemThemeEnabled);
+    useAppSelector(state => state.settings.systemThemeEnabled);
 
 export const useHapticsEnabled = () =>
-    useSelector(state => state.settings.hapticsEnabled);
+    useAppSelector(state => state.settings.hapticsEnabled);
 
 export default settingsSlice.reducer;

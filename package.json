@@ -7,7 +7,7 @@
         "start": "cd client && yarn start",
         "ios": "cd client && yarn ios",
         "android": "cd client && yarn android",
-        "web": "cd web && yarn dev",
+        "web": "cd client && yarn web",
         "build:ios": "cd client && yarn build:ios",
         "build:android": "cd client && yarn build:android",
         "deploy-web": "cd client && deploy:web",

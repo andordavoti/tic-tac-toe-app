@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { FieldTypes, GridNumber, PlayerId } from '../types/Game';
+import { useAppSelector } from './hooks';
 
 export interface GameState {
     lobbyId: undefined | string;
@@ -55,8 +55,8 @@ export const {
     quitGame,
 } = gameSlice.actions;
 
-export const useGame = () => useSelector(state => state.game);
+export const useGame = () => useAppSelector(state => state.game);
 
-export const useLobbyId = () => useSelector(state => state.game.lobbyId);
+export const useLobbyId = () => useAppSelector(state => state.game.lobbyId);
 
 export default gameSlice.reducer;
