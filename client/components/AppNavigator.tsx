@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -17,6 +17,7 @@ import {
     useSystemThemeEnabled,
 } from '../redux/settingsSlice';
 import { useColorScheme } from 'react-native';
+import analytics from '@react-native-firebase/analytics';
 
 const Tab = createBottomTabNavigator();
 
@@ -123,8 +124,30 @@ const AppNavigator: React.FC = () => {
         dispatch(setCurrentTheme(deviceTheme));
     }
 
+    const routeNameRef = useRef<string | undefined>();
+    const navigationRef = useRef<any>();
+
     return (
-        <NavigationContainer>
+        <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+                routeNameRef.current =
+                    navigationRef?.current?.getCurrentRoute()?.name;
+            }}
+            onStateChange={async () => {
+                const previousRouteName = routeNameRef?.current;
+                const currentRouteName =
+                    navigationRef?.current?.getCurrentRoute()?.name;
+
+                if (previousRouteName !== currentRouteName) {
+                    await analytics().logScreenView({
+                        screen_name: currentRouteName,
+                        screen_class: currentRouteName,
+                    });
+                }
+                routeNameRef.current = currentRouteName;
+            }}
+        >
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused, size }) => {

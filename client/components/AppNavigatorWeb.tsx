@@ -1,20 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { colors } from '../lib/constants';
-import SelectMode from '../screens/SelectMode';
-import Multiplayer from '../screens/Multiplayer';
-import OnlineMultiplayer from '../screens/OnlineMultiplayer';
-import SettingsScreen from '../screens/SettingsScreen';
-
 import { useDispatch } from 'react-redux';
+import { useColorScheme } from 'react-native';
 import {
     setCurrentTheme,
     useSelectedTheme,
     useSystemThemeEnabled,
 } from '../redux/settingsSlice';
-import { useColorScheme } from 'react-native';
+import SelectMode from '../screens/SelectMode';
+import { colors } from '../lib/constants';
+import Multiplayer from '../screens/Multiplayer';
+import OnlineMultiplayer from '../screens/OnlineMultiplayer';
+import SettingsScreen from '../screens/SettingsScreen';
+import analyticsWeb from '../lib/firebase/analytics-web';
 
 const AppNavigatorWeb: React.FC = () => {
     const theme = useSelectedTheme();
@@ -33,8 +33,30 @@ const AppNavigatorWeb: React.FC = () => {
 
     const Stack = createStackNavigator();
 
+    const routeNameRef = useRef<string | undefined>();
+    const navigationRef = useRef<any>();
+
     return (
-        <NavigationContainer>
+        <NavigationContainer
+            ref={navigationRef}
+            onReady={() => {
+                routeNameRef.current =
+                    navigationRef?.current?.getCurrentRoute()?.name;
+            }}
+            onStateChange={async () => {
+                const previousRouteName = routeNameRef?.current;
+                const currentRouteName =
+                    navigationRef?.current?.getCurrentRoute()?.name;
+
+                if (previousRouteName !== currentRouteName) {
+                    analyticsWeb().logEvent('screen_view', {
+                        firebase_screen: currentRouteName,
+                        firebase_screen_class: currentRouteName,
+                    });
+                }
+                routeNameRef.current = currentRouteName;
+            }}
+        >
             <Stack.Navigator>
                 <Stack.Screen
                     name="Select Mode"

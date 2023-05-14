@@ -28,16 +28,30 @@
             "config": {
                 "usesNonExemptEncryption": false
             },
-            "appStoreUrl": "https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441"
+            "appStoreUrl": "https://apps.apple.com/us/app/tic-tac-toe-online/id1513609441",
+            "googleServicesFile": "./GoogleService-Info.plist"
         },
         "android": {
             "package": "com.andordavoti.tictactoe.game",
             "versionCode": 2020062601,
             "permissions": [],
-            "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game"
+            "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game",
+            "googleServicesFile": "./google-services.json"
         },
         "web": {
             "favicon": "./assets/icon.png"
-        }
+        },
+        "plugins": [
+            // "sentry-expo",
+            "@react-native-firebase/app",
+            [
+                "expo-build-properties",
+                {
+                    "ios": {
+                        "useFrameworks": "static"
+                    }
+                }
+            ]
+        ]
     }
 }

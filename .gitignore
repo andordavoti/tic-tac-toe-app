@@ -11,6 +11,12 @@ client/web-build/
 client/web-report/
 client/app.config.js
 client/lib/apiKeys.js
+client/GoogleService-Info.plist
+client/google-services.json
+client/ios
+client/android
+client/index.js
+client/metro.config.js
 
 # macOS
 client/.DS_Store
