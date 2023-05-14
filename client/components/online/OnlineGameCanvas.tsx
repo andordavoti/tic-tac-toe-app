@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { useDimensions } from '@react-native-community/hooks';
 
-import { colors, calcFromHeight } from '../../lib/constants';
+import { colors, calcFromHeight, IS_IOS } from '../../lib/constants';
 import {
     getFieldType,
     checkGame,
@@ -78,8 +78,7 @@ const OnlineGameCanvas: React.FC = () => {
                 { merge: true }
             );
 
-            if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.selectionAsync();
+            if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
         } catch (err) {
             handleError(err);
         }
@@ -103,7 +102,7 @@ const OnlineGameCanvas: React.FC = () => {
     };
 
     const handleNewGame = () => {
-        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+        if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
         resetLobby();
     };
 
@@ -134,19 +133,19 @@ const OnlineGameCanvas: React.FC = () => {
                 winner: result.winner,
                 winnerColumns: result.winnerColumns,
             });
-            if (Platform.OS === 'ios' && hapticsEnabled)
+            if (IS_IOS && hapticsEnabled)
                 Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Success
                 );
         } else if (winner) {
             setWinnerDetails(initialState);
-            if (Platform.OS === 'ios' && hapticsEnabled)
+            if (IS_IOS && hapticsEnabled)
                 Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Error
                 );
         } else if (result?.tied) {
             setWinnerDetails({ ...initialState, tied: true });
-            if (Platform.OS === 'ios' && hapticsEnabled)
+            if (IS_IOS && hapticsEnabled)
                 Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Error
                 );

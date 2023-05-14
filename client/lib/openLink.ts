@@ -1,10 +1,11 @@
 import * as WebBrowser from 'expo-web-browser';
-import { Platform, Linking } from 'react-native';
+import { Linking } from 'react-native';
 import { handleError } from './handleError';
+import { IS_WEB } from './constants';
 
 export const openLink = async (link: string) => {
     try {
-        if (Platform.OS === 'web') {
+        if (IS_WEB) {
             Linking.openURL(link);
         } else {
             await WebBrowser.openBrowserAsync(link);

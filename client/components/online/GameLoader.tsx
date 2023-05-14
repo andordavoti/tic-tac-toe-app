@@ -3,7 +3,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { modifyPlayer, getConnectedPlayers } from '../../lib/playerUtils';
 import { getPlayerName } from '../../lib/gameCanvasUtils';
 import withSpinner from '../withSpinner';
-import { View, Text, TouchableOpacity, Platform } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
@@ -11,7 +11,12 @@ import { useDispatch } from 'react-redux';
 import OnlineGameCanvas from './OnlineGameCanvas';
 
 import { useDimensions } from '@react-native-community/hooks';
-import { colors, calcFromWidth, calcFromHeight } from '../../lib/constants';
+import {
+    colors,
+    calcFromWidth,
+    calcFromHeight,
+    IS_IOS,
+} from '../../lib/constants';
 import { handleError } from '../../lib/handleError';
 import { showErrorToast, showInfoToast } from '../../lib/toast';
 import { useHapticsEnabled, useSelectedTheme } from '../../redux/settingsSlice';
@@ -140,7 +145,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
     const copyLobbyId = async () => {
         showInfoToast('Copied Lobby ID to Clipboard');
         await Clipboard.setStringAsync(lobbyId);
-        if (Platform.OS === 'ios' && hapticsEnabled) {
+        if (IS_IOS && hapticsEnabled) {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         }
     };
@@ -184,8 +189,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
                 style={styles.quitButton}
                 labelStyle={{ color: 'white' }}
                 onPress={() => {
-                    if (Platform.OS === 'ios' && hapticsEnabled)
-                        Haptics.selectionAsync();
+                    if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
                     disconnectPlayer();
                 }}
             >

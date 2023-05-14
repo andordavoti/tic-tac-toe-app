@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    StyleSheet,
-    Platform,
-    Image,
-    TouchableOpacity,
-} from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { colors, calcFromHeight } from '../lib/constants';
+import { colors, calcFromHeight, IS_IOS, IS_WEB } from '../lib/constants';
 import { ThemeMode } from '../types/Theme';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { openLink } from '../lib/openLink';
@@ -38,8 +31,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                     labelStyle={{ color: 'white' }}
                     onPress={() => {
                         navigation.navigate('Multiplayer');
-                        if (Platform.OS === 'ios' && hapticsEnabled)
-                            Haptics.selectionAsync();
+                        if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
                     }}
                     contentStyle={{ margin: 10 }}
                 >
@@ -51,21 +43,20 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                     labelStyle={{ color: 'white' }}
                     onPress={() => {
                         navigation.navigate('Online Multiplayer');
-                        if (Platform.OS === 'ios' && hapticsEnabled)
-                            Haptics.selectionAsync();
+                        if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
                     }}
                     contentStyle={{ margin: 10 }}
                 >
                     Online Multiplayer
                 </Button>
-                {Platform.OS === 'web' && (
+                {IS_WEB && (
                     <Button
                         mode="contained"
                         style={styles.button}
                         labelStyle={{ color: 'white' }}
                         onPress={() => {
                             navigation.navigate('Settings');
-                            if (Platform.OS === 'ios' && hapticsEnabled)
+                            if (IS_IOS && hapticsEnabled)
                                 Haptics.selectionAsync();
                         }}
                         contentStyle={{ margin: 10 }}
@@ -74,7 +65,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
                     </Button>
                 )}
             </View>
-            {Platform.OS === 'web' && (
+            {IS_WEB && (
                 <>
                     <Text
                         style={[

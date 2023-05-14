@@ -5,10 +5,9 @@ import 'firebase/compat/firestore';
 import firestoreRn, {
     FirebaseFirestoreTypes,
 } from '@react-native-firebase/firestore';
-import { Platform } from 'react-native';
 import { IS_WEB } from '../constants';
 
-if (Platform.OS === 'web') {
+if (IS_WEB) {
     initializeApp();
 }
 

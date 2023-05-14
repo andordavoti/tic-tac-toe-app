@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
 import { Button, ToggleButton } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { checkGame } from '../lib/gameCanvasUtils';
-import { colors, calcFromHeight } from '../lib/constants';
+import { colors, calcFromHeight, IS_IOS } from '../lib/constants';
 import Grid from './Grid';
 import { ThemeMode } from '../types/Theme';
 import { useDimensions } from '@react-native-community/hooks';
@@ -70,7 +70,7 @@ const GameCanvas: React.FC = () => {
                 turn: prevState.turn === 'o' ? 'x' : 'o',
             };
         });
-        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+        if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
     };
 
     useEffect(() => {
@@ -105,8 +105,7 @@ const GameCanvas: React.FC = () => {
 
     const onValueChange = (value: string) => {
         if (value) {
-            if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.selectionAsync();
+            if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
             setGameState({
                 ...gameState,
                 gridSize: Number(value) as GridNumber,
@@ -116,7 +115,7 @@ const GameCanvas: React.FC = () => {
 
     const renderInfo = () => {
         if (canvasFrozen && (winner || tied)) {
-            if (Platform.OS === 'ios' && hapticsEnabled)
+            if (IS_IOS && hapticsEnabled)
                 Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Success
                 );
@@ -135,7 +134,7 @@ const GameCanvas: React.FC = () => {
                         style={styles.button}
                         labelStyle={{ color: 'white' }}
                         onPress={() => {
-                            if (Platform.OS === 'ios' && hapticsEnabled)
+                            if (IS_IOS && hapticsEnabled)
                                 Haptics.selectionAsync();
                             setGameState({ ...initialState, gridSize });
                         }}

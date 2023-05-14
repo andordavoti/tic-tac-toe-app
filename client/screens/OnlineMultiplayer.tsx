@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Platform } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { colors, urls, calcFromHeight } from '../lib/constants';
+import { colors, urls, calcFromHeight, IS_WEB, IS_IOS } from '../lib/constants';
 import { getConnectedPlayers } from '../lib/playerUtils';
 import PlayerMenu from '../components/Online/PlayerMenu';
 import withSpinner from '../components/withSpinner';
@@ -34,13 +34,13 @@ const OnlineMultiplayer: React.FC = () => {
 
     useEffect(() => {
         let unsubscribe: any;
-        if (Platform.OS !== 'web') {
+        if (!IS_WEB) {
             unsubscribe = NetInfo.addEventListener(state => {
                 setConnected(state.isConnected);
             });
         }
         return () => {
-            if (Platform.OS !== 'web') {
+            if (!IS_WEB) {
                 unsubscribe();
             }
         };
@@ -77,7 +77,7 @@ const OnlineMultiplayer: React.FC = () => {
 
             // Checking if lobby exists
             if (!lobbyExists) {
-                if (Platform.OS === 'ios' && hapticsEnabled) {
+                if (IS_IOS && hapticsEnabled) {
                     Haptics.notificationAsync(
                         Haptics.NotificationFeedbackType.Error
                     );
@@ -95,7 +95,7 @@ const OnlineMultiplayer: React.FC = () => {
                 : 0;
 
             if (connectedPlayers.length >= 2) {
-                if (Platform.OS === 'ios' && hapticsEnabled) {
+                if (IS_IOS && hapticsEnabled) {
                     Haptics.notificationAsync(
                         Haptics.NotificationFeedbackType.Error
                     );
@@ -106,7 +106,7 @@ const OnlineMultiplayer: React.FC = () => {
 
             dispatch(setPlayerId(playerId));
             dispatch(setLobbyId(textInput));
-            if (Platform.OS === 'ios' && hapticsEnabled)
+            if (IS_IOS && hapticsEnabled)
                 Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Success
                 );
@@ -119,13 +119,12 @@ const OnlineMultiplayer: React.FC = () => {
 
     const handleGridSizeChange = (value: GridString) => {
         if (value) {
-            if (Platform.OS === 'ios' && hapticsEnabled)
-                Haptics.selectionAsync();
+            if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
             setGridSize(Number(value) as GridNumber);
         }
     };
 
-    if (connected || Platform.OS === 'web') {
+    if (connected || IS_WEB) {
         return (
             <View style={styles.container}>
                 {lobbyId ? (

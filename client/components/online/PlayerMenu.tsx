@@ -1,15 +1,15 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    Platform,
-} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, ToggleButton } from 'react-native-paper';
-import { colors, calcFromHeight, calcFromWidth } from '../../lib/constants';
+import {
+    colors,
+    calcFromHeight,
+    calcFromWidth,
+    IS_IOS,
+    IS_WEB,
+} from '../../lib/constants';
 
 import { useDimensions } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
@@ -61,13 +61,13 @@ const PlayerMenu: React.FC<Props> = ({
             if (text.length) {
                 showInfoToast('Inserted text from Clipboard');
                 setTextInput(text);
-                if (Platform.OS === 'ios' && hapticsEnabled)
+                if (IS_IOS && hapticsEnabled)
                     Haptics.notificationAsync(
                         Haptics.NotificationFeedbackType.Success
                     );
             } else {
                 showInfoToast('Clipboard is empty');
-                if (Platform.OS === 'ios' && hapticsEnabled)
+                if (IS_IOS && hapticsEnabled)
                     Haptics.notificationAsync(
                         Haptics.NotificationFeedbackType.Error
                     );
@@ -79,7 +79,7 @@ const PlayerMenu: React.FC<Props> = ({
 
     const clearInput = () => {
         setTextInput('');
-        if (Platform.OS === 'ios' && hapticsEnabled) Haptics.selectionAsync();
+        if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
     };
 
     return (
@@ -138,8 +138,7 @@ const PlayerMenu: React.FC<Props> = ({
             <Button
                 onPress={() => {
                     handleNewGame();
-                    if (Platform.OS === 'ios' && hapticsEnabled)
-                        Haptics.selectionAsync();
+                    if (IS_IOS && hapticsEnabled) Haptics.selectionAsync();
                 }}
                 mode="contained"
                 style={styles.button}
@@ -162,10 +161,7 @@ const PlayerMenu: React.FC<Props> = ({
             <Text style={styles.joinText}>Join Game:</Text>
 
             <TextInput
-                style={[
-                    styles.input,
-                    Platform.OS === 'web' ? { outlineWidth: 0 } : null,
-                ]}
+                style={[styles.input, IS_WEB ? { outlineWidth: 0 } : null]}
                 value={textInput}
                 onChangeText={handleInputChange}
                 keyboardAppearance={theme}
@@ -186,7 +182,7 @@ const PlayerMenu: React.FC<Props> = ({
                     alignItems: 'center',
                 }}
             >
-                {Platform.OS !== 'web' ? (
+                {!IS_WEB ? (
                     <>
                         <TouchableOpacity onPress={insertFromClipboard}>
                             <MaterialCommunityIcons
