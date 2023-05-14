@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
+import {
+    TouchableOpacity,
+    View,
+    StyleSheet,
+    useWindowDimensions,
+} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { useDimensions } from '@react-native-community/hooks';
 import { colors, calcFromWidth } from '../lib/constants';
 import { ThemeMode } from '../types/Theme';
 import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
@@ -32,7 +36,7 @@ const Column: React.FC<Props> = ({
     const [isWinnerColumn, setIsWinnerColumn] = useState(false);
     const theme = useSelectedTheme();
 
-    const { width, height } = useDimensions().window;
+    const { width, height } = useWindowDimensions();
 
     const size3 = height * 0.1;
     const size4 = height * 0.08;

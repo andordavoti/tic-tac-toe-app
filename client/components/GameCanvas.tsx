@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { FieldTypes, Winner, GridNumber, WinnerColumns } from '../types/Game';
 import { Button, ToggleButton } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
@@ -7,7 +7,6 @@ import { checkGame } from '../lib/gameCanvasUtils';
 import { colors, calcFromHeight, IS_IOS } from '../lib/constants';
 import Grid from './Grid';
 import { ThemeMode } from '../types/Theme';
-import { useDimensions } from '@react-native-community/hooks';
 import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 
 interface GameCanvasState {
@@ -25,7 +24,7 @@ const GameCanvas: React.FC = () => {
     const theme = useSelectedTheme();
     const hapticsEnabled = useHapticsEnabled();
 
-    const { height } = useDimensions().window;
+    const { height } = useWindowDimensions();
 
     const styles = getStyleSheet(theme, height);
 

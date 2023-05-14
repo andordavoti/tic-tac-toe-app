@@ -1,12 +1,18 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    TouchableOpacity,
+    useWindowDimensions,
+} from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { colors, calcFromHeight, IS_IOS, IS_WEB, urls } from '../lib/constants';
 import { ThemeMode } from '../types/Theme';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { openLink } from '../lib/openLink';
-import { useDimensions } from '@react-native-community/hooks';
 import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 
 interface Props {
@@ -17,7 +23,7 @@ const SelectMode: React.FC<Props> = ({ navigation }) => {
     const theme = useSelectedTheme();
     const hapticsEnabled = useHapticsEnabled();
 
-    const { height } = useDimensions().window;
+    const { height } = useWindowDimensions();
 
     const styles = getStyleSheet(theme, height);
 

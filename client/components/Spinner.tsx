@@ -1,8 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, useWindowDimensions } from 'react-native';
 import { colors, calcFromHeight } from '../lib/constants';
 import { ActivityIndicator } from 'react-native-paper';
-import { useDimensions } from '@react-native-community/hooks';
 import { useSelectedTheme } from '../redux/settingsSlice';
 
 interface Props {
@@ -12,7 +11,7 @@ interface Props {
 
 const Spinner: React.FC<Props> = ({ msg, size = 'large' }) => {
     const theme = useSelectedTheme();
-    const { height } = useDimensions().window;
+    const { height } = useWindowDimensions();
     return (
         <View style={{ marginTop: calcFromHeight(10, height) }}>
             <ActivityIndicator color={colors[theme].main} size={size} />

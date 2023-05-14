@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    useWindowDimensions,
+} from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, ToggleButton } from 'react-native-paper';
@@ -10,8 +16,6 @@ import {
     IS_IOS,
     IS_WEB,
 } from '../../lib/constants';
-
-import { useDimensions } from '@react-native-community/hooks';
 import * as Haptics from 'expo-haptics';
 import { handleError } from '../../lib/handleError';
 import { GridNumber, GridString } from '../../types/Game';
@@ -53,7 +57,7 @@ const PlayerMenu: React.FC<Props> = ({
     const theme = useSelectedTheme();
     const hapticsEnabled = useHapticsEnabled();
 
-    const { width, height } = useDimensions().window;
+    const { width, height } = useWindowDimensions();
 
     const insertFromClipboard = async () => {
         try {

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import {
+    View,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    useWindowDimensions,
+} from 'react-native';
 import { Switch, Button, ToggleButton } from 'react-native-paper';
 import Constants from 'expo-constants';
 import * as Haptics from 'expo-haptics';
@@ -13,7 +19,6 @@ import { useDispatch } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { openLink } from '../lib/openLink';
-import { useDimensions } from '@react-native-community/hooks';
 import {
     setCurrentTheme,
     setUseSystemTheme,
@@ -32,7 +37,7 @@ const SettingsScreen: React.FC = ({}) => {
 
     const [selectedTheme, setSelectedTheme] = useState('system');
 
-    const { height } = useDimensions().window;
+    const { height } = useWindowDimensions();
 
     const styles = getStyleSheet(theme, height);
 

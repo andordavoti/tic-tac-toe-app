@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, useWindowDimensions } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import NetInfo from '@react-native-community/netinfo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import { ThemeMode } from '../types/Theme';
 import { handleError } from '../lib/handleError';
 import { GridNumber, GridString } from '../types/Game';
-import { useDimensions } from '@react-native-community/hooks';
 import { showErrorToast } from '../lib/toast';
 import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 import { setLobbyId, setPlayerId, useLobbyId } from '../redux/gameSlice';
@@ -46,7 +45,7 @@ const OnlineMultiplayer: React.FC = () => {
         };
     }, []);
 
-    const { height } = useDimensions().window;
+    const { height } = useWindowDimensions();
 
     const styles = getStyleSheet(theme, height);
 

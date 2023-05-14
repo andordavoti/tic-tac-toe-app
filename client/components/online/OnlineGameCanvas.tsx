@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
-import { useDimensions } from '@react-native-community/hooks';
-
 import { colors, calcFromHeight, IS_IOS } from '../../lib/constants';
 import {
     getFieldType,
@@ -53,7 +51,7 @@ const OnlineGameCanvas: React.FC = () => {
     } = game;
     const timeOutDuration = 10000;
 
-    const { height } = useDimensions().window;
+    const { height } = useWindowDimensions();
 
     const styles = getStyleSheet(theme, height);
 

@@ -3,14 +3,18 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { modifyPlayer, getConnectedPlayers } from '../../lib/playerUtils';
 import { getPlayerName } from '../../lib/gameCanvasUtils';
 import withSpinner from '../withSpinner';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    useWindowDimensions,
+} from 'react-native';
 import * as Clipboard from 'expo-clipboard';
 import { Button } from 'react-native-paper';
 import * as Haptics from 'expo-haptics';
 import { useDispatch } from 'react-redux';
 import OnlineGameCanvas from './OnlineGameCanvas';
 
-import { useDimensions } from '@react-native-community/hooks';
 import {
     colors,
     calcFromWidth,
@@ -56,7 +60,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
 
     const { playerId, lobbyId } = game;
 
-    const { width, height } = useDimensions().window;
+    const { width, height } = useWindowDimensions();
 
     const disconnectPlayer = async () => {
         try {
