@@ -2,8 +2,6 @@ import React from 'react';
 import { StatusBar, Platform, LogBox } from 'react-native';
 import AppNavigator from './components/AppNavigator';
 import { Provider } from 'react-redux';
-import * as Sentry from 'sentry-expo';
-import { SENTRY_DSN } from './lib/apiKeys';
 import { PersistGate } from 'redux-persist/integration/react';
 import AppNavigatorWeb from './components/AppNavigatorWeb';
 import Toast from 'react-native-toast-message';
@@ -17,13 +15,6 @@ if (Platform.OS !== 'web') {
         'Cannot update a component from inside the function body of a different component.',
     ]);
 }
-
-Sentry.init({
-    dsn: SENTRY_DSN,
-    enableInExpoDevelopment: false,
-    debug: process.env.NODE_ENV === 'development' ? true : false,
-    enableAutoSessionTracking: true,
-});
 
 const App: React.FC = () => {
     return (
