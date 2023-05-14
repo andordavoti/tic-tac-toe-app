@@ -5,7 +5,6 @@ import * as Haptics from 'expo-haptics';
 import { useDimensions } from '@react-native-community/hooks';
 
 import { colors, calcFromHeight } from '../../lib/constants';
-import { firestore } from '../../lib/firebaseUtils';
 import {
     getFieldType,
     checkGame,
@@ -18,6 +17,7 @@ import { Winner, WinnerColumns } from '../../types/Game';
 import { handleError } from '../../lib/handleError';
 import { useHapticsEnabled, useSelectedTheme } from '../../redux/settingsSlice';
 import { useGame } from '../../redux/gameSlice';
+import { getLobbyDocRef } from '../../lib/firebase/firestore';
 
 interface WinnerState {
     winner: Winner;
@@ -62,7 +62,7 @@ const OnlineGameCanvas: React.FC = () => {
     const handleFieldPress = async (num: number) => {
         try {
             if (canvasFrozen) return;
-            const docRef = firestore.collection('lobbies').doc(lobbyId);
+            const docRef = getLobbyDocRef(lobbyId);
 
             const newFieldTypes = [...fieldTypes];
 
@@ -87,7 +87,7 @@ const OnlineGameCanvas: React.FC = () => {
 
     const resetLobby = async () => {
         try {
-            const docRef = firestore.collection('lobbies').doc(lobbyId);
+            const docRef = getLobbyDocRef(lobbyId);
 
             await docRef.set(
                 {
@@ -109,7 +109,7 @@ const OnlineGameCanvas: React.FC = () => {
 
     const changeTurn = async () => {
         try {
-            const docRef = firestore.collection('lobbies').doc(lobbyId);
+            const docRef = getLobbyDocRef(lobbyId);
 
             await docRef.set(
                 {

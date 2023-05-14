@@ -16,7 +16,7 @@ import { useDimensions } from '@react-native-community/hooks';
 import { showErrorToast } from '../lib/toast';
 import { useHapticsEnabled, useSelectedTheme } from '../redux/settingsSlice';
 import { setLobbyId, setPlayerId, useLobbyId } from '../redux/gameSlice';
-import firestore from '../lib/firebase/firestore-web';
+import { getLobbyDocRef } from '../lib/firebase/firestore';
 
 // Wrapping gamecanvas and playermenu in the spinner HOC component
 const PlayerMenuWithSpinner = withSpinner(PlayerMenu);
@@ -72,13 +72,11 @@ const OnlineMultiplayer: React.FC = () => {
     const handleJoinGame = async () => {
         try {
             // Fetching lobby from text input
-            const snapshot = await firestore()
-                .collection('lobbies')
-                .doc(textInput)
-                .get();
+            const snapshot = getLobbyDocRef(textInput);
+            const lobbyExists = (await snapshot.get()).exists;
 
             // Checking if lobby exists
-            if (!snapshot.exists) {
+            if (!lobbyExists) {
                 if (Platform.OS === 'ios' && hapticsEnabled) {
                     Haptics.notificationAsync(
                         Haptics.NotificationFeedbackType.Error
@@ -88,7 +86,7 @@ const OnlineMultiplayer: React.FC = () => {
                 return;
             }
 
-            const players = snapshot?.data()?.players;
+            const players = (await snapshot.get()).data().players;
             const connectedPlayers = getConnectedPlayers(players);
             const playerId = players[0].connected
                 ? 1

@@ -1,10 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {
-    firestore,
-    modifyPlayer,
-    getConnectedPlayers,
-} from '../../lib/firebaseUtils';
+import { modifyPlayer, getConnectedPlayers } from '../../lib/playerUtils';
 import { getPlayerName } from '../../lib/gameCanvasUtils';
 import withSpinner from '../withSpinner';
 import { View, Text, TouchableOpacity, Platform } from 'react-native';
@@ -26,6 +22,7 @@ import {
     setGameStateChange,
     useGame,
 } from '../../redux/gameSlice';
+import { getLobbyDocRef } from '../../lib/firebase/firestore';
 
 const GameCanvasWithSpinner = withSpinner(OnlineGameCanvas);
 
@@ -58,7 +55,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
 
     const disconnectPlayer = async () => {
         try {
-            const docRef = firestore.collection('lobbies').doc(lobbyId);
+            const docRef = getLobbyDocRef(lobbyId);
             const getGameState = await docRef.get();
 
             const gamePlayers = getGameState.data()?.players as
@@ -87,7 +84,7 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
     useEffect(() => {
         const connectPlayer = async () => {
             try {
-                const docRef = firestore.collection('lobbies').doc(lobbyId);
+                const docRef = getLobbyDocRef(lobbyId);
 
                 const players = modifyPlayer(game.players, playerId, {
                     connected: true,
@@ -104,11 +101,11 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
     }, [game.gameLoaded]);
 
     useEffect(() => {
-        const docRef = firestore.collection('lobbies').doc(lobbyId);
+        const docRef = getLobbyDocRef(lobbyId);
         let initial = true;
+
         const channel = docRef.onSnapshot(snapshot => {
             if (!snapshot.exists) return showError();
-
             if (initial) {
                 dispatch(
                     setGameLoaded({
@@ -127,7 +124,6 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
                 } as GameState)
             );
         }, showError);
-
         return () => {
             disconnectPlayer();
             channel();
@@ -141,9 +137,9 @@ const GameLoader: React.FC<Props> = ({ styles }) => {
         return result;
     }, [game.players]);
 
-    const copyLobbyId = () => {
+    const copyLobbyId = async () => {
         showInfoToast('Copied Lobby ID to Clipboard');
-        Clipboard.setString(lobbyId);
+        await Clipboard.setStringAsync(lobbyId);
         if (Platform.OS === 'ios' && hapticsEnabled) {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         }
