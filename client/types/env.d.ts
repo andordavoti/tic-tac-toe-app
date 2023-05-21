@@ -9,9 +9,8 @@ declare module '@env' {
     export const FIREBASE_MESSAGING_SENDER_ID: string;
     export const FIREBASE_APP_ID: string;
 
-    export const SENTRY_ORG: string;
-    export const SENTRY_PROJECT: string;
-    export const SENTRY_AUTH_TOKEN: string;
+    export const GOOGLE_SERVICES_JSON: string;
+    export const GOOGLE_SERVICES_PLIST: string;
 
     export const EAS_PROJECT_ID: string;
 }
