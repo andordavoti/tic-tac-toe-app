@@ -2,10 +2,10 @@ import express from 'express';
 import { firestore as FirebaseFirestore } from 'firebase-admin';
 import cors from 'cors';
 
-//Controllers
-import NewGame from './controllers/newGame';
+// Controllers
+import newGame from './controllers/newGame';
 
-//Services
+// Services
 function server(firestore: FirebaseFirestore.Firestore) {
     const app = express();
 
@@ -17,7 +17,7 @@ function server(firestore: FirebaseFirestore.Firestore) {
      * @method POST
      * @description creates a new game in the database and returns the game id as response.
      */
-    app.post('/new', NewGame(firestore));
+    app.post('/new', newGame(firestore));
 
     return app;
 }
