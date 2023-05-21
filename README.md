@@ -105,6 +105,12 @@ To build locally, run:
 yarn build:android:local
 ```
 
+## Web
+
+```sh
+yarn deploy:web
+```
+
 # Authors
 
 -   [Andor Davoti](https://github.com/andordavoti)
