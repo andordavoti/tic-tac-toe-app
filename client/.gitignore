@@ -16,3 +16,5 @@ metro.config.js
 .env
 GoogleService-Info.plist
 google-services.json
+*.ipa
+*.aab
