@@ -13,7 +13,7 @@
         "deploy:web": "expo build:web && firebase deploy --only hosting:client",
         "update:deps": "yarn upgrade-interactive --latest",
         "types": "tsc --noEmit",
-        "eas-build-pre-install": "echo $GOOGLE_SERVICES_JSON | base64 --decode > ./google-services.json && echo $GOOGLE_SERVICES_PLIST | base64 --decode > ./GoogleService-Info.plist"
+        "eas-build-pre-install": "echo $GOOGLE_SERVICES_JSON | base64 --decode > ./google-services.json; echo $GOOGLE_SERVICES_PLIST | base64 --decode > ./GoogleService-Info.plist"
     },
     "dependencies": {
         "@expo/webpack-config": "^18.0.1",
@@ -47,7 +47,7 @@
         "firebase": "^9.22.0",
         "react": "18.2.0",
         "react-dom": "18.2.0",
-        "react-native": "0.71.7",
+        "react-native": "0.71.8",
         "react-native-dotenv": "^3.4.8",
         "react-native-gesture-handler": "~2.9.0",
         "react-native-paper": "^4.5.0",
