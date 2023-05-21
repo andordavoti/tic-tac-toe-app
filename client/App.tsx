@@ -9,15 +9,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { toastConfig } from './lib/toast';
 import store, { persistor } from './redux/store';
 import { IS_WEB } from './lib/constants';
-import * as Sentry from 'sentry-expo';
-import Constants from 'expo-constants';
-
-Sentry.init({
-    release: Constants.manifest.version,
-    dsn: 'https://bfbcd5574b7849d099745490b29093c6@o384994.ingest.sentry.io/4505183470813184',
-    enableInExpoDevelopment: true,
-    debug: __DEV__,
-});
 
 const App: React.FC = () => {
     return (

@@ -13,6 +13,7 @@
         "deploy:web": "expo build:web && firebase deploy --only hosting:client",
         "update:deps": "yarn upgrade-interactive --latest",
         "types": "tsc --noEmit",
+        "eas-push-env": "eas secret:push --env-file ./.env --force",
         "eas-build-pre-install": "echo $GOOGLE_SERVICES_JSON | base64 --decode > ./google-services.json; echo $GOOGLE_SERVICES_PLIST | base64 --decode > ./GoogleService-Info.plist"
     },
     "dependencies": {
@@ -27,7 +28,6 @@
         "@react-navigation/native": "^6.1.6",
         "@react-navigation/stack": "^6.3.16",
         "@reduxjs/toolkit": "^1.9.5",
-        "@sentry/react-native": "4.13.0",
         "dotenv": "^16.0.3",
         "expo": "~48.0.15",
         "expo-application": "~5.1.1",
@@ -58,8 +58,7 @@
         "react-native-web": "~0.18.11",
         "react-redux": "^8.0.5",
         "redux-logger": "^3.0.6",
-        "redux-persist": "^6.0.0",
-        "sentry-expo": "~6.1.0"
+        "redux-persist": "^6.0.0"
     },
     "devDependencies": {
         "@babel/core": "^7.20.0",
