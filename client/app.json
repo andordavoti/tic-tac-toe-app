@@ -36,7 +36,10 @@
             "versionCode": 2023052102,
             "permissions": [],
             "playStoreUrl": "https://play.google.com/store/apps/details?id=com.andordavoti.tictactoe.game",
-            "googleServicesFile": "./google-services.json"
+            "googleServicesFile": "./google-services.json",
+            "blockedPermissions": [
+                "android.permission.REQUEST_INSTALL_PACKAGES"
+            ]
         },
         "web": {
             "favicon": "./assets/icon.png"
