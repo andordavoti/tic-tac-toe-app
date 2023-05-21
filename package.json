@@ -10,9 +10,9 @@
         "web": "cd client && yarn web",
         "build:ios": "cd client && yarn build:ios",
         "build:android": "cd client && yarn build:android",
-        "deploy-web": "cd client && deploy:web",
-        "deploy-server": "cd server && yarn deploy",
-        "deploy-landing": "cd landing-page && yarn build && firebase deploy --only hosting"
+        "deploy:web": "cd client && deploy:web",
+        "deploy:server": "cd server && yarn deploy",
+        "deploy:landing": "cd landing-page && yarn build && firebase deploy --only hosting"
     },
     "repository": {
         "type": "git",
