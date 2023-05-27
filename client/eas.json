@@ -1,19 +1,23 @@
 {
-  "cli": {
-    "version": ">= 3.12.0",
-    "promptToConfigurePushNotifications": false
-  },
-  "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+    "cli": {
+        "version": ">= 3.12.0",
+        "promptToConfigurePushNotifications": false
     },
-    "preview": {
-      "distribution": "internal"
+    "build": {
+        "development": {
+            "developmentClient": true,
+            "distribution": "internal"
+        },
+        "preview": {
+            "distribution": "internal"
+        },
+        "production": {
+            "env": {
+                "GOOGLE_SERVICES_FILE": "SILENCE_WARNING"
+            }
+        }
     },
-    "production": {}
-  },
-  "submit": {
-    "production": {}
-  }
+    "submit": {
+        "production": {}
+    }
 }
