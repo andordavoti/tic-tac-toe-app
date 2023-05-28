@@ -47,6 +47,7 @@
         },
         "plugins": [
             "@react-native-firebase/app",
+            "./config-plugins/rnf-disable-ad-id-support.plugin.js",
             [
                 "expo-build-properties",
                 {
